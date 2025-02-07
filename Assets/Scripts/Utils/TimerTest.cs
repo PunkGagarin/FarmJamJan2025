@@ -82,6 +82,7 @@ namespace Farm.Utils
         {
             if (_timerHandle != null)
                 _timer.RemoveTimer(_timerHandle);
+            
             _timerHandle = _timer.AddTimer(_duration, TimerExpire);
         }
 

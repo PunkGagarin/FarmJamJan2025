@@ -20,9 +20,9 @@ namespace Farm.Utils.Timer
             pauseService.Register(this);
         }
 
-        public TimerHandle AddTimer(float duration, Action callback)
+        public TimerHandle AddTimer(float duration, Action onTimerExpire)
         {
-            var timer = new TimerHandle(duration, callback);
+            var timer = new TimerHandle(duration, onTimerExpire);
             _timers.Add(timer);
             return timer;
         }
@@ -56,7 +56,7 @@ namespace Farm.Utils.Timer
 
                 if (timer.RemainingTime <= 0)
                 {
-                    timer.Callback?.Invoke();
+                    timer.OnTimerExpire?.Invoke();
                     _timersToRemove.Add(timer);
                 }
             }

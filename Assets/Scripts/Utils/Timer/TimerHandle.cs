@@ -9,7 +9,7 @@ namespace Farm.Utils.Timer
 
         public float RemainingTime { get; internal set; }
         public float Duration { get; }
-        public Action Callback { get; }
+        public Action OnTimerExpire { get; }
 
         public float Progress => Mathf.Clamp01(RemainingTime / Duration);    
         
@@ -19,11 +19,11 @@ namespace Farm.Utils.Timer
             set => _speedMultiplier = Mathf.Max(0.01f, value);
         }
 
-        public TimerHandle(float duration, Action callback)
+        public TimerHandle(float duration, Action onTimerExpire)
         {
             Duration = duration;
             RemainingTime = duration;
-            Callback = callback;
+            OnTimerExpire = onTimerExpire;
         }
 
         public void AddTime(float additionalTime) => 
