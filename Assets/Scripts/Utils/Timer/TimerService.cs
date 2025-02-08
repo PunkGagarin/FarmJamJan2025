@@ -20,9 +20,9 @@ namespace Farm.Utils.Timer
             pauseService.Register(this);
         }
 
-        public TimerHandle AddTimer(float duration, Action onTimerExpire)
+        public TimerHandle AddTimer(float duration, Action onTimerExpire, bool isLooping = false)
         {
-            var timer = new TimerHandle(duration, onTimerExpire);
+            var timer = new TimerHandle(duration, onTimerExpire, isLooping);
             _timers.Add(timer);
             return timer;
         }
@@ -57,7 +57,15 @@ namespace Farm.Utils.Timer
                 if (timer.RemainingTime <= 0)
                 {
                     timer.OnTimerExpire?.Invoke();
-                    _timersToRemove.Add(timer);
+
+                    if (timer.IsLooping)
+                    {
+                        timer.Reset();
+                    }
+                    else
+                    {
+                        _timersToRemove.Add(timer);
+                    }
                 }
             }
             
