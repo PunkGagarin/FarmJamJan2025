@@ -1,6 +1,9 @@
+using System.Runtime.InteropServices;
+using Audio;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Zenject;
 
 public class MainMenuUi : MonoBehaviour
 {
@@ -11,11 +14,14 @@ public class MainMenuUi : MonoBehaviour
     [SerializeField] private OptionsDialog optionsDialog;
     [SerializeField] private CreditsDialog creditsDialog;
 
+    [Inject] private MusicManager musicManager;
+    
     private void Awake()
     {
         startGameButton.onClick.AddListener(OnStartGameClicked);
         optionsButton.onClick.AddListener(OnOptionsClicked);
         creditsButton.onClick.AddListener(OnCreditsClicked);
+        musicManager.PlaySoundByType(GameAudioType.MainMenuBgm, 0);
     }
 
     private void OnStartGameClicked()

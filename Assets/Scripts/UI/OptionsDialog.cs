@@ -1,6 +1,8 @@
+using Audio;
 using UI.Core;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class OptionsDialog : BaseUIObject
 {
@@ -9,6 +11,10 @@ public class OptionsDialog : BaseUIObject
     [SerializeField] private Slider musicSlider;
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private Slider masterSlider;
+
+    [Inject] private SoundManager soundManager;
+    [Inject] private MusicManager musicManager;
+    [Inject] private MasterSoundManager masterSoundManager;
 
     private void Awake()
     {
@@ -23,29 +29,47 @@ public class OptionsDialog : BaseUIObject
 
     private void OnAcceptButtonClicked()
     {
-        //todo
+        soundManager.PlaySoundByType(GameAudioType.ButtonCLick, 0, Vector3.zero);
+
+        soundManager.SaveCurrentValue();
+        musicManager.SaveCurrentValue();
+        masterSoundManager.SaveCurrentValue();
         Hide();
     }
 
     private void OnDeclineButtonClicked()
     {
-        //todo
+        soundManager.PlaySoundByType(GameAudioType.ButtonCLick, 0, Vector3.zero);
+
+        masterSoundManager.RestorePrevValue(masterSoundManager.Volume);
+        musicManager.RestorePrevValue(masterSoundManager.Volume);
+        soundManager.RestorePrevValue(masterSoundManager.Volume);
+        UpdateSliders();
         Hide();
     }
 
-    private void OnMasterSliderValueChanged(float arg0)
+    private void UpdateSliders()
     {
-        //todo
+        masterSlider.value = masterSoundManager.Volume;
+        musicSlider.value = musicManager.Volume;
+        sfxSlider.value = soundManager.Volume;
+    }
+
+    private void OnMasterSliderValueChanged(float value)
+    {
+        masterSoundManager.ChangeVolume(value, value);
+        OnMusicSliderValueChanged(musicManager.Volume);
+        OnSoundSliderValueChanged(soundManager.Volume);
     }
 
     private void OnMusicSliderValueChanged(float value)
     {
-        //todo
+        musicManager.ChangeVolume(value, masterSoundManager.Volume);
     }
 
     private void OnSoundSliderValueChanged(float value)
     {
-        //todo
+        soundManager.ChangeVolume(value, masterSoundManager.Volume);
     }
 
     private void OnDestroy()
