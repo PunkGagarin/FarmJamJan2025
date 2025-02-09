@@ -14,6 +14,7 @@ public class MainMenuUi : MonoBehaviour
     [SerializeField] private CreditsDialog _creditsDialog;
 
     [Inject] private MusicManager _musicManager;
+    [Inject] private SceneLoader _sceneLoader;
     
     private void Awake()
     {
@@ -25,7 +26,7 @@ public class MainMenuUi : MonoBehaviour
 
     private void OnStartGameClicked()
     {
-        SceneManager.LoadScene("GamePlayScene");
+        _sceneLoader.Load(SceneLoader.Scene.GamePlayScene);
     }
 
     private void OnOptionsClicked()
