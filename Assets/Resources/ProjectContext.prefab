@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 939e1c88988f543a88bc716a5c79b6c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundsFactory: {fileID: 11400000, guid: b2b06eb7d0e184476bfb21d5c57c6091, type: 2}
+  _soundsFactory: {fileID: 11400000, guid: b2b06eb7d0e184476bfb21d5c57c6091, type: 2}
 --- !u!1 &2741890460048112235
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,9 +219,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd3a5095e01cf49b291225eabe76739e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundManager: {fileID: 7098928736344630894}
-  masterSoundManager: {fileID: 1903170941317149952}
-  musicManager: {fileID: 786563009711971739}
+  _soundManager: {fileID: 7098928736344630894}
+  _masterSoundManager: {fileID: 1903170941317149952}
+  _musicManager: {fileID: 786563009711971739}
 --- !u!1 &5116106268304627687
 GameObject:
   m_ObjectHideFlags: 0
@@ -363,8 +363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f032359b733c449938e62653609068fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundsFactory: {fileID: 11400000, guid: b2b06eb7d0e184476bfb21d5c57c6091, type: 2}
-  audioSource: {fileID: 4303768770725674284}
+  _soundsFactory: {fileID: 11400000, guid: b2b06eb7d0e184476bfb21d5c57c6091, type: 2}
 --- !u!1 &6092781060043057983
 GameObject:
   m_ObjectHideFlags: 0

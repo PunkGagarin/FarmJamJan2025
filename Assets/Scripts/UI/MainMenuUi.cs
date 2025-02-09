@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices;
 using Audio;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,21 +6,21 @@ using Zenject;
 
 public class MainMenuUi : MonoBehaviour
 {
-    [SerializeField] private Button startGameButton;
-    [SerializeField] private Button optionsButton;
-    [SerializeField] private Button creditsButton;
+    [SerializeField] private Button _startGameButton;
+    [SerializeField] private Button _optionsButton;
+    [SerializeField] private Button _creditsButton;
 
-    [SerializeField] private OptionsDialog optionsDialog;
-    [SerializeField] private CreditsDialog creditsDialog;
+    [SerializeField] private OptionsDialog _optionsDialog;
+    [SerializeField] private CreditsDialog _creditsDialog;
 
-    [Inject] private MusicManager musicManager;
+    [Inject] private MusicManager _musicManager;
     
     private void Awake()
     {
-        startGameButton.onClick.AddListener(OnStartGameClicked);
-        optionsButton.onClick.AddListener(OnOptionsClicked);
-        creditsButton.onClick.AddListener(OnCreditsClicked);
-        musicManager.PlaySoundByType(GameAudioType.MainMenuBgm, 0);
+        _startGameButton.onClick.AddListener(OnStartGameClicked);
+        _optionsButton.onClick.AddListener(OnOptionsClicked);
+        _creditsButton.onClick.AddListener(OnCreditsClicked);
+        _musicManager.PlaySoundByType(GameAudioType.MainMenuBgm, 0);
     }
 
     private void OnStartGameClicked()
@@ -31,18 +30,18 @@ public class MainMenuUi : MonoBehaviour
 
     private void OnOptionsClicked()
     {
-        optionsDialog.Show();
+        _optionsDialog.Show();
     }
 
     private void OnCreditsClicked()
     {
-        creditsDialog.Show();
+        _creditsDialog.Show();
     }
 
     private void OnDestroy()
     {
-        startGameButton.onClick.AddListener(OnStartGameClicked);
-        optionsButton.onClick.AddListener(OnOptionsClicked);
-        creditsButton.onClick.AddListener(OnCreditsClicked);
+        _startGameButton.onClick.AddListener(OnStartGameClicked);
+        _optionsButton.onClick.AddListener(OnOptionsClicked);
+        _creditsButton.onClick.AddListener(OnCreditsClicked);
     }
 }

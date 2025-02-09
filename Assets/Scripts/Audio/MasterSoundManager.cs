@@ -12,14 +12,14 @@ class MasterSoundManager : BaseAudioManager
         Volume = PlayerPrefs.GetFloat(PLAYER_PREFS_NAME, DEFAULT_VOLUME);
     }
 
-    public override void ChangeVolume(float _volume, float _masterVolume)
+    public override void ChangeVolume(float volume, float masterVolume)
     {
-        Volume = _volume;
+        Volume = volume;
     }
 
     
     protected override void SetPlayerPrefsName()
     {
-        playerPrefsName = PLAYER_PREFS_NAME;
+        PlayerPrefsName = PLAYER_PREFS_NAME;
     }
 }

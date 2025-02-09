@@ -4,14 +4,14 @@ using Zenject;
 
 public class SoundInstaller : MonoInstaller
 {
-    [SerializeField] private SoundManager soundManager;
-    [SerializeField] private MasterSoundManager masterSoundManager;
-    [SerializeField] private MusicManager musicManager;
+    [SerializeField] private SoundManager _soundManager;
+    [SerializeField] private MasterSoundManager _masterSoundManager;
+    [SerializeField] private MusicManager _musicManager;
 
     public override void InstallBindings()
     {
-        Container.Bind<MasterSoundManager>().FromInstance(masterSoundManager).AsSingle();
-        Container.Bind<SoundManager>().FromInstance(soundManager).AsSingle();
-        Container.Bind<MusicManager>().FromInstance(musicManager).AsSingle();
+        Container.Bind<MasterSoundManager>().FromInstance(_masterSoundManager).AsSingle();
+        Container.Bind<SoundManager>().FromInstance(_soundManager).AsSingle();
+        Container.Bind<MusicManager>().FromInstance(_musicManager).AsSingle();
     }
 }

@@ -6,79 +6,79 @@ using Zenject;
 
 public class OptionsDialog : BaseUIObject
 {
-    [SerializeField] private Button acceptButton;
-    [SerializeField] private Button declineButton;
-    [SerializeField] private Slider musicSlider;
-    [SerializeField] private Slider sfxSlider;
-    [SerializeField] private Slider masterSlider;
+    [SerializeField] private Button _acceptButton;
+    [SerializeField] private Button _declineButton;
+    [SerializeField] private Slider _musicSlider;
+    [SerializeField] private Slider _sfxSlider;
+    [SerializeField] private Slider _masterSlider;
 
-    [Inject] private SoundManager soundManager;
-    [Inject] private MusicManager musicManager;
-    [Inject] private MasterSoundManager masterSoundManager;
+    [Inject] private SoundManager _soundManager;
+    [Inject] private MusicManager _musicManager;
+    [Inject] private MasterSoundManager _masterSoundManager;
 
     private void Awake()
     {
-        acceptButton.onClick.AddListener(OnAcceptButtonClicked);
-        declineButton.onClick.AddListener(OnDeclineButtonClicked);
+        _acceptButton.onClick.AddListener(OnAcceptButtonClicked);
+        _declineButton.onClick.AddListener(OnDeclineButtonClicked);
 
-        masterSlider.onValueChanged.AddListener(OnMasterSliderValueChanged);
-        musicSlider.onValueChanged.AddListener(OnMusicSliderValueChanged);
-        sfxSlider.onValueChanged.AddListener(OnSoundSliderValueChanged);
+        _masterSlider.onValueChanged.AddListener(OnMasterSliderValueChanged);
+        _musicSlider.onValueChanged.AddListener(OnMusicSliderValueChanged);
+        _sfxSlider.onValueChanged.AddListener(OnSoundSliderValueChanged);
         Hide();
     }
 
     private void OnAcceptButtonClicked()
     {
-        soundManager.PlaySoundByType(GameAudioType.ButtonCLick, 0, Vector3.zero);
+        _soundManager.PlaySoundByType(GameAudioType.ButtonCLick, 0, Vector3.zero);
 
-        soundManager.SaveCurrentValue();
-        musicManager.SaveCurrentValue();
-        masterSoundManager.SaveCurrentValue();
+        _soundManager.SaveCurrentValue();
+        _musicManager.SaveCurrentValue();
+        _masterSoundManager.SaveCurrentValue();
         Hide();
     }
 
     private void OnDeclineButtonClicked()
     {
-        soundManager.PlaySoundByType(GameAudioType.ButtonCLick, 0, Vector3.zero);
+        _soundManager.PlaySoundByType(GameAudioType.ButtonCLick, 0, Vector3.zero);
 
-        masterSoundManager.RestorePrevValue(masterSoundManager.Volume);
-        musicManager.RestorePrevValue(masterSoundManager.Volume);
-        soundManager.RestorePrevValue(masterSoundManager.Volume);
+        _masterSoundManager.RestorePrevValue(_masterSoundManager.Volume);
+        _musicManager.RestorePrevValue(_masterSoundManager.Volume);
+        _soundManager.RestorePrevValue(_masterSoundManager.Volume);
         UpdateSliders();
         Hide();
     }
 
     private void UpdateSliders()
     {
-        masterSlider.value = masterSoundManager.Volume;
-        musicSlider.value = musicManager.Volume;
-        sfxSlider.value = soundManager.Volume;
+        _masterSlider.value = _masterSoundManager.Volume;
+        _musicSlider.value = _musicManager.Volume;
+        _sfxSlider.value = _soundManager.Volume;
     }
 
     private void OnMasterSliderValueChanged(float value)
     {
-        masterSoundManager.ChangeVolume(value, value);
-        OnMusicSliderValueChanged(musicManager.Volume);
-        OnSoundSliderValueChanged(soundManager.Volume);
+        _masterSoundManager.ChangeVolume(value, value);
+        OnMusicSliderValueChanged(_musicManager.Volume);
+        OnSoundSliderValueChanged(_soundManager.Volume);
     }
 
     private void OnMusicSliderValueChanged(float value)
     {
-        musicManager.ChangeVolume(value, masterSoundManager.Volume);
+        _musicManager.ChangeVolume(value, _masterSoundManager.Volume);
     }
 
     private void OnSoundSliderValueChanged(float value)
     {
-        soundManager.ChangeVolume(value, masterSoundManager.Volume);
+        _soundManager.ChangeVolume(value, _masterSoundManager.Volume);
     }
 
     private void OnDestroy()
     {
-        acceptButton.onClick.AddListener(OnAcceptButtonClicked);
-        declineButton.onClick.AddListener(OnDeclineButtonClicked);
+        _acceptButton.onClick.AddListener(OnAcceptButtonClicked);
+        _declineButton.onClick.AddListener(OnDeclineButtonClicked);
 
-        masterSlider.onValueChanged.AddListener(OnMasterSliderValueChanged);
-        musicSlider.onValueChanged.AddListener(OnMusicSliderValueChanged);
-        sfxSlider.onValueChanged.AddListener(OnSoundSliderValueChanged);
+        _masterSlider.onValueChanged.AddListener(OnMasterSliderValueChanged);
+        _musicSlider.onValueChanged.AddListener(OnMusicSliderValueChanged);
+        _sfxSlider.onValueChanged.AddListener(OnSoundSliderValueChanged);
     }
 }

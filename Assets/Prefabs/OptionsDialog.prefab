@@ -659,12 +659,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af956547e31464be4874ea9081698d3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  content: {fileID: 3774517478023576181}
-  acceptButton: {fileID: 5594755644712195213}
-  declineButton: {fileID: 4742907776039631074}
-  musicSlider: {fileID: 8818262556490420753}
-  sfxSlider: {fileID: 5074240711619519986}
-  masterSlider: {fileID: 6206450465489293251}
+  Content: {fileID: 3774517478023576181}
+  _acceptButton: {fileID: 5594755644712195213}
+  _declineButton: {fileID: 4742907776039631074}
+  _musicSlider: {fileID: 8818262556490420753}
+  _sfxSlider: {fileID: 5074240711619519986}
+  _masterSlider: {fileID: 6206450465489293251}
 --- !u!1 &3369197462695913830
 GameObject:
   m_ObjectHideFlags: 0

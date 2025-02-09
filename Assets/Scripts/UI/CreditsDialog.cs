@@ -4,11 +4,11 @@ using UnityEngine.UI;
 
 public class CreditsDialog : BaseUIObject
 {
-    [SerializeField] private Button closeButton;
+    [SerializeField] private Button _closeButton;
 
     private void Awake()
     {
-        closeButton.onClick.AddListener(OnCloseButtonClicked);
+        _closeButton.onClick.AddListener(OnCloseButtonClicked);
         Hide();
     }
 
@@ -19,6 +19,6 @@ public class CreditsDialog : BaseUIObject
 
     private void OnDestroy()
     {
-        closeButton.onClick.RemoveListener(OnCloseButtonClicked);
+        _closeButton.onClick.RemoveListener(OnCloseButtonClicked);
     }
 }

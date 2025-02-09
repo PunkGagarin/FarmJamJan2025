@@ -4,16 +4,16 @@ namespace UI.Core
 {
     public class BaseUIObject : MonoBehaviour
     {
-        [SerializeField] protected GameObject content;
+        [SerializeField] protected GameObject Content;
 
         public void Show()
         {
-            content.SetActive(true);
+            Content.SetActive(true);
         }
 
         public void Hide()
         {
-            content.SetActive(false);
+            Content.SetActive(false);
         }
 
     }

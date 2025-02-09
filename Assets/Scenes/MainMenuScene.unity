@@ -1048,8 +1048,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d45786bb5e7a54c1aa8f6def64f27de3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  content: {fileID: 1359035856}
-  closeButton: {fileID: 433457266}
+  Content: {fileID: 1359035856}
+  _closeButton: {fileID: 433457266}
 --- !u!1 &811083135
 GameObject:
   m_ObjectHideFlags: 0
@@ -2409,11 +2409,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c256f23f962024f9f885e655dc84e31a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startGameButton: {fileID: 1676784848}
-  optionsButton: {fileID: 1000654550}
-  creditsButton: {fileID: 732060296}
-  optionsDialog: {fileID: 1101876431}
-  creditsDialog: {fileID: 742638410}
+  _startGameButton: {fileID: 1676784848}
+  _optionsButton: {fileID: 1000654550}
+  _creditsButton: {fileID: 732060296}
+  _optionsDialog: {fileID: 1101876431}
+  _creditsDialog: {fileID: 742638410}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

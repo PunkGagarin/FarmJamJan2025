@@ -4,43 +4,37 @@ namespace Audio
 {
     public abstract class BaseAudioManager : MonoBehaviour
     {
-        protected string playerPrefsName;
+        protected string PlayerPrefsName;
 
-        protected AudioSource audioSource;
+        protected AudioSource AudioSource;
 
         public float Volume { get; protected set; }
 
-        public virtual void ChangeVolume(float _volume, float _masterVolume)
+        public virtual void ChangeVolume(float volume, float masterVolume)
         {
-            Volume = _volume;
-            if (audioSource != null)
+            Volume = volume;
+            if (AudioSource != null)
             {
-                audioSource.volume = Volume * _masterVolume;
+                AudioSource.volume = Volume * masterVolume;
             }
         }
 
-        public virtual void SaveVolume(float _volume, float _masterVolume)
+        public virtual void SaveVolume(float volume, float masterVolume)
         {
-            ChangeVolume(_volume, _masterVolume);
+            ChangeVolume(volume, masterVolume);
             SaveCurrentValue();
         }
 
         public virtual void SaveCurrentValue()
         {
-            PlayerPrefs.SetFloat(playerPrefsName, Volume);
+            PlayerPrefs.SetFloat(PlayerPrefsName, Volume);
             PlayerPrefs.Save();
         }
 
-        public virtual void RestorePrevValue(float _masterVolume)
+        public virtual void RestorePrevValue(float masterVolume)
         {
-            float prevVolume = PlayerPrefs.GetFloat(playerPrefsName, Volume);
-            SaveVolume(prevVolume, _masterVolume);
-        }
-
-
-        protected void SetAudioSource(AudioSource audioSource)
-        {
-            this.audioSource = audioSource;
+            float prevVolume = PlayerPrefs.GetFloat(PlayerPrefsName, Volume);
+            SaveVolume(prevVolume, masterVolume);
         }
 
         protected abstract void SetPlayerPrefsName();
