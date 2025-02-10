@@ -25,7 +25,7 @@ public class MainMenuUi : MonoBehaviour
 
     private void OnStartGameClicked()
     {
-        _sceneLoader.Load(SceneLoader.Scene.GamePlayScene);
+        _sceneLoader.Load(SceneLoader.Scene.Gameplay);
     }
 
     private void OnOptionsClicked()
