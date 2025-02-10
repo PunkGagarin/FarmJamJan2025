@@ -22,7 +22,7 @@ namespace Audio
         {
             var soundToPlay = _soundsFactory.GetClipByTypeAndIndex(type, soundIndex);
             AudioSource.clip = soundToPlay;
-            AudioSource.volume = DEFAULT_VOLUME * Volume;
+            AudioSource.volume = Volume;
             AudioSource.loop = true;
             AudioSource.Play();
         }

@@ -15,7 +15,29 @@ MonoBehaviour:
   _clips:
   - _key: 1
     _value:
-    - {fileID: 8300000, guid: b60bda429771c4613be47d85e68669b2, type: 3}
-  - _key: 2
+    - {fileID: 8300000, guid: d9195837b42cc4950b57785660b2ba82, type: 3}
+  - _key: 9
     _value:
     - {fileID: 8300000, guid: d2fc47ce6aae14f41a162f2db35ab673, type: 3}
+  - _key: 2
+    _value:
+    - {fileID: 8300000, guid: b9e68291114ed4a86962c561a2743c0c, type: 3}
+  - _key: 3
+    _value:
+    - {fileID: 8300000, guid: 07b3b052239ff47eb9522e3014693d64, type: 3}
+  - _key: 4
+    _value:
+    - {fileID: 8300000, guid: 5cab818570fb34093b392a1af347758b, type: 3}
+  - _key: 5
+    _value:
+    - {fileID: 8300000, guid: 4277a08dec17a4b79befbfbf3b209843, type: 3}
+  - _key: 6
+    _value:
+    - {fileID: 8300000, guid: 197f11a99a8a24091929446e60d4f784, type: 3}
+  - _key: 7
+    _value:
+    - {fileID: 8300000, guid: cd2358536aab143c0913102c46f7e2ac, type: 3}
+  - _key: 20
+    _value:
+    - {fileID: 8300000, guid: bc5e2084ba6514260a1ba32459dcd5fc, type: 3}
+    - {fileID: 8300000, guid: f4a502bde36d840e8805f1a7b1e46478, type: 3}

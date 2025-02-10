@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace Audio
 {
-
     public class SoundManager : BaseAudioManager, ISoundManager
     {
         private const string PLAYER_PREFS_NAME = "SoundEffectVolume";
@@ -22,12 +21,6 @@ namespace Audio
         {
             return _soundsFactory.GetRandomClipByType(type);
         }
-        
-        public void PlayRandomSoundByType(GameAudioType type, Transform transform, float volumeMultiplier)
-        {
-            var soundToPlay = GetRandomSoundByType(type);
-            PlaySound(soundToPlay, transform.position, volumeMultiplier);
-        }
 
         public void PlayRandomSoundByType(GameAudioType type, Transform transform)
         {
@@ -46,20 +39,20 @@ namespace Audio
             var soundToPlay = _soundsFactory.GetClipByTypeAndIndex(type, soundIndex);
             PlaySound(soundToPlay, position);
         }
-        
+
         public void PlayOneShotByType(GameAudioType type, int soundIndex)
         {
             var soundToPlay = _soundsFactory.GetClipByTypeAndIndex(type, soundIndex);
             AudioSource.clip = soundToPlay;
-            AudioSource.volume = DEFAULT_VOLUME * Volume;
+            AudioSource.volume = Volume;
             AudioSource.panStereo = 0.0f;
             AudioSource.spatialBlend = 0.0f;
             AudioSource.Play();
         }
 
-        private void PlaySound(AudioClip clip, Vector3 position, float volumeMultiplier = DEFAULT_VOLUME)
+        private void PlaySound(AudioClip clip, Vector3 position)
         {
-            AudioSource.PlayClipAtPoint(clip, position, volumeMultiplier * Volume);
+            AudioSource.PlayClipAtPoint(clip, position, Volume);
         }
 
         protected override void SetPlayerPrefsName()

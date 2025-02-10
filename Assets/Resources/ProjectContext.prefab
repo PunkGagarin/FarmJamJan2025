@@ -177,6 +177,7 @@ Transform:
   - {fileID: 5666625821662304412}
   - {fileID: 1696461914473770239}
   - {fileID: 8790408875751318193}
+  - {fileID: 6072713222306579340}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5464426048026841594
@@ -224,6 +225,7 @@ MonoBehaviour:
   _soundManager: {fileID: 7098928736344630894}
   _masterSoundManager: {fileID: 1903170941317149952}
   _musicManager: {fileID: 786563009711971739}
+  _ambientSoundPlayer: {fileID: 5903677174259292024}
 --- !u!114 &3776598980771137902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -420,5 +422,49 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d8ccac8f2b8e4212a1f85b4e0be11235, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &6516197874676354270
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6072713222306579340}
+  - component: {fileID: 5903677174259292024}
+  m_Layer: 0
+  m_Name: AmbientSoundPlayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6072713222306579340
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6516197874676354270}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4715784132987279155}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5903677174259292024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6516197874676354270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 702ec078f83149e4adf9f047c50e746c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
