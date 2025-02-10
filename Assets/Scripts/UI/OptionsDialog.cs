@@ -29,7 +29,7 @@ public class OptionsDialog : BaseUIObject
 
     private void OnAcceptButtonClicked()
     {
-        _soundManager.PlaySoundByType(GameAudioType.ButtonCLick, 0, Vector3.zero);
+        _soundManager.PlaySoundByType(GameAudioType.ButtonCLick, 0);
 
         _soundManager.SaveCurrentValue();
         _musicManager.SaveCurrentValue();
@@ -39,7 +39,7 @@ public class OptionsDialog : BaseUIObject
 
     private void OnDeclineButtonClicked()
     {
-        _soundManager.PlaySoundByType(GameAudioType.ButtonCLick, 0, Vector3.zero);
+        _soundManager.PlaySoundByType(GameAudioType.ButtonCLick, 0);
 
         _masterSoundManager.RestorePrevValue(_masterSoundManager.Volume);
         _musicManager.RestorePrevValue(_masterSoundManager.Volume);

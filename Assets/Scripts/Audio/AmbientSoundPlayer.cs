@@ -1,27 +1,33 @@
 using Audio;
+using Farm.Utils.Timer;
 using UnityEngine;
 using Zenject;
+using Random = UnityEngine.Random;
 
-public class AmbientSoundPlayer : MonoBehaviour //todo
+public class AmbientSoundPlayer : MonoBehaviour
 {
-    private float _minInterval = 15f; 
-    private float _maxInterval = 60f;
-    
+    private TimerHandle _timerHandle;
+    private float _duration = 45f;
+    private float _playChance = 0.5f;
+
     [Inject] private SoundManager _sfxManager;
+    [Inject] private TimerService _timerService;
+
     void Start()
     {
-        ScheduleNextSound();
+        _timerHandle = _timerService.AddTimer(_duration, TryPlayAmbient, true);
     }
 
-   private void ScheduleNextSound()
+    private void TryPlayAmbient()
     {
-        float delay = Random.Range(_minInterval, _maxInterval);
-        Invoke("PlaySoundAndReschedule", delay);
+        if (Random.value < _playChance)
+        {
+            _sfxManager.PlayRandomSoundByType(GameAudioType.AmbientSound);
+        }
     }
 
-    private void PlaySoundAndReschedule()
+    private void OnDestroy()
     {
-        _sfxManager.PlayRandomSoundByType(GameAudioType.AmbientSound, Vector3.one);
-        ScheduleNextSound();
+        _timerHandle?.FinalizeTimer();
     }
 }

@@ -8,17 +8,12 @@ public class CreditsDialog : BaseUIObject
 
     private void Awake()
     {
-        _closeButton.onClick.AddListener(OnCloseButtonClicked);
-        Hide();
-    }
-
-    private void OnCloseButtonClicked()
-    {
+        _closeButton.onClick.AddListener(Hide);
         Hide();
     }
 
     private void OnDestroy()
     {
-        _closeButton.onClick.RemoveListener(OnCloseButtonClicked);
+        _closeButton.onClick.RemoveListener(Hide);
     }
 }

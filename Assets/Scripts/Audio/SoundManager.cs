@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Audio
@@ -9,9 +11,12 @@ namespace Audio
 
         [SerializeField] private SoundsFactorySO _soundsFactory;
 
+        private List<AudioSource> _audioSources;
+
         private void Awake()
         {
             AudioSource = GetComponent<AudioSource>();
+            _audioSources = new List<AudioSource> { AudioSource };
             SetPlayerPrefsName();
             Volume = PlayerPrefs.GetFloat(PLAYER_PREFS_NAME, DEFAULT_VOLUME);
             AudioSource.volume = Volume;
@@ -22,37 +27,37 @@ namespace Audio
             return _soundsFactory.GetRandomClipByType(type);
         }
 
-        public void PlayRandomSoundByType(GameAudioType type, Transform transform)
+        private AudioSource GetAvailableAudioSource()
+        {
+            foreach (AudioSource source in _audioSources.Where(source => !source.isPlaying))
+            {
+                return source;
+            }
+            
+            AudioSource newAudioSource = gameObject.AddComponent<AudioSource>();
+            newAudioSource.volume = Volume;
+            _audioSources.Add(newAudioSource);
+            return newAudioSource;
+        }
+
+        public void PlayRandomSoundByType(GameAudioType type)
         {
             var soundToPlay = GetRandomSoundByType(type);
-            PlaySound(soundToPlay, transform.position);
+            PlaySound(soundToPlay);
         }
 
-        public void PlayRandomSoundByType(GameAudioType type, Vector3 position)
+        public void PlaySoundByType(GameAudioType type, int soundIndex)
         {
-            var soundToPlay = GetRandomSoundByType(type);
-            PlaySound(soundToPlay, position);
+            var clip = _soundsFactory.GetClipByTypeAndIndex(type, soundIndex);
+            PlaySound(clip);
         }
 
-        public void PlaySoundByType(GameAudioType type, int soundIndex, Vector3 position)
+        private void PlaySound(AudioClip clip)
         {
-            var soundToPlay = _soundsFactory.GetClipByTypeAndIndex(type, soundIndex);
-            PlaySound(soundToPlay, position);
-        }
-
-        public void PlayOneShotByType(GameAudioType type, int soundIndex)
-        {
-            var soundToPlay = _soundsFactory.GetClipByTypeAndIndex(type, soundIndex);
-            AudioSource.clip = soundToPlay;
-            AudioSource.volume = Volume;
-            AudioSource.panStereo = 0.0f;
-            AudioSource.spatialBlend = 0.0f;
-            AudioSource.Play();
-        }
-
-        private void PlaySound(AudioClip clip, Vector3 position)
-        {
-            AudioSource.PlayClipAtPoint(clip, position, Volume);
+            var audioSource = GetAvailableAudioSource();
+            audioSource.clip = clip;
+            audioSource.volume = Volume;
+            audioSource.Play();
         }
 
         protected override void SetPlayerPrefsName()
