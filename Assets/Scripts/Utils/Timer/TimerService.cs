@@ -69,7 +69,7 @@ namespace Farm.Utils.Timer
                 }
             }
             
-            if (_timersToRemove.Count > 0) 
+            if (_timersToRemove.Count > 0)
             {
                 _timers.RemoveAll(t => _timersToRemove.Contains(t));
                 _timersToRemove.Clear();

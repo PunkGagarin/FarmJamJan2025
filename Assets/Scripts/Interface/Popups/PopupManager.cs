@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Farm.Gameplay;
+using UnityEngine;
 
 namespace Farm.Interface.Popups
 {
@@ -15,9 +16,8 @@ namespace Farm.Interface.Popups
             return _gameOverPopup;
         }
 
-        public CapsulePopup OpenCapsule(Vector3 showPosition, bool openPopupToTheLeft)
+        public CapsulePopup OpenCapsule(Capsule capsule)
         {
-            _capsulePopup.UpdatePosition(showPosition, openPopupToTheLeft, _canvas);
             _capsulePopup.gameObject.SetActive(true);
 
             return _capsulePopup;

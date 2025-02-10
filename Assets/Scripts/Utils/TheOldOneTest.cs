@@ -1,5 +1,4 @@
 ﻿using Farm.Gameplay;
-using Farm.Interface;
 using UnityEngine;
 
 namespace Farm.Utils
@@ -7,19 +6,18 @@ namespace Farm.Utils
     public class TheOldOneTest : MonoBehaviour
     {
         [SerializeField] private TheOldOneDefinition _theOldOneDefinition;
-        [SerializeField] private TheOldOneUI _theOldOneUI;
         [SerializeField] private TheOldOne _theOldOne;
 
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Q)) 
                 InitializeTheOldOne();
+
+            if (Input.GetKeyDown(KeyCode.E))
+                _theOldOne.Feed(100);
         }
 
-        private void InitializeTheOldOne()
-        {
-            _theOldOneUI.Bind(_theOldOne);
+        private void InitializeTheOldOne() => 
             _theOldOne.Initialize(_theOldOneDefinition);
-        }
     }
 }
