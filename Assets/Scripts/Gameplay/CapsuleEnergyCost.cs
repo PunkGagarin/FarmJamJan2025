@@ -54,6 +54,7 @@ namespace Farm.Gameplay
             {
                 _inventory.CurrentEnergy -= _capsuleDefinition.CostToUnlock;
                 gameObject.SetActive(false);
+                _inventory.ResetColor();
                 OnBoughtSuccess?.Invoke();
             }
             else
