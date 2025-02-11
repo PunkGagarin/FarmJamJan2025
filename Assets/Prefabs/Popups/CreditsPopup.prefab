@@ -118,7 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d45786bb5e7a54c1aa8f6def64f27de3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Content: {fileID: 0}
+  _rectTransform: {fileID: 0}
   _closeButton: {fileID: 5704350387805671421}
 --- !u!1 &4968169474686295133
 GameObject:
