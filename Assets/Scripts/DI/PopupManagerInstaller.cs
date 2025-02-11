@@ -12,7 +12,7 @@ namespace Farm.DI
         {
             Container
                 .Bind<PopupManager>()
-                .FromInstance(_popupManagerPrefab)
+                .FromComponentInNewPrefab(_popupManagerPrefab)
                 .AsSingle()
                 .NonLazy();
         }

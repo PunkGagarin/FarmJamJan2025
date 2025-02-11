@@ -1,10 +1,10 @@
 using Audio;
-using UI.Core;
+using Farm.Interface.Popups;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-public class OptionsDialog : BaseUIObject
+public class OptionsPopup : Popup
 {
     [SerializeField] private Button _acceptButton;
     [SerializeField] private Button _declineButton;
@@ -24,7 +24,6 @@ public class OptionsDialog : BaseUIObject
         _masterSlider.onValueChanged.AddListener(OnMasterSliderValueChanged);
         _musicSlider.onValueChanged.AddListener(OnMusicSliderValueChanged);
         _sfxSlider.onValueChanged.AddListener(OnSoundSliderValueChanged);
-        Hide();
     }
 
     private void OnAcceptButtonClicked()
@@ -34,7 +33,7 @@ public class OptionsDialog : BaseUIObject
         _soundManager.SaveCurrentValue();
         _musicManager.SaveCurrentValue();
         _masterSoundManager.SaveCurrentValue();
-        Hide();
+        Close();
     }
 
     private void OnDeclineButtonClicked()
@@ -45,7 +44,7 @@ public class OptionsDialog : BaseUIObject
         _musicManager.RestorePrevValue(_masterSoundManager.Volume);
         _soundManager.RestorePrevValue(_masterSoundManager.Volume);
         UpdateSliders();
-        Hide();
+        Close();
     }
 
     private void UpdateSliders()

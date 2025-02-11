@@ -1,19 +1,18 @@
-using UI.Core;
+using Farm.Interface.Popups;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CreditsDialog : BaseUIObject
+public class CreditsPopup : Popup
 {
     [SerializeField] private Button _closeButton;
 
     private void Awake()
     {
-        _closeButton.onClick.AddListener(Hide);
-        Hide();
+        _closeButton.onClick.AddListener(Close);
     }
 
     private void OnDestroy()
     {
-        _closeButton.onClick.RemoveListener(Hide);
+        _closeButton.onClick.RemoveListener(Close);
     }
 }

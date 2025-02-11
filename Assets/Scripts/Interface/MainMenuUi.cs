@@ -1,4 +1,5 @@
 using Audio;
+using Farm.Interface.Popups;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -9,11 +10,9 @@ public class MainMenuUi : MonoBehaviour
     [SerializeField] private Button _optionsButton;
     [SerializeField] private Button _creditsButton;
 
-    [SerializeField] private OptionsDialog _optionsDialog;
-    [SerializeField] private CreditsDialog _creditsDialog;
-
     [Inject] private MusicManager _musicManager;
     [Inject] private SceneLoader _sceneLoader;
+    [Inject] private PopupManager _popupManager;
     
     private void Awake()
     {
@@ -30,12 +29,12 @@ public class MainMenuUi : MonoBehaviour
 
     private void OnOptionsClicked()
     {
-        _optionsDialog.Show();
+        _popupManager.OpenOptions();
     }
 
     private void OnCreditsClicked()
     {
-        _creditsDialog.Show();
+        _popupManager.OpenCredits();
     }
 
     private void OnDestroy()
