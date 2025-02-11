@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e76e7ae9926f480ab93409ce8d2826c4, type: 3}
+  m_Name: Capsule Repository
+  m_EditorClassIdentifier: 
+  _definitions:
+  - {fileID: 11400000, guid: da70633ae355140499821bc952c7ad9d, type: 2}
+  - {fileID: 11400000, guid: df491de53d206bd4288bd12faf5804c4, type: 2}
+  - {fileID: 11400000, guid: 2b55a58b61737664da99bcc26d3ce153, type: 2}
+  - {fileID: 11400000, guid: 4f4009db0806e924096d9b88dc71eed0, type: 2}
+  - {fileID: 11400000, guid: c48d5aa79801c924e9dc6f4e6ca20d22, type: 2}

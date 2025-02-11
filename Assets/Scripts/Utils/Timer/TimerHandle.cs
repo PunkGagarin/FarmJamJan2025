@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Farm.Utils.Timer
 {
-    public class TimerHandle
+    public class TimerHandle : IDisposable
     {
         private float _speedMultiplier = 1f;
         private bool _isLooping;
@@ -11,7 +11,7 @@ namespace Farm.Utils.Timer
         public float RemainingTime { get; internal set; }
         public float Duration { get; }
         public bool IsLooping => _isLooping;
-        public Action OnTimerExpire { get; }
+        public Action OnTimerExpire { get; private set; }
 
         public float Progress => Mathf.Clamp01(RemainingTime / Duration);    
         
@@ -43,5 +43,10 @@ namespace Farm.Utils.Timer
 
         public void FinalizeTimer() => 
             _isLooping = false;
+
+        public void Dispose()
+        {
+            OnTimerExpire = null;
+        }
     }
 }

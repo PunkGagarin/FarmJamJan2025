@@ -1,4 +1,5 @@
 ﻿using Farm.Gameplay;
+using Farm.Gameplay.Definitions;
 using UnityEngine;
 
 namespace Farm.Utils
@@ -8,13 +9,9 @@ namespace Farm.Utils
         [SerializeField] private TheOldOneDefinition _theOldOneDefinition;
         [SerializeField] private TheOldOne _theOldOne;
 
-        private void Update()
+        private void Start()
         {
-            if (Input.GetKeyDown(KeyCode.Q)) 
-                InitializeTheOldOne();
-
-            if (Input.GetKeyDown(KeyCode.E))
-                _theOldOne.Feed(100);
+            InitializeTheOldOne();
         }
 
         private void InitializeTheOldOne() => 

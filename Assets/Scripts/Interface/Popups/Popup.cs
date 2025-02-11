@@ -18,12 +18,16 @@ namespace Farm.Interface.Popups
             
             if (withPause)
                 _pauseService.SetPaused(true);
+            
+            gameObject.SetActive(true);
         }
 
         public virtual void Close()
         {
             if (_openedWithPause)
                 _pauseService.SetPaused(false);
+
+            gameObject.SetActive(false);
         }
     }
 }

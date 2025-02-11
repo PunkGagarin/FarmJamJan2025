@@ -11,14 +11,14 @@ namespace Farm.Interface.Popups
 
         public GameOverPopup OpenGameOver()
         {
-            _gameOverPopup.gameObject.SetActive(true);
             _gameOverPopup.Open(true);
             return _gameOverPopup;
         }
 
         public CapsulePopup OpenCapsule(Capsule capsule)
         {
-            _capsulePopup.gameObject.SetActive(true);
+            _capsulePopup.Initialize(capsule);
+            _capsulePopup.Open(false);
 
             return _capsulePopup;
         }

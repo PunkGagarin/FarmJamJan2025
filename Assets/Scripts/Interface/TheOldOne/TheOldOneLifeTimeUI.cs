@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Farm.Gameplay;
+using Farm.Gameplay.Definitions;
 using Farm.Utils.Timer;
 using UnityEngine;
 
@@ -45,8 +46,6 @@ namespace Farm.Interface.TheOldOne
                 float rotateAmount = -normalizedTime * FULL_CIRCLE_EDGE - _fixedAngle;
 
                 _marks[i].transform.localRotation = Quaternion.Euler(0, 0, rotateAmount);
-        
-                Debug.Log($"Mark {i}: Angle = {rotateAmount}");
             }
         }
 

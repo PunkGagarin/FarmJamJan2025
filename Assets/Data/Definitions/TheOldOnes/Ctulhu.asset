@@ -16,14 +16,14 @@ MonoBehaviour:
   _maxSatiety: 2500
   _startSatiety: 800
   _timeToStarveTick: 1.5
-  _lifeTime: 20
+  _lifeTime: 120
   _satietyPhasesData:
   - PhaseStartTime: 0
     SatietyLoseByTick: 5
-  - PhaseStartTime: 2
+  - PhaseStartTime: 30
     SatietyLoseByTick: 10
-  - PhaseStartTime: 4
+  - PhaseStartTime: 80
     SatietyLoseByTick: 20
-  - PhaseStartTime: 16
+  - PhaseStartTime: 100
     SatietyLoseByTick: 40
   _rampageTime: 5

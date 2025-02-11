@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Farm.Gameplay
+namespace Farm.Gameplay.Definitions
 {
-    [CreateAssetMenu(fileName = "The Old One Definition", menuName = "Game Resources/The Old One Definition")]
-    public class TheOldOneDefinition : ScriptableObject
+    [CreateAssetMenu(fileName = "The Old One Definition", menuName = "Game Resources/Definition/The Old One")]
+    public class TheOldOneDefinition : Definition
     {
         [Serializable]
         public class PhasesData

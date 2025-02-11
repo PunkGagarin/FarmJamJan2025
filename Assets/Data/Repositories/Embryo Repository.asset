@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2137f829ad348b59c369b5b25562d98, type: 3}
+  m_Name: Embryo Repository
+  m_EditorClassIdentifier: 
+  _definitions:
+  - {fileID: 11400000, guid: 8c6a2815470df7f4aaca292a52dc8cf9, type: 2}
+  - {fileID: 11400000, guid: 8513fbc1992349343be38a62bdfacfba, type: 2}
+  - {fileID: 11400000, guid: 4fbb591e9844f6d47b2307d25216318a, type: 2}

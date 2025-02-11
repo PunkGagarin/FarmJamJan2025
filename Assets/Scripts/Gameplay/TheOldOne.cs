@@ -1,5 +1,6 @@
 ﻿using System;
 using DG.Tweening;
+using Farm.Gameplay.Definitions;
 using Farm.Interface.Popups;
 using Farm.Interface.TheOldOne;
 using Farm.Utils.Pause;
@@ -17,6 +18,7 @@ namespace Farm.Gameplay
 
         [Inject] private PopupManager _popupManager;
         [Inject] private TimerService _timerService;
+        [Inject] private FeedMediator _feedMediator;
         private TheOldOneDefinition _definition;
         private float _maxSatiety;
         private float _currentSatiety;
@@ -44,6 +46,8 @@ namespace Farm.Gameplay
             OnPhaseChanged?.Invoke(_currentPhase);
             _starveTimer = _timerService.AddTimer(_definition.TimeToStarveTick, Starve, true);
             OnSatietyChanged?.Invoke(_currentSatiety, _maxSatiety);
+
+            _feedMediator.UpdateTheOldOne(this);
 
             InitializeInterface();
         }

@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using Farm.Gameplay;
+using Farm.Gameplay.Definitions;
 using Farm.Utils.Timer;
 using TMPro;
 using UnityEngine;
