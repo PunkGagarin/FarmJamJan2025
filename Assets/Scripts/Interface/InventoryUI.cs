@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
@@ -15,7 +16,10 @@ namespace Farm.Interface
         [Header("Параметры тряски")]
         [SerializeField] private float _shakeDuration;
         [SerializeField] private float _shakePower;
-        
+        [SerializeField] private List<InventorySlot> _inventorySlots;
+        [SerializeField] private int _maxSlotsCount;
+
+        public List<InventorySlot> InventorySlots => _inventorySlots;
 
         private int _currentEnergy;
         
