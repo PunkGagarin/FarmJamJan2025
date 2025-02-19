@@ -683,8 +683,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 18, y: 265}
-  m_SizeDelta: {x: 1132.824, y: 318.5261}
+  m_AnchoredPosition: {x: 0, y: 287}
+  m_SizeDelta: {x: 1483.1462, y: 325.5796}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1506025750
 MonoBehaviour:
@@ -706,7 +706,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Eldritch Farm
+  m_text: "Feast of the\n Forgotten "
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 168233b8fe43f4dae8e2bbd962232efa, type: 2}
   m_sharedMaterial: {fileID: 5683825052000979397, guid: 168233b8fe43f4dae8e2bbd962232efa, type: 2}
@@ -733,8 +733,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 190.4
-  m_fontSizeBase: 190.4
+  m_fontSize: 177.52
+  m_fontSizeBase: 177.52
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

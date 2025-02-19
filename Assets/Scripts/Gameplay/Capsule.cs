@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Farm.Enums;
 using Farm.Gameplay.Definitions;
 using Farm.Gameplay.Repositories;
@@ -21,7 +22,8 @@ namespace Farm.Gameplay
         [SerializeField] private TMP_Text _info;
         [SerializeField] private CapsuleEnergyCost _capsuleEnergyCost;
         [SerializeField] private CapsuleDefinition _capsuleDefinition;
-        
+        [SerializeField] private List<CapsuleSlotProvider> _capsuleSlots;
+
         [Inject] private PopupManager _popupManager;
         [Inject] private EmbryoRepository _embryoRepository;
         [Inject] private TimerService _timerService;
@@ -31,17 +33,19 @@ namespace Farm.Gameplay
         private EmbryoDefinition _embryo;
         private bool _isOwn;
         private bool _isFeedReady;
-        
+
         public EmbryoDefinition Embryo => _embryo;
+        public List<CapsuleSlotProvider> CapsuleSlots => _capsuleSlots;
+
         public event Action OnEmbryoStateChanged;
 
         public void StartEmbryoProcess()
         {
             _embryo = GetRandomEmbryo();
-            
+
             _embryoImage.gameObject.SetActive(true);
             _embryoImage.sprite = _embryo.Image;
-            
+
             OnEmbryoStateChanged?.Invoke();
             float timeToGrow = CalculateTimeToGrow();
 
@@ -74,28 +78,51 @@ namespace Farm.Gameplay
 
             if (chance < humanProcChance)
                 return _embryoRepository.GetEmbryoByType(EmbryoType.Human);
-            
+
             if (chance < animalProcChance)
                 return _embryoRepository.GetEmbryoByType(EmbryoType.Animal);
-            
+
             return _embryoRepository.GetEmbryoByType(EmbryoType.Fish);
         }
-        
-        private void BuyCapsule() => 
-            _isOwn = true;
+
+        private void BuyCapsule() => UpdateOwnership();
 
         private void Awake()
         {
             _growProgress.gameObject.SetActive(false);
             _info.gameObject.SetActive(false);
             _embryoImage.gameObject.SetActive(false);
-            
+
             _capsuleEnergyCost.OnBoughtSuccess += BuyCapsule;
 
             if (_capsuleDefinition.CostToUnlock == 0)
-                _isOwn = true;
+            {
+                UpdateOwnership();
+            }
             else
+            {
                 _capsuleEnergyCost.Initialize(_capsuleDefinition);
+            }
+
+            _capsuleSlots.ForEach(slot => slot.OnModuleChanged += OnModuleChanged);
+        }
+
+        private void UpdateOwnership()
+        {
+            _isOwn = true;
+            _capsuleSlots.ForEach(slot => slot.IsOwn = true);
+        }
+
+        private void OnModuleChanged(CapsuleSlotProvider slot)
+        {
+            _capsuleSlots.ForEach(capsuleSlot =>
+            {
+                if (capsuleSlot == slot)
+                {
+                    //todo
+                }
+            });
+            Debug.Log($"OnModuleChanged {name}, {slot.name}");
         }
 
         private void Update()
@@ -121,7 +148,7 @@ namespace Farm.Gameplay
                 }
             }
         }
-        
+
         private void FeedTheOldOne()
         {
             _info.gameObject.SetActive(false);
@@ -137,10 +164,11 @@ namespace Farm.Gameplay
         {
             return _embryo.EnergyValue;
         }
-        
+
         private void OnDestroy()
         {
             _capsuleEnergyCost.OnBoughtSuccess -= BuyCapsule;
+            _capsuleSlots.ForEach(slot => slot.OnModuleChanged -= OnModuleChanged);
         }
     }
 }

@@ -7,26 +7,37 @@ namespace Farm
 {
     public class InventorySlot : MonoBehaviour, IPointerDownHandler, IDraggable
     {
-        [SerializeField] private Image _image;
-        public GameObject GameObject => gameObject;
-        
-        public void SetIcon(Sprite icon)
-        {
-            /*_image.sprite = icon;*/
-        }
+        public event Action<IDraggable> OnDragStart;
 
-        public void SetActive(bool isActive)
-        {
-            gameObject.SetActive(isActive);
-        }
+        [SerializeField] private Image _image;
 
         public Sprite Icon => _image.sprite;
+        public UpgradeModule UpgradeModule { get; private set; }
 
-        public event Action<IDraggable> OnClick;
+        public void Initialize()
+        {
+            gameObject.SetActive(false);
+        }
+
+        public void SetModule(UpgradeModule module)
+        {
+            UpgradeModule = module;
+            _image.sprite = module.Definition.Icon;
+            gameObject.SetActive(true);
+        }
+
+        public void DragEnds(bool success)
+        {
+            gameObject.SetActive(!success);
+            if (success)
+            {
+                UpgradeModule = null;
+            }
+        }
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            OnClick?.Invoke(this);
+            OnDragStart?.Invoke(this);
             gameObject.SetActive(false);
         }
     }

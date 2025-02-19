@@ -1,64 +1,88 @@
 using Farm.Interface;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 namespace Farm
 {
     public class IconDragger : MonoBehaviour
     {
-        [Inject] private InventoryUI inventoryUI;
-        [SerializeField] private SpriteRenderer _spriteRenderer;
+        [Inject] private InventoryUI _inventoryUI;
+        [SerializeField] private Image _icon;
+        [SerializeField] private CapsuleManager _capsuleManager;
 
         private IDraggable _draggable;
 
-        private void Awake()
+        private void Start()
         {
-            inventoryUI.InventorySlots.ForEach(slot => slot.OnClick += ChangeSprite);
+            foreach (var slot in _inventoryUI.InventorySlots) slot.OnDragStart += ChangeSprite;
+            _capsuleManager.Capsules.ForEach(capsule => capsule.CapsuleSlots.ForEach(slot => slot.OnDragStart += ChangeSprite));
+            SetActive(false);
         }
 
         void Update()
         {
-            Vector3 mousePosition = Input.mousePosition; // Координаты мыши в пикселях
-            mousePosition.z = 10f; // Устанавливаем Z, чтобы проекция была перед камерой
-
-            Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-            transform.position = worldPosition; // Перемещаем объект к позиции мыши
-
+            MoveIconByMouse();
+            
             if (Input.GetMouseButtonUp(0) && _draggable != null)
             {
+                var worldPosition = GetWorldPosition();
                 var hit = Physics2D.Raycast(worldPosition, Vector2.zero);
-                if (hit.collider != null && hit.collider.TryGetComponent(out IDraggable draggable))
+                if (hit.collider != null && hit.collider.TryGetComponent(out ISlot slot) && slot.CanPlaceItem)
                 {
-                    SetActive(false);
-                    draggable.SetIcon(_draggable.Icon);
-                    _draggable.SetActive(false);
-                    _draggable = null;
+                    SetItemNewToSlot(slot);
                 }
                 else
                 {
-                    SetActive(false);
-                    _draggable.SetActive(true);
-                    _draggable = null;
+                    ReturnItem();
                 }
                 
             }
         }
 
+        private static Vector3 GetWorldPosition()
+        {
+            Vector3 mousePosition = Input.mousePosition;
+            mousePosition.z = 10f;
+            return  Camera.main.ScreenToWorldPoint(mousePosition);
+        }
+
+        private void MoveIconByMouse()
+        {
+            transform.position = Input.mousePosition;
+        }
+
+        private void SetItemNewToSlot(ISlot slot)
+        {
+            SetActive(false);
+            slot.SetItem(_draggable);
+            _draggable.DragEnds(true);
+            _draggable = null;
+        }
+
+        private void ReturnItem()
+        {
+            SetActive(false);
+            _draggable.DragEnds(false);
+            _draggable = null;
+        }
+
         private void ChangeSprite(IDraggable draggable)
         {
             _draggable = draggable;
-            _spriteRenderer.sprite = _draggable.Icon;
+            _icon.sprite = _draggable.Icon;
             SetActive(true);
         }
 
         public void SetActive(bool active)
         {
-            _spriteRenderer.enabled = active;
+            _icon.enabled = active;
         }
 
         private void OnDestroy()
         {
-            inventoryUI.InventorySlots.ForEach(slot => slot.OnClick -= ChangeSprite);
+            foreach (var slot in _inventoryUI.InventorySlots) slot.OnDragStart -= ChangeSprite;
+            _capsuleManager.Capsules.ForEach(capsule => capsule.CapsuleSlots.ForEach(slot => slot.OnDragStart -= ChangeSprite));
         }
     }
 }
