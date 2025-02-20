@@ -2791,6 +2791,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3524943427948229843, guid: 496b69df23e9a4351ac8e21c985d83ef, type: 3}
+      propertyPath: _busketSlot
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4730087181990010467, guid: 496b69df23e9a4351ac8e21c985d83ef, type: 3}
       propertyPath: m_Name
       value: ShopInfo

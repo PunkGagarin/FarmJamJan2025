@@ -106,6 +106,7 @@ MonoBehaviour:
   _moduleCostMultiplier: 0.15
   _buyModuleButton: {fileID: 8654245242820644667}
   _placedSlotsCountText: {fileID: 7263063137368777497}
+  _busketSlot: {fileID: 4384783129775703829}
 --- !u!1001 &4314215690587809357
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -208,6 +209,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1364086823047883503, guid: 5163543360d5d4001a59369cf01bedc0, type: 3}
   m_PrefabInstance: {fileID: 4314215690587809357}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4384783129775703829 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 506317779432841560, guid: 5163543360d5d4001a59369cf01bedc0, type: 3}
+  m_PrefabInstance: {fileID: 4314215690587809357}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4597e764f72db41639bfecaa9cde71e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4526760161991303025
 PrefabInstance:
   m_ObjectHideFlags: 0

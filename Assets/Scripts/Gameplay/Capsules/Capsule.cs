@@ -104,7 +104,7 @@ namespace Farm.Gameplay
                 _capsuleEnergyCost.Initialize(_capsuleDefinition);
             }
 
-            _capsuleSlots.ForEach(slot => slot.OnModuleChanged += OnModuleChanged);
+            CapsuleSlotProvider.OnAnyModuleChanged += OnModuleChanged;
         }
 
         private void UpdateOwnership()
@@ -168,7 +168,7 @@ namespace Farm.Gameplay
         private void OnDestroy()
         {
             _capsuleEnergyCost.OnBoughtSuccess -= BuyCapsule;
-            _capsuleSlots.ForEach(slot => slot.OnModuleChanged -= OnModuleChanged);
+            CapsuleSlotProvider.OnAnyModuleChanged -= OnModuleChanged;
         }
     }
 }

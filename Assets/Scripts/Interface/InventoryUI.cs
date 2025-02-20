@@ -24,11 +24,11 @@ namespace Farm.Interface
         [Header("Инвентарь")] [SerializeField] private int _maxSlotsCount = 8;
         [SerializeField] private InventorySlot _inventorySlotPrefab;
         [SerializeField] private Transform _inventorySlotsContent;
-
         [SerializeField] private float _baseModuleCost;
         [SerializeField] private float _moduleCostMultiplier;
         [SerializeField] private Button _buyModuleButton;
         [SerializeField] private TMP_Text _placedSlotsCountText;
+        [SerializeField] private BusketSlot _busketSlot;
 
         [Inject] private UpgradeModuleRepository _upgradeModuleRepository;
 
@@ -88,9 +88,9 @@ namespace Farm.Interface
         {
             var placedCount = _inventorySlots.Count(slot => slot.UpgradeModule != null);
             _placedSlotsCountText.text =
-                $"{placedCount}/{_maxSlotsCount}"; // todo how to understand when item is removed from inventory
+                $"{placedCount}/{_maxSlotsCount}";
         }
-
+        
         private void InitializeSlots()
         {
             _inventorySlots = new InventorySlot[_maxSlotsCount];
@@ -103,7 +103,7 @@ namespace Farm.Interface
             UpdatePlacedSlotsCountText();
         }
 
-        private void ShakeNotEnoughPlace() =>
+        public void ShakeNotEnoughPlace() =>
             _placedSlotsCountText.transform.DOShakePosition(_shakeDuration, Vector3.one * _shakePower);
 
         public bool CanBuy(int cost) =>
@@ -127,11 +127,13 @@ namespace Farm.Interface
             InitializeSlots();
             _currentModuleCost = _baseModuleCost;
             _buyModuleButton.onClick.AddListener(OnBuyUpgradeModuleClicked);
+            InventorySlot.OnModuleChanged += UpdatePlacedSlotsCountText;
         }
 
         private void OnDestroy()
         {
             _buyModuleButton.onClick.RemoveListener(OnBuyUpgradeModuleClicked);
+            InventorySlot.OnModuleChanged -= UpdatePlacedSlotsCountText;
         }
     }
 }

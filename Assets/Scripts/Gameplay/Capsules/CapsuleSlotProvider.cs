@@ -1,14 +1,18 @@
 using System;
+using Farm.Interface;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Zenject;
 
 namespace Farm
 {
     public class CapsuleSlotProvider : MonoBehaviour, IPointerDownHandler, ISlot
     {
         public event Action<UpgradeModule> OnClick;
-        public event Action<CapsuleSlotProvider> OnModuleChanged;
+        public static event Action<CapsuleSlotProvider> OnAnyModuleChanged;
+        
+        [Inject] private InventoryUI _inventoryUI; 
 
         [SerializeField] private Image _icon;
 
@@ -22,16 +26,21 @@ namespace Farm
             _upgradeModule = item;
             _icon.sprite = item.Icon;
             _icon.enabled = true;
-            OnModuleChanged?.Invoke(this);
+            OnAnyModuleChanged?.Invoke(this);
         }
 
         public void OnPointerDown(PointerEventData eventData)
         {
             if (_upgradeModule == null) return;
+            if (!_inventoryUI.CanPlaceItem)
+            {
+                _inventoryUI.ShakeNotEnoughPlace();
+                return;
+            }
             OnClick?.Invoke(_upgradeModule);
             _upgradeModule = null;
             _icon.enabled = false;
-            OnModuleChanged?.Invoke(this);
+            OnAnyModuleChanged?.Invoke(this);
         }
     }
 }

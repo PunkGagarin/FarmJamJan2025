@@ -9,6 +9,7 @@ namespace Farm
     public class InventorySlot : MonoBehaviour, IPointerDownHandler, IDraggable
     {
         public event Action<IDraggable> OnDragStart;
+        public static event Action OnModuleChanged;
 
         [SerializeField] private Image _image;
 
@@ -23,6 +24,7 @@ namespace Farm
         public void SetModule(UpgradeModule module)
         {
             UpgradeModule = module;
+            OnModuleChanged?.Invoke();
             _image.sprite = module.Definition.Icon;
             gameObject.SetActive(true);
         }
@@ -33,6 +35,7 @@ namespace Farm
             if (success)
             {
                 UpgradeModule = null;
+                OnModuleChanged?.Invoke();
             }
         }
 
