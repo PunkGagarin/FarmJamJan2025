@@ -16,14 +16,21 @@ namespace Farm
         private void Start()
         {
             foreach (var slot in _inventoryUI.InventorySlots) slot.OnDragStart += ChangeSprite;
-            _capsuleManager.Capsules.ForEach(capsule => capsule.CapsuleSlots.ForEach(slot => slot.OnClick += ReturnModuleToInventory));
+            _capsuleManager.Capsules.ForEach(capsule =>
+                capsule.CapsuleSlots.ForEach(slot => slot.OnClick += ReturnModuleToInventory));
             SetActive(false);
+        }
+
+        private void ReturnModuleToInventory(UpgradeModule obj)
+        {
+            if (!_inventoryUI.CanPlaceItem) return;
+            _inventoryUI.SetItem(obj);
         }
 
         void Update()
         {
             MoveIconByMouse();
-            
+
             if (Input.GetMouseButtonUp(0) && _draggable != null)
             {
                 var worldPosition = GetWorldPosition();
@@ -36,7 +43,6 @@ namespace Farm
                 {
                     ReturnItem();
                 }
-                
             }
         }
 
@@ -44,7 +50,7 @@ namespace Farm
         {
             Vector3 mousePosition = Input.mousePosition;
             mousePosition.z = 10f;
-            return  Camera.main.ScreenToWorldPoint(mousePosition);
+            return Camera.main.ScreenToWorldPoint(mousePosition);
         }
 
         private void MoveIconByMouse()
@@ -55,7 +61,7 @@ namespace Farm
         private void SetItemNewToSlot(ISlot slot)
         {
             SetActive(false);
-            slot.SetItem(_draggable);
+            slot.SetItem(_draggable.UpgradeModule);
             _draggable.DragEnds(true);
             _draggable = null;
         }
@@ -78,17 +84,12 @@ namespace Farm
         {
             _icon.enabled = active;
         }
-        
-        private void ReturnModuleToInventory(IDraggable obj)
-        {
-            if (!_inventoryUI.CanPlaceItem) return;
-            _inventoryUI.SetItem(obj.UpgradeModule);
-        }
-        
+
         private void OnDestroy()
         {
             foreach (var slot in _inventoryUI.InventorySlots) slot.OnDragStart -= ChangeSprite;
-            _capsuleManager.Capsules.ForEach(capsule => capsule.CapsuleSlots.ForEach(slot => slot.OnClick -= ReturnModuleToInventory));
+            _capsuleManager.Capsules.ForEach(capsule =>
+                capsule.CapsuleSlots.ForEach(slot => slot.OnClick -= ReturnModuleToInventory));
         }
     }
 }

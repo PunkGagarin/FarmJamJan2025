@@ -7,19 +7,19 @@ namespace Farm
 {
     public class CapsuleSlotProvider : MonoBehaviour, IPointerDownHandler, ISlot
     {
-        public event Action<IDraggable> OnClick;
+        public event Action<UpgradeModule> OnClick;
         public event Action<CapsuleSlotProvider> OnModuleChanged;
 
         [SerializeField] private Image _icon;
 
         public bool IsOwn { get; set; }
-        public bool CanPlaceItem => IsOwn && _item == null;
+        public bool CanPlaceItem => IsOwn && (_upgradeModule) == null;
 
-        private IDraggable _item;
+        private UpgradeModule _upgradeModule;
 
-        public void SetItem(IDraggable item)
+        public void SetItem(UpgradeModule item)
         {
-            _item = item;
+            _upgradeModule = item;
             _icon.sprite = item.Icon;
             _icon.enabled = true;
             OnModuleChanged?.Invoke(this);
@@ -27,10 +27,11 @@ namespace Farm
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            if (_item == null) return;
-            OnClick?.Invoke(_item);
-            _item = null;
+            if (_upgradeModule == null) return;
+            OnClick?.Invoke(_upgradeModule);
+            _upgradeModule = null;
             _icon.enabled = false;
+            OnModuleChanged?.Invoke(this);
         }
     }
 }
