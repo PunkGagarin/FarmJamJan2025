@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using DG.Tweening;
 using Farm.Gameplay.Repositories;
 using TMPro;
@@ -36,7 +35,7 @@ namespace Farm.Interface
         private InventorySlot[] _inventorySlots;
         private float _currentModuleCost;
         private int _currentEnergy;
-        
+
         public InventorySlot[] InventorySlots => _inventorySlots;
 
         public int CurrentEnergy
@@ -59,12 +58,13 @@ namespace Farm.Interface
                 ShakeNotEnoughPlace();
                 return;
             }
+
             if (!CanBuy((int)_currentModuleCost))
             {
                 ShakeCanNotBuy();
                 return;
             }
-                 
+
             BuyUpgradeModule();
         }
 
@@ -75,19 +75,20 @@ namespace Farm.Interface
             UpgradeModule newModule = _upgradeModuleRepository.GetRandomModule();
             SetItem(newModule);
         }
-      
-        private void SetItem(UpgradeModule module)
+
+        public void SetItem(UpgradeModule module)
         {
             _inventorySlots.First(slot => slot.UpgradeModule == null).SetModule(module);
             UpdatePlacedSlotsCountText();
         }
 
-        private bool CanPlaceItem => _inventorySlots.Any(slot => slot.UpgradeModule == null);
-        
+        public bool CanPlaceItem => _inventorySlots.Any(slot => slot.UpgradeModule == null);
+
         private void UpdatePlacedSlotsCountText()
         {
             var placedCount = _inventorySlots.Count(slot => slot.UpgradeModule != null);
-            _placedSlotsCountText.text = $"{placedCount}/{_maxSlotsCount}"; // todo how to understand when item is removed from inventory
+            _placedSlotsCountText.text =
+                $"{placedCount}/{_maxSlotsCount}"; // todo how to understand when item is removed from inventory
         }
 
         private void InitializeSlots()
@@ -98,6 +99,7 @@ namespace Farm.Interface
                 _inventorySlots[i] = Instantiate(_inventorySlotPrefab, _inventorySlotsContent);
                 _inventorySlots[i].Initialize();
             }
+
             UpdatePlacedSlotsCountText();
         }
 

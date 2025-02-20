@@ -16,7 +16,7 @@ namespace Farm
         private void Start()
         {
             foreach (var slot in _inventoryUI.InventorySlots) slot.OnDragStart += ChangeSprite;
-            _capsuleManager.Capsules.ForEach(capsule => capsule.CapsuleSlots.ForEach(slot => slot.OnDragStart += ChangeSprite));
+            _capsuleManager.Capsules.ForEach(capsule => capsule.CapsuleSlots.ForEach(slot => slot.OnClick += ReturnModuleToInventory));
             SetActive(false);
         }
 
@@ -78,11 +78,17 @@ namespace Farm
         {
             _icon.enabled = active;
         }
-
+        
+        private void ReturnModuleToInventory(IDraggable obj)
+        {
+            if (!_inventoryUI.CanPlaceItem) return;
+            _inventoryUI.SetItem(obj.UpgradeModule);
+        }
+        
         private void OnDestroy()
         {
             foreach (var slot in _inventoryUI.InventorySlots) slot.OnDragStart -= ChangeSprite;
-            _capsuleManager.Capsules.ForEach(capsule => capsule.CapsuleSlots.ForEach(slot => slot.OnDragStart -= ChangeSprite));
+            _capsuleManager.Capsules.ForEach(capsule => capsule.CapsuleSlots.ForEach(slot => slot.OnClick -= ReturnModuleToInventory));
         }
     }
 }
