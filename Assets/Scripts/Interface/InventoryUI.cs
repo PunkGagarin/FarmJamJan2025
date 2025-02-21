@@ -10,6 +10,7 @@ namespace Farm.Interface
 {
     public class InventoryUI : MonoBehaviour
     {
+        [SerializeField] private RectTransform _inventoryRectTransform;
         [SerializeField] private Transform _energyPanel;
         [SerializeField] private TMP_Text _energyAmount;
         [SerializeField] private Color _canBuyColor;
@@ -27,14 +28,16 @@ namespace Farm.Interface
         [SerializeField] private float _baseModuleCost;
         [SerializeField] private float _moduleCostMultiplier;
         [SerializeField] private Button _buyModuleButton;
+        [SerializeField] private Button _openInventoryButton;
         [SerializeField] private TMP_Text _placedSlotsCountText;
-        [SerializeField] private BusketSlot _busketSlot;
 
         [Inject] private UpgradeModuleRepository _upgradeModuleRepository;
 
         private InventorySlot[] _inventorySlots;
         private float _currentModuleCost;
         private int _currentEnergy;
+        private bool _isOpen = false;
+        private RectTransform _inventorySlotsContentRect;
 
         public InventorySlot[] InventorySlots => _inventorySlots;
 
@@ -130,7 +133,16 @@ namespace Farm.Interface
 
         public void ShakeCanNotBuy() =>
             _energyPanel.DOShakePosition(_shakeDuration, Vector3.one * _shakePower);
-
+        
+        private void ToggleOpenAnimation()
+        {
+            float screenWidth = Screen.width;
+            var closedX = screenWidth + _inventorySlotsContentRect.rect.width; 
+            var openedX = closedX - _inventorySlotsContentRect.rect.width;
+            _inventoryRectTransform.DOMoveX(endValue: _isOpen ? closedX : openedX, duration: 0.5f);
+            _isOpen = !_isOpen;
+        }
+        
         private void Awake()
         {
             CurrentEnergy = _startEnergy;
@@ -138,12 +150,16 @@ namespace Farm.Interface
             _currentModuleCost = _baseModuleCost;
             UpdateBuyModuleButtonText();
             _buyModuleButton.onClick.AddListener(OnBuyUpgradeModuleClicked);
+            _openInventoryButton.onClick.AddListener(ToggleOpenAnimation);
             InventorySlot.OnModuleChanged += UpdatePlacedSlotsCountText;
+            
+            _inventorySlotsContentRect = _inventorySlotsContent.GetComponent<RectTransform>();
         }
 
         private void OnDestroy()
         {
             _buyModuleButton.onClick.RemoveListener(OnBuyUpgradeModuleClicked);
+            _openInventoryButton.onClick.AddListener(ToggleOpenAnimation);
             InventorySlot.OnModuleChanged -= UpdatePlacedSlotsCountText;
         }
     }
