@@ -28,6 +28,9 @@ namespace Farm.Utils.Timer
             OnTimerExpire = onTimerExpire;
             _isLooping = isLooping;
         }
+        
+        public void EarlyComplete() => 
+            RemainingTime = 0;
 
         public void AddTime(float additionalTime) => 
             RemainingTime = Mathf.Min(RemainingTime + additionalTime, Duration);
