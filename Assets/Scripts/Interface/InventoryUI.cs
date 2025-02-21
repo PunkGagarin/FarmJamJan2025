@@ -71,7 +71,8 @@ namespace Farm.Interface
         private void BuyUpgradeModule()
         {
             CurrentEnergy -= (int)_currentModuleCost;
-            _currentModuleCost += _currentModuleCost * _moduleCostMultiplier;
+            _currentModuleCost += Mathf.Round(_currentModuleCost * _moduleCostMultiplier);
+            UpdateBuyModuleButtonText();
             UpgradeModule newModule = _upgradeModuleRepository.GetRandomModule();
             SetItem(newModule);
         }
@@ -103,6 +104,15 @@ namespace Farm.Interface
             UpdatePlacedSlotsCountText();
         }
 
+        private void UpdateBuyModuleButtonText()
+        {
+            var textMeshProUGUI = _buyModuleButton.GetComponentInChildren<TextMeshProUGUI>();
+            if (textMeshProUGUI != null)
+            {
+                textMeshProUGUI.text = $"Buy module  for \n{_currentModuleCost}";
+            }
+        }
+
         public void ShakeNotEnoughPlace() =>
             _placedSlotsCountText.transform.DOShakePosition(_shakeDuration, Vector3.one * _shakePower);
 
@@ -126,6 +136,7 @@ namespace Farm.Interface
             CurrentEnergy = _startEnergy;
             InitializeSlots();
             _currentModuleCost = _baseModuleCost;
+            UpdateBuyModuleButtonText();
             _buyModuleButton.onClick.AddListener(OnBuyUpgradeModuleClicked);
             InventorySlot.OnModuleChanged += UpdatePlacedSlotsCountText;
         }

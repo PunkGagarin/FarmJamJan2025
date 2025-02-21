@@ -120,9 +120,9 @@ namespace Farm.Gameplay
                 if (capsuleSlot == slot)
                 {
                     //todo
+                    Debug.Log($"OnModuleChanged {name}, {slot.name}");
                 }
             });
-            Debug.Log($"OnModuleChanged {name}, {slot.name}");
         }
 
         private void Update()

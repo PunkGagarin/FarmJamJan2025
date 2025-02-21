@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Farm.Interface;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Zenject;
 
@@ -10,6 +12,9 @@ namespace Farm
         [Inject] private InventoryUI _inventoryUI;
         [SerializeField] private Image _icon;
         [SerializeField] private CapsuleManager _capsuleManager;
+
+        [SerializeField] private GraphicRaycaster _raycaster;
+        [SerializeField] private EventSystem _eventSystem;
 
         private IDraggable _draggable;
 
@@ -41,7 +46,23 @@ namespace Farm
                 }
                 else
                 {
-                    ReturnItem(); 
+                    PointerEventData pointerData = new PointerEventData(_eventSystem)
+                    {
+                        position = Input.mousePosition
+                    };
+
+                    List<RaycastResult> results = new List<RaycastResult>();
+                    _raycaster.Raycast(pointerData, results);
+
+                    foreach (RaycastResult result in results)
+                    {
+                        if (result.gameObject.TryGetComponent(out ISlot busketSlot))
+                        {
+                            SetItemNewToSlot(busketSlot);
+                            return;
+                        }
+                    }
+                    ReturnItem();
                 }
             }
         }
