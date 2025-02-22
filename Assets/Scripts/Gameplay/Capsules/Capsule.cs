@@ -51,6 +51,7 @@ namespace Farm.Gameplay
 
             _embryoTimer = _timerService.AddTimer(timeToGrow, EmbryoGrewUp);
             _growProgress.gameObject.SetActive(true);
+            _capsuleSlots.ForEach(slot => slot.IsCapsuleInGrowthProcess = true);
         }
 
         private float CalculateTimeToGrow()
@@ -63,6 +64,7 @@ namespace Farm.Gameplay
             _isFeedReady = true;
             _growProgress.gameObject.SetActive(false);
             _info.gameObject.SetActive(true);
+            _capsuleSlots.ForEach(slot => slot.IsCapsuleInGrowthProcess = false);
         }
 
         private EmbryoDefinition GetRandomEmbryo()

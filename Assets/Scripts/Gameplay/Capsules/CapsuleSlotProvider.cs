@@ -19,7 +19,8 @@ namespace Farm
         [SerializeField] private Image _icon;
 
         public bool IsOwn { get; set; }
-        public bool CanPlaceItem => IsOwn && (_upgradeModule) == null;
+        public bool IsCapsuleInGrowthProcess { get; set; }
+        public bool CanPlaceItem => IsOwn && _upgradeModule == null && !IsCapsuleInGrowthProcess;
 
         private UpgradeModule _upgradeModule;
 
@@ -35,13 +36,17 @@ namespace Farm
         public void OnPointerDown(PointerEventData eventData)
         {
             if (_upgradeModule == null) return;
+            if (IsCapsuleInGrowthProcess)
+            {
+                _soundManager.PlaySoundByType(GameAudioType.ActionError, 0);
+                return;
+            }
             if (!_inventoryUI.CanPlaceItem)
             {
                 _soundManager.PlaySoundByType(GameAudioType.ActionError, 0);
                 _inventoryUI.ShakeNotEnoughPlace();
                 return;
             }
-
             _soundManager.PlaySoundByType(GameAudioType.ModuleRemovedFromCapsule, 0);
             OnClick?.Invoke(_upgradeModule);
             _upgradeModule = null;
