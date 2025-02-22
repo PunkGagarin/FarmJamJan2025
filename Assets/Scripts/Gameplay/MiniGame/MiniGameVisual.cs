@@ -21,13 +21,15 @@ namespace Farm.Gameplay.MiniGame
         [SerializeField] private MiniGameSpeedometer _miniGameSpeedometer;
         [SerializeField] private Segment _segmentPrefab;
         [SerializeField] private Transform _segmentsContainer;
+        
         [Inject] private TimerService _timerService;
         public event Action<MiniGameEffect> OnMiniGameEnds;
         private bool _isStarted;
         private TimerHandle _miniGameTimer;
         private TimerHandle _delayTimer;
-        private Queue<Segment> _segments = new Queue<Segment>();
+        private Queue<Segment> _segments = new();
         private float _totalAngle = 0f;
+        private int _currentTapCount = 0;
         
         private const string START_GAME = "Start Game";
         private const string TAP = "Tap me!";
@@ -68,6 +70,7 @@ namespace Farm.Gameplay.MiniGame
         {
             _miniGameTimer = _timerService.AddTimer(_miniGameConfig.PlayTime, FinalizeGame);
             _speed = _miniGameConfig.StartSpeed;
+            
         }
         
         private void FinalizeGame()
@@ -84,6 +87,7 @@ namespace Farm.Gameplay.MiniGame
             _isStarted = false;
             bool isCollected = false;
             var drumShift = _drum.transform.rotation.eulerAngles.z;
+            _currentTapCount = 0;
             foreach (Segment segment in _segments)
             {
                 if ((segment.StartAngle - drumShift) % FULL_CIRCLE_ANGLE <= 0 && 
@@ -101,9 +105,15 @@ namespace Farm.Gameplay.MiniGame
         private void TapAction()
         {
             DisableActionButton();
+            _currentTapCount += 1;
+            
             _speed = Mathf.Min(_speed + _miniGameConfig.SpeedToAddPerTap, _miniGameConfig.MaxSpeed);
             _miniGameSpeedometer.SetSpeed(_speed);
             GenerateSegment();
+            if (_currentTapCount >= _miniGameConfig.MaxTaps)
+            {
+                FinalizeGame();
+            }
         }
         
         private void GenerateSegment()

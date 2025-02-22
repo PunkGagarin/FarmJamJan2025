@@ -18,4 +18,7 @@ MonoBehaviour:
   _baseFishChance: 33
   _baseMutationChance: 10
   _basePositiveMutationChance: 75
-  _capsuleCosts: 0000000000000000000000006400000064000000c80000009001000020030000
+  _capsuleCosts: 000000000000000064000000c80000002c010000900100005802000020030000
+  _humanCapsuleImage: {fileID: 0}
+  _animalCapsuleImage: {fileID: 0}
+  _fishCapsuleImage: {fileID: 0}

@@ -13,14 +13,15 @@ MonoBehaviour:
   m_Name: Minigame Config
   m_EditorClassIdentifier: 
   _pool: {fileID: 11400000, guid: 1246d17cc9803f34d9f3df885387b2eb, type: 2}
-  _tier1Angle: 40
-  _tier2Angle: 20
-  _tier3Angle: 12
-  _startSpeed: 10
-  _speedToAddPerTap: 1
-  _maxSpeed: 20
-  _maxSegmentsOnWheel: 8
-  _playTime: 5
+  _tier1Angle: 35
+  _tier2Angle: 25
+  _tier3Angle: 15
+  _startSpeed: 30
+  _speedToAddPerTap: 50
+  _maxSpeed: 300
+  _maxSegmentsOnWheel: 7
+  _playTime: 9
   _delayTime: 0.1
+  _maxTapCount: 10
   _tier1SpeedCap: 0.33
   _tier2SpeedCap: 0.67

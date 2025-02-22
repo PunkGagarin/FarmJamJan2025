@@ -14,18 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Ctulhu
   _maxSatiety: 2500
-  _startSatiety: 800
-  _timeToStarveTick: 1.5
-  _lifeTime: 1200
+  _startSatiety: 400
+  _timeToStarveTick: 1
+  _lifeTime: 1500
   _satietyPhasesData:
   - PhaseStartTime: 0
-    SatietyLoseByTick: 1
-  - PhaseStartTime: 30
-    SatietyLoseByTick: 1
-  - PhaseStartTime: 80
-    SatietyLoseByTick: 1
-  - PhaseStartTime: 100
-    SatietyLoseByTick: 1
+    SatietyLoseByTick: 3
+  - PhaseStartTime: 240
+    SatietyLoseByTick: 4
+  - PhaseStartTime: 480
+    SatietyLoseByTick: 5
+  - PhaseStartTime: 720
+    SatietyLoseByTick: 6
+  - PhaseStartTime: 960
+    SatietyLoseByTick: 7
+  - PhaseStartTime: 1200
+    SatietyLoseByTick: 8
   _rampageTime: 5
   _humanFeedModifier: 0
   _animalFeedModifier: 0

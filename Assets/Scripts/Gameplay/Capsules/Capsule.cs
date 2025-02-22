@@ -135,7 +135,7 @@ namespace Farm.Gameplay.Capsules
         }
 
         private int CalculateFeedAmount() => 
-            _embryo.EnergyValue;
+            _embryo.StarvationValue;
 
         private void OnDestroy()
         {
