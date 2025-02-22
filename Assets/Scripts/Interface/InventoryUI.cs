@@ -14,26 +14,15 @@ namespace Farm.Interface
         [SerializeField] private RectTransform _inventoryRectTransform;
         [SerializeField] private Transform _energyPanel;
         [SerializeField] private TMP_Text _energyAmount;
-        [SerializeField] private Color _canBuyColor;
-        [SerializeField] private Color _canNotBuyColor;
-        [SerializeField] private Color _regularColor;
-        [SerializeField] private int _startEnergy;
-
-        [Header("Параметры тряски")] [SerializeField]
-        private float _shakeDuration;
-
-        [SerializeField] private float _shakePower;
-        [Header("Инвентарь")] [SerializeField] private int _maxSlotsCount = 8;
-        [SerializeField] private InventorySlot _inventorySlotPrefab;
         [SerializeField] private Transform _inventorySlotsContent;
-        [SerializeField] private float _baseModuleCost;
-        [SerializeField] private float _moduleCostMultiplier;
+        [SerializeField] private InventorySlot _inventorySlotPrefab;
         [SerializeField] private Button _buyModuleButton;
         [SerializeField] private Button _openInventoryButton;
         [SerializeField] private TMP_Text _placedSlotsCountText;
 
         [Inject] private UpgradeModuleRepository _upgradeModuleRepository;
         [Inject] private SoundManager _soundManager;
+        [Inject] private InventoryConfig _inventoryConfig;
 
         private InventorySlot[] _inventorySlots;
         private float _currentModuleCost;
@@ -79,7 +68,7 @@ namespace Farm.Interface
         private void BuyUpgradeModule()
         {
             CurrentEnergy -= (int)_currentModuleCost;
-            _currentModuleCost += Mathf.Round(_currentModuleCost * _moduleCostMultiplier);
+            _currentModuleCost += Mathf.Round(_currentModuleCost * _inventoryConfig.ModuleCostMultiplier);
             UpdateBuyModuleButtonText();
             UpgradeModule newModule = _upgradeModuleRepository.GetRandomModule();
             SetItem(newModule);
@@ -97,12 +86,12 @@ namespace Farm.Interface
         {
             var placedCount = _inventorySlots.Count(slot => slot.UpgradeModule != null);
             _placedSlotsCountText.text =
-                $"{placedCount}/{_maxSlotsCount}";
+                $"{placedCount}/{_inventoryConfig.MaxSlotsCount}";
         }
-        
+
         private void InitializeSlots()
         {
-            _inventorySlots = new InventorySlot[_maxSlotsCount];
+            _inventorySlots = new InventorySlot[_inventoryConfig.MaxSlotsCount];
             for (var i = 0; i < _inventorySlots.Length; i++)
             {
                 _inventorySlots[i] = Instantiate(_inventorySlotPrefab, _inventorySlotsContent);
@@ -122,42 +111,42 @@ namespace Farm.Interface
         }
 
         public void ShakeNotEnoughPlace() =>
-            _placedSlotsCountText.transform.DOShakePosition(_shakeDuration, Vector3.one * _shakePower);
+            _placedSlotsCountText.transform.DOShakePosition(_inventoryConfig.ShakeDuration, Vector3.one * _inventoryConfig.ShakePower);
 
         public bool CanBuy(int cost) =>
             _currentEnergy >= cost;
 
         public void ShowCanBuy() =>
-            _energyAmount.color = _canBuyColor;
+            _energyAmount.color = _inventoryConfig.CanBuyColor;
 
         public void ShowCanNotBuy() =>
-            _energyAmount.color = _canNotBuyColor;
+            _energyAmount.color = _inventoryConfig.CanNotBuyColor;
 
         public void ResetColor() =>
-            _energyAmount.color = _regularColor;
+            _energyAmount.color = _inventoryConfig.RegularColor;
 
         public void ShakeCanNotBuy() =>
-            _energyPanel.DOShakePosition(_shakeDuration, Vector3.one * _shakePower);
-        
+            _energyPanel.DOShakePosition(_inventoryConfig.ShakeDuration, Vector3.one * _inventoryConfig.ShakePower);
+
         private void ToggleOpenAnimation()
         {
             float screenWidth = Screen.width;
-            var closedX = screenWidth + _inventorySlotsContentRect.rect.width; 
+            var closedX = screenWidth + _inventorySlotsContentRect.rect.width;
             var openedX = closedX - _inventorySlotsContentRect.rect.width;
             _inventoryRectTransform.DOMoveX(endValue: _isOpen ? closedX : openedX, duration: 0.5f);
             _isOpen = !_isOpen;
         }
-        
+
         private void Awake()
         {
-            CurrentEnergy = _startEnergy;
+            CurrentEnergy = _inventoryConfig.StartEnergy;
             InitializeSlots();
-            _currentModuleCost = _baseModuleCost;
+            _currentModuleCost = _inventoryConfig.BaseModuleCost;
             UpdateBuyModuleButtonText();
             _buyModuleButton.onClick.AddListener(OnBuyUpgradeModuleClicked);
             _openInventoryButton.onClick.AddListener(ToggleOpenAnimation);
             InventorySlot.OnModuleChanged += UpdatePlacedSlotsCountText;
-            
+
             _inventorySlotsContentRect = _inventorySlotsContent.GetComponent<RectTransform>();
         }
 

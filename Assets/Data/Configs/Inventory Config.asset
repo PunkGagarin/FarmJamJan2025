@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5383462406244a07a0dcbcd8ea7fd335, type: 3}
+  m_Name: Inventory Config
+  m_EditorClassIdentifier: 
+  _canBuyColor: {r: 0.18498707, g: 1, b: 0, a: 0}
+  _canNotBuyColor: {r: 1, g: 0, b: 0, a: 0}
+  _regularColor: {r: 1, g: 1, b: 1, a: 0}
+  _startEnergy: 500
+  _shakeDuration: 1
+  _shakePower: 4
+  _maxSlotsCount: 8
+  _baseModuleCost: 5
+  _moduleCostMultiplier: 0.15

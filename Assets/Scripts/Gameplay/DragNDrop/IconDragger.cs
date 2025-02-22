@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Farm.Interface;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Zenject;
 
@@ -14,7 +15,7 @@ namespace Farm
         [SerializeField] private Image _icon;
         [SerializeField] private CapsuleManager _capsuleManager;
 
-        [SerializeField] private GraphicRaycaster _raycaster;
+        [FormerlySerializedAs("_raycaster")] [SerializeField] private GraphicRaycaster _busketSlotRaycaster;
         [SerializeField] private EventSystem _eventSystem;
 
         private IDraggable _draggable;
@@ -53,7 +54,7 @@ namespace Farm
                     };
 
                     List<RaycastResult> results = new List<RaycastResult>();
-                    _raycaster.Raycast(pointerData, results);
+                    _busketSlotRaycaster.Raycast(pointerData, results);
 
                     foreach (RaycastResult result in results)
                     {

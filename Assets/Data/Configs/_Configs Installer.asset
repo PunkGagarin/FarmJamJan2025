@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baitConfig: {fileID: 11400000, guid: 3915d3091884c1e46bbc33a4b8eaeba2, type: 2}
   _capsuleConfig: {fileID: 11400000, guid: 32d83e61e53ed5845943cc93b988bc2a, type: 2}
+  _inventoryConfig: {fileID: 11400000, guid: 2097d571683674ff68ec717bfa652761, type: 2}
+  _upgradeModuleConfig: {fileID: 11400000, guid: 87639d5810273466eab8113c718081e6, type: 2}
