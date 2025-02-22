@@ -9,6 +9,7 @@ namespace Farm.DI
     {
         [SerializeField] private EmbryoRepository _embryoRepository;
         [SerializeField] private UpgradeModuleRepository _upgradeModuleRepository;
+        [SerializeField] private TheOldOneRepository _theOldOneRepository;
 
         public override void InstallBindings()
         {
@@ -20,6 +21,11 @@ namespace Farm.DI
             Container
                 .Bind<UpgradeModuleRepository>()
                 .FromInstance(_upgradeModuleRepository)
+                .AsSingle();
+            
+            Container
+                .Bind<TheOldOneRepository>()
+                .FromInstance(_theOldOneRepository)
                 .AsSingle();
         }
     }

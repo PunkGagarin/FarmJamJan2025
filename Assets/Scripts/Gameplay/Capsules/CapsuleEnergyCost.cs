@@ -1,29 +1,27 @@
 ﻿using System;
-using Farm.Gameplay.Definitions;
 using Farm.Interface;
 using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Zenject;
 
-namespace Farm.Gameplay
+namespace Farm.Gameplay.Capsules
 {
     public class CapsuleEnergyCost : MonoBehaviour
     {
         [SerializeField] private Button _button;
         [SerializeField] private TMP_Text _costAmount;
         [Inject] private InventoryUI _inventory;
-        private CapsuleDefinition _capsuleDefinition;
+        private int _cost;
 
-        private bool CanBuy => _capsuleDefinition != null && _inventory.CanBuy(_capsuleDefinition.CostToUnlock);
+        private bool CanBuy => _inventory.CanBuy(_cost);
 
         public event Action OnBoughtSuccess;
-        public void Initialize(CapsuleDefinition capsuleDefinition)
+        public void Initialize(int cost)
         {
-            _capsuleDefinition = capsuleDefinition;
-            _costAmount.text = capsuleDefinition.CostToUnlock.ToString();
+            _cost = cost;
+            _costAmount.text = _cost.ToString();
             gameObject.SetActive(true);
         }
 
@@ -52,7 +50,7 @@ namespace Farm.Gameplay
         {
             if (CanBuy)
             {
-                _inventory.CurrentEnergy -= _capsuleDefinition.CostToUnlock;
+                _inventory.CurrentEnergy -= _cost;
                 gameObject.SetActive(false);
                 _inventory.ResetColor();
                 OnBoughtSuccess?.Invoke();

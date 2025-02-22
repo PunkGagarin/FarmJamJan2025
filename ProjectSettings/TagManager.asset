@@ -41,3 +41,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Capsules
+    uniqueID: 3908579015
+    locked: 0

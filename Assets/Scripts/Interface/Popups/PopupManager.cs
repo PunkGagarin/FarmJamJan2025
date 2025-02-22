@@ -1,4 +1,5 @@
 ﻿using Farm.Gameplay;
+using Farm.Gameplay.Capsules;
 using UnityEngine;
 
 namespace Farm.Interface.Popups

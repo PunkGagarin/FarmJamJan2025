@@ -1,4 +1,5 @@
-﻿using Farm.Gameplay;
+﻿using Farm.Gameplay.Capsules;
+using Farm.Gameplay.Configs.MiniGame;
 using Farm.Gameplay.MiniGame;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,9 +9,12 @@ namespace Farm.Interface.Popups
     public class CapsulePopup : Popup
     {
         [SerializeField] private Image _embryoView;
-        [SerializeField] private Button _createEmbryoButton;
         [SerializeField] private Button _closeButton;
         [SerializeField] private MiniGameVisual _miniGame;
+        [Header("Tier buttons")]
+        [SerializeField] private Button _createEmbryoButton;
+        [SerializeField] private Button _minusTier;
+        [SerializeField] private Button _plusTier;
         private Capsule _capsule;
 
         public void Initialize(Capsule capsule)
@@ -44,14 +48,16 @@ namespace Farm.Interface.Popups
 
             _closeButton.gameObject.SetActive(false);
             _miniGame.gameObject.SetActive(true);
+            _miniGame.Initialize();
             _miniGame.OnMiniGameEnds += StartEmbryoProcess;
         }
         
-        private void StartEmbryoProcess(string miniGameResult)
+        private void StartEmbryoProcess(MiniGameEffect miniGameResult)
         {
             _closeButton.gameObject.SetActive(true);
             _miniGame.gameObject.SetActive(false);
-            Debug.Log($"Risk proc : {miniGameResult}");
+            string minigameBonus = miniGameResult == null ? "none" : $"{miniGameResult.BuffType} {miniGameResult.Value}";
+            Debug.Log($"Minigame bonus = {minigameBonus}");
             _miniGame.OnMiniGameEnds -= StartEmbryoProcess;
 
             _capsule.StartEmbryoProcess();

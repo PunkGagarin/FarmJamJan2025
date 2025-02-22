@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Farm.Enums;
+using Farm.Gameplay.Configs;
 using Farm.Gameplay.Definitions;
 using Farm.Gameplay.Repositories;
 using Farm.Interface;
@@ -13,7 +14,7 @@ using UnityEngine.UI;
 using Zenject;
 using Random = UnityEngine.Random;
 
-namespace Farm.Gameplay
+namespace Farm.Gameplay.Capsules
 {
     public class Capsule : MonoBehaviour
     {
@@ -21,16 +22,17 @@ namespace Farm.Gameplay
         [SerializeField] private SpriteRenderer _embryoImage;
         [SerializeField] private TMP_Text _info;
         [SerializeField] private CapsuleEnergyCost _capsuleEnergyCost;
-        [SerializeField] private CapsuleDefinition _capsuleDefinition;
+        [SerializeField] private int _capsuleNumber;
         [SerializeField] private List<CapsuleSlotProvider> _capsuleSlots;
-
         [Inject] private PopupManager _popupManager;
         [Inject] private EmbryoRepository _embryoRepository;
         [Inject] private TimerService _timerService;
         [Inject] private FeedMediator _feedMediator;
         [Inject] private InventoryUI _inventory;
+        [Inject] private CapsuleConfig _capsuleConfig;
         private TimerHandle _embryoTimer;
         private EmbryoDefinition _embryo;
+        private int _currentTier;
         private bool _isOwn;
         private bool _isFeedReady;
 
@@ -54,10 +56,8 @@ namespace Farm.Gameplay
             _capsuleSlots.ForEach(slot => slot.IsCapsuleInGrowthProcess = true);
         }
 
-        private float CalculateTimeToGrow()
-        {
-            return _embryo.TimeToGrowth / _capsuleDefinition.GrowthSpeed;
-        }
+        private float CalculateTimeToGrow() =>
+            _embryo.TimeToGrowth;
 
         private void EmbryoGrewUp()
         {
@@ -70,11 +70,11 @@ namespace Farm.Gameplay
         private EmbryoDefinition GetRandomEmbryo()
         {
             float totalChance = 0;
-            totalChance += _capsuleDefinition.BaseEmbryoChances.HumanChance;
+            totalChance += _capsuleConfig.BaseHumanChance;
             float humanProcChance = totalChance;
-            totalChance += _capsuleDefinition.BaseEmbryoChances.AnimalChance;
+            totalChance += _capsuleConfig.BaseAnimalChance;
             float animalProcChance = totalChance;
-            totalChance += _capsuleDefinition.BaseEmbryoChances.FishChance;
+            totalChance += _capsuleConfig.BaseFishChance;
 
             var chance = Random.Range(0, totalChance);
 
@@ -97,13 +97,13 @@ namespace Farm.Gameplay
 
             _capsuleEnergyCost.OnBoughtSuccess += BuyCapsule;
 
-            if (_capsuleDefinition.CostToUnlock == 0)
+            if (_capsuleConfig.CapsuleCosts[_capsuleNumber] == 0)
             {
                 UpdateOwnership();
             }
             else
             {
-                _capsuleEnergyCost.Initialize(_capsuleDefinition);
+                _capsuleEnergyCost.Initialize(_capsuleConfig.CapsuleCosts[_capsuleNumber]);
             }
 
             CapsuleSlotProvider.OnAnyModuleChanged += OnModuleChanged;
@@ -162,10 +162,8 @@ namespace Farm.Gameplay
             OnEmbryoStateChanged?.Invoke();
         }
 
-        private int CalculateFeedAmount()
-        {
-            return _embryo.EnergyValue;
-        }
+        private int CalculateFeedAmount() => 
+            _embryo.EnergyValue;
 
         private void OnDestroy()
         {

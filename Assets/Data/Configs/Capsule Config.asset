@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98821e2b3e64469083396742b058f75a, type: 3}
+  m_Name: Capsule Config
+  m_EditorClassIdentifier: 
+  _upgradeCost: 200
+  _baseHumanChance: 33
+  _baseAnimalChance: 33
+  _baseFishChance: 33
+  _baseMutationChance: 10
+  _basePositiveMutationChance: 75
+  _capsuleCosts: 0000000000000000000000006400000064000000c80000009001000020030000

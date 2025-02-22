@@ -21,6 +21,9 @@ namespace Farm.Gameplay.Definitions
         [SerializeField] private float _lifeTime;
         [SerializeField] private List<PhasesData> _satietyPhasesData;
         [SerializeField] private float _rampageTime;
+        [SerializeField] private float _humanFeedModifier;
+        [SerializeField] private float _animalFeedModifier;
+        [SerializeField] private float _fishFeedModifier;
 
         public string Name => _name;
         public float MaxSatiety => _maxSatiety;
@@ -29,6 +32,9 @@ namespace Farm.Gameplay.Definitions
         public List<PhasesData> SatietyPhasesData => _satietyPhasesData;
         public float LifeTime => _lifeTime;
         public float RampageTime => _rampageTime;
+        public float HumanFeedModifier => _humanFeedModifier;
+        public float AnimalFeedModifier => _animalFeedModifier;
+        public float FishFeedModifier => _fishFeedModifier;
 
     }
 }
