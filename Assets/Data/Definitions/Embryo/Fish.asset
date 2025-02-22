@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Fish
   m_EditorClassIdentifier: 
   _image: {fileID: 21300000, guid: e3669f782799a9140a65ad6e30d415db, type: 3}
-  _timeToGrowth: 5
-  _energyValue: 20
+  _timeToGrowth: 40
+  _energyValue: 50
+  _starvationValue: 100
   _embryoType: 2

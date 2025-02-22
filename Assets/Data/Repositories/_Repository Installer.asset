@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: _Repository Installer
   m_EditorClassIdentifier: 
   _embryoRepository: {fileID: 11400000, guid: 25a8c7af38d217e45bd1faf15d1ba5b4, type: 2}
+  _theOldOneRepository: {fileID: 11400000, guid: 4f71c5f9b30e1dc4b9e70ac64e01ad06, type: 2}
   _upgradeModuleRepository: {fileID: 11400000, guid: 75f7d74a12949458c92060cb71938b2c, type: 2}

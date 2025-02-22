@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: Bait Config
   m_EditorClassIdentifier: 
   _baitTiers:
-  - _baseFoodAmount: 2
-    _baseEnergyAmount: 10
-    _baseGrowthSpeed: 4
+  - _baseFoodAmount: 100
+    _baseEnergyAmount: 50
+    _baseGrowthSpeed: 40
     _baseCost: 0
-  - _baseFoodAmount: 4
-    _baseEnergyAmount: 20
-    _baseGrowthSpeed: 6
-    _baseCost: 50
+  - _baseFoodAmount: 480
+    _baseEnergyAmount: 300
+    _baseGrowthSpeed: 120
+    _baseCost: 100
   - _baseFoodAmount: 8
     _baseEnergyAmount: 40
     _baseGrowthSpeed: 8
