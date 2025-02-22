@@ -17,5 +17,9 @@
         BeingAfterEating = 10,
         
         AmbientSound = 20,
+        ModuleAdded = 21,
+        ModuleDestroyed = 22,
+        ModuleRemovedFromCapsule = 23,
+        ActionError = 24,
     }
 }

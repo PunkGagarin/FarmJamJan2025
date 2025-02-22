@@ -10,6 +10,7 @@ namespace Farm
     public class IconDragger : MonoBehaviour
     {
         [Inject] private InventoryUI _inventoryUI;
+        
         [SerializeField] private Image _icon;
         [SerializeField] private CapsuleManager _capsuleManager;
 

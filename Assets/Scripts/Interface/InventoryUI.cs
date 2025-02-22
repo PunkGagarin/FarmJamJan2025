@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Audio;
 using DG.Tweening;
 using Farm.Gameplay.Repositories;
 using TMPro;
@@ -32,6 +33,7 @@ namespace Farm.Interface
         [SerializeField] private TMP_Text _placedSlotsCountText;
 
         [Inject] private UpgradeModuleRepository _upgradeModuleRepository;
+        [Inject] private SoundManager _soundManager;
 
         private InventorySlot[] _inventorySlots;
         private float _currentModuleCost;
@@ -58,16 +60,19 @@ namespace Farm.Interface
         {
             if (!CanPlaceItem)
             {
+                _soundManager.PlaySoundByType(GameAudioType.ActionError, 0);
                 ShakeNotEnoughPlace();
                 return;
             }
 
             if (!CanBuy((int)_currentModuleCost))
             {
+                _soundManager.PlaySoundByType(GameAudioType.ActionError, 0);
                 ShakeCanNotBuy();
                 return;
             }
 
+            _soundManager.PlaySoundByType(GameAudioType.ModuleAdded, 0);
             BuyUpgradeModule();
         }
 

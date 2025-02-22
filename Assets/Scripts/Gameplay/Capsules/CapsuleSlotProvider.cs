@@ -1,4 +1,5 @@
 using System;
+using Audio;
 using Farm.Interface;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,8 +12,9 @@ namespace Farm
     {
         public event Action<UpgradeModule> OnClick;
         public static event Action<CapsuleSlotProvider> OnAnyModuleChanged;
-        
-        [Inject] private InventoryUI _inventoryUI; 
+
+        [Inject] private InventoryUI _inventoryUI;
+        [Inject] private SoundManager _soundManager;
 
         [SerializeField] private Image _icon;
 
@@ -23,6 +25,7 @@ namespace Farm
 
         public void SetItem(UpgradeModule item)
         {
+            _soundManager.PlaySoundByType(GameAudioType.ModuleAdded, 0);
             _upgradeModule = item;
             _icon.sprite = item.Icon;
             _icon.enabled = true;
@@ -34,9 +37,12 @@ namespace Farm
             if (_upgradeModule == null) return;
             if (!_inventoryUI.CanPlaceItem)
             {
+                _soundManager.PlaySoundByType(GameAudioType.ActionError, 0);
                 _inventoryUI.ShakeNotEnoughPlace();
                 return;
             }
+
+            _soundManager.PlaySoundByType(GameAudioType.ModuleRemovedFromCapsule, 0);
             OnClick?.Invoke(_upgradeModule);
             _upgradeModule = null;
             _icon.enabled = false;
