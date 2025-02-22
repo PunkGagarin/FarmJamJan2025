@@ -56,7 +56,8 @@ namespace Farm.Interface.Popups
         {
             _closeButton.gameObject.SetActive(true);
             _miniGame.gameObject.SetActive(false);
-            Debug.Log($"Risk proc : {miniGameResult}");
+            string minigameBonus = miniGameResult == null ? "none" : $"{miniGameResult.BuffType} {miniGameResult.Value}";
+            Debug.Log($"Minigame bonus = {minigameBonus}");
             _miniGame.OnMiniGameEnds -= StartEmbryoProcess;
 
             _capsule.StartEmbryoProcess();

@@ -13,7 +13,7 @@ namespace Farm.Gameplay.Configs.MiniGame
         [SerializeField] private float _startSpeed;
         [SerializeField] private float _speedToAddPerTap;
         [SerializeField] private float _maxSpeed;
-        [SerializeField] private int _segmentsSpawnPerTap;
+        [SerializeField] private int _maxSegmentsOnWheel;
         [SerializeField] private float _playTime;
         [SerializeField] private float _delayTime;
         [SerializeField, Range(0, 1), Tooltip("Процент заполнения шкалы скорости до получение следующего тира мутаций")] private float _tier1SpeedCap, _tier2SpeedCap;
@@ -25,7 +25,7 @@ namespace Farm.Gameplay.Configs.MiniGame
         public float StartSpeed => _startSpeed;
         public float SpeedToAddPerTap => _speedToAddPerTap;
         public float MaxSpeed => _maxSpeed;
-        public int SegmentsSpawnPerTap => _segmentsSpawnPerTap;
+        public int MaxSegmentsOnWheel => _maxSegmentsOnWheel;
         public float PlayTime => _playTime;
         public float DelayTime => _delayTime;
         public float Tier1SpeedCap => _tier1SpeedCap;

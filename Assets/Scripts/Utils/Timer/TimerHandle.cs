@@ -41,8 +41,12 @@ namespace Farm.Utils.Timer
         public void Tick(float deltaTime) => 
             RemainingTime -= deltaTime * _speedMultiplier;
 
-        public void Reset() => 
+        public void Reset(bool isHard = false)
+        {
+            if (isHard)
+                OnTimerExpire = null;
             RemainingTime = Duration;
+        }
 
         public void FinalizeTimer() => 
             _isLooping = false;

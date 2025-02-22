@@ -141,7 +141,5 @@ namespace Farm.Gameplay.Capsules
         {
             _capsuleEnergyCost.OnBoughtSuccess -= BuyCapsule;
         }
-        
-        private void MethodForTesting(){}
     }
 }

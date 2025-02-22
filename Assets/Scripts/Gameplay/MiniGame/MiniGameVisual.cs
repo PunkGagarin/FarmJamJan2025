@@ -19,8 +19,6 @@ namespace Farm.Gameplay.MiniGame
         [SerializeField] private Button _actionButton;
         [SerializeField] private TMP_Text _actionButtonText;
         [SerializeField] private MiniGameSpeedometer _miniGameSpeedometer;
-        [SerializeField] private Color _positiveColor;
-        [SerializeField] private Color _negativeColor;
         [SerializeField] private Segment _segmentPrefab;
         [SerializeField] private Transform _segmentsContainer;
         [Inject] private TimerService _timerService;
@@ -28,21 +26,35 @@ namespace Farm.Gameplay.MiniGame
         private bool _isStarted;
         private TimerHandle _miniGameTimer;
         private TimerHandle _delayTimer;
-        private List<Segment> _segments = new List<Segment>();
+        private Queue<Segment> _segments = new Queue<Segment>();
+        private float _totalAngle = 0f;
         
         private const string START_GAME = "Start Game";
         private const string TAP = "Tap me!";
         private const string END_GAME = "Collect!";
+        private const float FULL_CIRCLE_ANGLE = 360f;
+        private const int MAX_ATTEMPTS_TO_FIT_SEGMENT = 10;
         
 
         public void Initialize()
         {
+            ResetState();
+
             _actionButtonText.text = START_GAME;
             _actionButton.onClick.RemoveAllListeners();
             _actionButton.onClick.AddListener(StartGame);
             _miniGameSpeedometer.Init(_miniGameConfig);
         }
         
+        private void ResetState()
+        {
+            _miniGameTimer?.Reset();
+            _delayTimer?.Reset();
+            foreach (Segment segment in _segments)
+                segment.gameObject.SetActive(false);
+            _totalAngle = 0f;
+        }
+
         private void StartGame()
         {
             _isStarted = true;
@@ -60,7 +72,7 @@ namespace Farm.Gameplay.MiniGame
         
         private void FinalizeGame()
         {
-            _delayTimer.EarlyComplete();
+            _delayTimer?.EarlyComplete();
             DisableActionButton();
             _actionButtonText.text = END_GAME;
             _actionButton.onClick.RemoveListener(TapAction);
@@ -70,6 +82,20 @@ namespace Farm.Gameplay.MiniGame
         private void EndGame()
         {
             _isStarted = false;
+            bool isCollected = false;
+            var drumShift = _drum.transform.rotation.eulerAngles.z;
+            foreach (Segment segment in _segments)
+            {
+                if ((segment.StartAngle - drumShift) % FULL_CIRCLE_ANGLE <= 0 && 
+                    (segment.StartAngle + segment.Angle - drumShift) % FULL_CIRCLE_ANGLE >= 0)
+                {
+                    isCollected = true;
+                    OnMiniGameEnds?.Invoke(segment.MiniGameEffect);
+                    break;
+                }
+            }
+            if (!isCollected)
+                OnMiniGameEnds?.Invoke(null);
         }
 
         private void TapAction()
@@ -84,12 +110,104 @@ namespace Farm.Gameplay.MiniGame
         {
             int allowedTiers = _miniGameSpeedometer.AllowTiers;
             List<MiniGameEffect> allowedEffects = _miniGameConfig.Effects.Where(buffs => buffs.Tier <= allowedTiers).ToList();
-            MiniGameEffect randomEffect = allowedEffects[Random.Range(0, allowedEffects.Count)];
-            Segment segment = Instantiate(_segmentPrefab, _drum.position, Quaternion.identity, _segmentsContainer);
-            float segmentFill = DeterminateFillFromBuff(randomEffect)  / 360f;
-            segment.SetSegmentFill(segmentFill);
-            segment.GetComponent<Image>().color = randomEffect.Value > 0 ? _positiveColor : _negativeColor;
+            
+            bool segmentAdded = false;
+            int attempts = 0;
+
+            while (!segmentAdded && attempts < MAX_ATTEMPTS_TO_FIT_SEGMENT) 
+            {
+                MiniGameEffect randomEffect = allowedEffects[Random.Range(0, allowedEffects.Count)];
+                float startAngle = Random.Range(0f, FULL_CIRCLE_ANGLE);
+                float segmentSize = DeterminateFillFromBuff(randomEffect);
+                
+                if (!IsSegmentOverlap(startAngle, segmentSize))
+                {
+                    Segment segment = PickSegment();
+                    
+                    segment.SetStartAngle(startAngle);
+                    segment.SetSegmentAngle(segmentSize);
+                    segment.SetEffect(randomEffect);
+                    _totalAngle += segmentSize; 
+                    segmentAdded = true;
+                }
+                else
+                {
+                    float fitSegmentAngle = allowedTiers switch
+                    {
+                        1 => _miniGameConfig.Tier1Angle,
+                        2 => _miniGameConfig.Tier2Angle,
+                        3 => _miniGameConfig.Tier3Angle,
+                        _ => 0
+                    };
+                    
+                    if (!CanFitSegment(fitSegmentAngle))
+                        ResetFirstSegment();
+                }
+                
+                attempts++;
+            }
         }
+        
+        private bool CanFitSegment(float segmentSize)
+        {
+            List<float> gaps = new List<float>();
+
+            if (_segments.Count == 0)
+                return true;
+
+            var sortedSegments = _segments.OrderBy(segment => segment.StartAngle).ToList();
+
+            for (int i = 0; i < sortedSegments.Count; i++)
+            {
+                float currentSegmentEndAngle = sortedSegments[i].StartAngle + sortedSegments[i].Angle;
+                float nextSegmentStartAngle = (i + 1) < sortedSegments.Count ? sortedSegments[i + 1].StartAngle : 360f;
+
+                float gap = i + 1 < sortedSegments.Count ? nextSegmentStartAngle - currentSegmentEndAngle : (360f + sortedSegments[0].StartAngle) - currentSegmentEndAngle;
+                gaps.Add(gap);
+            }
+
+            return gaps.Any(gap => gap >= segmentSize);
+        }
+        
+        private Segment PickSegment()
+        {
+            if (_segments.Count == _miniGameConfig.MaxSegmentsOnWheel)
+                return ResetFirstSegment();
+            
+            foreach (Segment segment in _segments)
+            {
+                if (segment.Angle == 0)
+                    return segment;
+            }
+
+            Segment newSegment = Instantiate(_segmentPrefab, _drum.position, Quaternion.identity, _segmentsContainer);
+            _segments.Enqueue(newSegment);
+            return newSegment;
+        }
+        
+        private Segment ResetFirstSegment()
+        {
+            var segmentToReturn = _segments.Dequeue();
+            segmentToReturn.gameObject.SetActive(true);
+            _segments.Enqueue(segmentToReturn);
+            _totalAngle -= segmentToReturn.Angle;
+            segmentToReturn.SetSegmentAngle(0);
+            return segmentToReturn;
+        }
+
+        private bool IsSegmentOverlap(float startAngle, float segmentSize)
+        {
+            foreach (var segment in _segments)
+            {
+                float segmentEndAngle = segment.StartAngle + segment.Angle;
+        
+                if ((startAngle >= segment.StartAngle && startAngle < segmentEndAngle) ||
+                    (segment.StartAngle >= startAngle && segment.StartAngle < startAngle + segmentSize))
+                    return true;
+            }
+            return false;
+        }
+        
         private float DeterminateFillFromBuff(MiniGameEffect randomEffect)
         {
             switch (randomEffect.Tier)
@@ -103,7 +221,6 @@ namespace Farm.Gameplay.MiniGame
                 default:
                     return 0;
             }
-            
         }
 
         private void DisableActionButton()
@@ -111,7 +228,6 @@ namespace Farm.Gameplay.MiniGame
             _delayTimer = _timerService.AddTimer(_miniGameConfig.DelayTime, () => _actionButton.interactable = true);
             _actionButton.interactable = false;
         }
-
 
         private void Update()
         {

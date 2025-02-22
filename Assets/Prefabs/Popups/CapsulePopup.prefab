@@ -719,8 +719,6 @@ MonoBehaviour:
   _actionButton: {fileID: 7807338700243888319}
   _actionButtonText: {fileID: 3262027643034266701}
   _miniGameSpeedometer: {fileID: 7439449629784615052}
-  _positiveColor: {r: 0.54175574, g: 0.8018868, b: 0.11725702, a: 1}
-  _negativeColor: {r: 0.51978517, g: 0.011213934, b: 0.7924528, a: 1}
   _segmentPrefab: {fileID: 2123559933139847300, guid: dc7919f26c2858747b9e1834861650a6, type: 3}
   _segmentsContainer: {fileID: 7191201184413859629}
 --- !u!1 &1995479124970042967
@@ -2064,7 +2062,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6364099652640814895}
-  m_LocalRotation: {x: -0, y: 0, z: -0.77988285, w: -0.62592554}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2072,7 +2070,7 @@ RectTransform:
   - {fileID: 4140587072251560829}
   - {fileID: 7191201184413859629}
   m_Father: {fileID: 6437917829236663694}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 4062.5}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}

@@ -15,12 +15,12 @@ MonoBehaviour:
   _pool: {fileID: 11400000, guid: 1246d17cc9803f34d9f3df885387b2eb, type: 2}
   _tier1Angle: 40
   _tier2Angle: 20
-  _tier3Angle: 8
-  _startSpeed: 100
-  _speedToAddPerTap: 124
-  _maxSpeed: 720
-  _segmentsSpawnPerTap: 4
-  _playTime: 30
-  _delayTime: 3
+  _tier3Angle: 12
+  _startSpeed: 10
+  _speedToAddPerTap: 1
+  _maxSpeed: 20
+  _maxSegmentsOnWheel: 8
+  _playTime: 5
+  _delayTime: 0.1
   _tier1SpeedCap: 0.33
   _tier2SpeedCap: 0.67
