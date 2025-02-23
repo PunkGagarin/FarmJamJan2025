@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9609f1068ed4bc1b9c88b689d512452, type: 3}
+  m_Name: Upgrade Module Pool
+  m_EditorClassIdentifier: 
+  stats:
+  - ModuleCharacteristicType: 0
+    MinValue: 0
+    MaxValue: 100
+  - ModuleCharacteristicType: 1
+    MinValue: 0
+    MaxValue: 100
+  - ModuleCharacteristicType: 2
+    MinValue: 0
+    MaxValue: 100
+  - ModuleCharacteristicType: 3
+    MinValue: 0
+    MaxValue: 100
+  - ModuleCharacteristicType: 4
+    MinValue: 0
+    MaxValue: 100

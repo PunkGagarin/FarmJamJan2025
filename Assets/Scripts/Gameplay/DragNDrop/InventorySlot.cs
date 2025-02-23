@@ -24,7 +24,7 @@ namespace Farm
         {
             UpgradeModule = module;
             OnModuleChanged?.Invoke();
-            _image.sprite = module.Definition.Icon;
+            _image.sprite = module.Icon;
             gameObject.SetActive(true);
         }
 

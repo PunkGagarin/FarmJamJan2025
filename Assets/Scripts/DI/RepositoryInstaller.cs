@@ -8,7 +8,6 @@ namespace Farm.DI
     public class RepositoryInstaller : ScriptableObjectInstaller
     {
         [SerializeField] private EmbryoRepository _embryoRepository;
-        [SerializeField] private UpgradeModuleRepository _upgradeModuleRepository;
         [SerializeField] private TheOldOneRepository _theOldOneRepository;
 
         public override void InstallBindings()
@@ -17,12 +16,7 @@ namespace Farm.DI
                 .Bind<EmbryoRepository>()
                 .FromInstance(_embryoRepository)
                 .AsSingle();
-            
-            Container
-                .Bind<UpgradeModuleRepository>()
-                .FromInstance(_upgradeModuleRepository)
-                .AsSingle();
-            
+       
             Container
                 .Bind<TheOldOneRepository>()
                 .FromInstance(_theOldOneRepository)

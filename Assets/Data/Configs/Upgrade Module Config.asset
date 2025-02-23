@@ -12,3 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88c83eafa3144bf3b49317035a54faf7, type: 3}
   m_Name: Upgrade Module Config
   m_EditorClassIdentifier: 
+  _pool: {fileID: 11400000, guid: 36796e51cd1e841fca74551401697934, type: 2}
+  _oneStatPercent: 25
+  _twoStatPercent: 25
+  _threeStatPercent: 50
+  _negativePercentForTwo: 100
+  _negativePercentForThree: 100
+  _canBeThreeStatCount: 0
+  _icons:
+  - {fileID: 21300000, guid: 399470700809f2f4493aef42cc3a56b6, type: 3}
+  - {fileID: 21300000, guid: e3669f782799a9140a65ad6e30d415db, type: 3}
+  - {fileID: 21300000, guid: 4f5cf3927d11df04e89da0f34ac465cb, type: 3}

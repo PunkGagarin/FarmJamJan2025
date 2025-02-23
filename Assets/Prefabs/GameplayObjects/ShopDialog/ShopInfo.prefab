@@ -33,11 +33,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2557817443063830212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -149.9, y: 0}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 32, y: 200}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &9074662338320397671
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -182,17 +182,8 @@ MonoBehaviour:
   _inventoryRectTransform: {fileID: 2557817443063830212}
   _energyPanel: {fileID: 1788556296369042110}
   _energyAmount: {fileID: 2799080850570603620}
-  _canBuyColor: {r: 0.25402105, g: 1, b: 0, a: 1}
-  _canNotBuyColor: {r: 1, g: 0, b: 0, a: 1}
-  _regularColor: {r: 1, g: 1, b: 1, a: 1}
-  _startEnergy: 500
-  _shakeDuration: 1
-  _shakePower: 4
-  _maxSlotsCount: 8
-  _inventorySlotPrefab: {fileID: 6444807241088782044, guid: 48151ffdba9ea4a32b23ae6d2b98430a, type: 3}
   _inventorySlotsContent: {fileID: 3274876963639651713}
-  _baseModuleCost: 5
-  _moduleCostMultiplier: 0.15
+  _inventorySlotPrefab: {fileID: 6444807241088782044, guid: 48151ffdba9ea4a32b23ae6d2b98430a, type: 3}
   _buyModuleButton: {fileID: 8654245242820644667}
   _openInventoryButton: {fileID: 5408392231828927711}
   _placedSlotsCountText: {fileID: 7263063137368777497}

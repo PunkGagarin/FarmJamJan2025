@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Farm.Enums;
 using Farm.Gameplay.Configs;
+using Farm.Gameplay.Configs.UpgradeModules;
 using Farm.Gameplay.Definitions;
 using Farm.Gameplay.Repositories;
 using Farm.Interface;
@@ -30,6 +31,7 @@ namespace Farm.Gameplay.Capsules
         [Inject] private FeedMediator _feedMediator;
         [Inject] private InventoryUI _inventory;
         [Inject] private CapsuleConfig _capsuleConfig;
+        [Inject] private UpgradeModuleConfig _upgradeModuleConfig;
         private TimerHandle _embryoTimer;
         private EmbryoDefinition _embryo;
         private int _currentTier;
