@@ -20,10 +20,10 @@ namespace Farm.Interface.TheOldOne
         
         private int _maxPhases;
 
-        public void Initialize(TheOldOneDefinition definition, TimerHandle lifeTime)
+        public void Initialize(TheOldOneDefinition definition, TimerHandle lifeTimer)
         {
             _maxPhases = definition.SatietyPhasesData.Count;
-            _theOldOneLifeTimeUI.Initialize(definition, lifeTime);
+            _theOldOneLifeTimeUI.Initialize(definition, lifeTimer);
             UpdateSatietyBar(definition.StartSatiety, definition.MaxSatiety, true);
         }
         

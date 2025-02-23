@@ -25,7 +25,8 @@ namespace Farm.Gameplay
         private TimerHandle _lifeTimer;
         private TimerHandle _starveTimer;
         private TimerHandle _rampageTimer;
-        private int _currentPhase;
+        private TimerHandle _phaseTimer;
+        private int _currentStage;
         private Sequence _blinkingTween;
         private bool _inRampage;
 
@@ -37,13 +38,12 @@ namespace Farm.Gameplay
             _definition = definition;
             _inRampage = false;
 
-            _currentPhase = 0;
+            _currentStage = 0;
             _currentSatiety = _definition.StartSatiety;
             _maxSatiety = _definition.MaxSatiety;
 
             _lifeTimer = _timerService.AddTimer(_definition.LifeTime, Sealed);
-            _timerService.AddTimer(_definition.SatietyPhasesData[_currentPhase + 1].PhaseStartTime, ChangePhase);
-            OnPhaseChanged?.Invoke(_currentPhase);
+            _phaseTimer = _timerService.AddTimer(_definition.SatietyPhasesData[_currentStage + 1].PhaseStartTime, ChangePhase);
             _starveTimer = _timerService.AddTimer(_definition.TimeToStarveTick, Starve, true);
             OnSatietyChanged?.Invoke(_currentSatiety, _maxSatiety);
 
@@ -79,20 +79,20 @@ namespace Farm.Gameplay
 
         private void ChangePhase()
         {
-            int nextPhase = _currentPhase + 1;
-            if (nextPhase >= _definition.SatietyPhasesData.Count)
-                return;
-
-            float timerTime = _definition.SatietyPhasesData[nextPhase].PhaseStartTime - _definition.SatietyPhasesData[_currentPhase].PhaseStartTime;
-            _currentPhase = nextPhase;
-            Debug.Log($"phase changed to {_currentPhase}");
-            _timerService.AddTimer(timerTime, ChangePhase);
-            OnPhaseChanged?.Invoke(_currentPhase);
+            _currentStage++;
+            Debug.Log($"Stage changed to {_currentStage}");
+            OnPhaseChanged?.Invoke(_currentStage);
+            
+            if (_currentStage + 1 < _definition.SatietyPhasesData.Count)
+            {
+                float phaseTime = _definition.SatietyPhasesData[_currentStage + 1].PhaseStartTime - _definition.SatietyPhasesData[_currentStage].PhaseStartTime;
+                _phaseTimer = _timerService.AddTimer(phaseTime, ChangePhase);
+            }
         }
 
         private void Starve()
         {
-            _currentSatiety -= _definition.SatietyPhasesData[_currentPhase].SatietyLoseByTick;
+            _currentSatiety -= _definition.SatietyPhasesData[_currentStage].SatietyLoseByTick;
             OnSatietyChanged?.Invoke(_currentSatiety, _maxSatiety);
 
             if (_currentSatiety <= 0)

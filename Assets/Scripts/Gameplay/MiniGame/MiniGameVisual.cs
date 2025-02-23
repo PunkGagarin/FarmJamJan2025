@@ -50,8 +50,8 @@ namespace Farm.Gameplay.MiniGame
         
         private void ResetState()
         {
-            _miniGameTimer?.Reset();
-            _delayTimer?.Reset();
+            _miniGameTimer?.EarlyComplete();
+            _delayTimer?.EarlyComplete();
             foreach (Segment segment in _segments)
                 segment.gameObject.SetActive(false);
             _totalAngle = 0f;
