@@ -9,5 +9,6 @@ namespace Farm.Gameplay.Configs.MiniGame
         [Range(1, 3)] public int Tier;
         public BuffType BuffType;
         public int Value;
+        [Min(0)] public float Weight;
     }
 }

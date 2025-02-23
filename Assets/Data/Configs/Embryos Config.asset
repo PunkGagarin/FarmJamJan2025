@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46ae1eebcdd44238a16139d5d80ead28, type: 3}
+  m_Name: Embryos Config
+  m_EditorClassIdentifier: 
+  _embryoTiers:
+  - _baseFoodAmount: 50
+    _baseEnergyAmount: 50
+    _baseGrowthSpeed: 8
+    _baseCost: 0
+  - _baseFoodAmount: 100
+    _baseEnergyAmount: 100
+    _baseGrowthSpeed: 10
+    _baseCost: 20
+  - _baseFoodAmount: 200
+    _baseEnergyAmount: 200
+    _baseGrowthSpeed: 12
+    _baseCost: 40
+  - _baseFoodAmount: 300
+    _baseEnergyAmount: 300
+    _baseGrowthSpeed: 15
+    _baseCost: 80
+  _humanImage: {fileID: 21300000, guid: 4f5cf3927d11df04e89da0f34ac465cb, type: 3}
+  _animalImage: {fileID: 21300000, guid: 399470700809f2f4493aef42cc3a56b6, type: 3}
+  _fishImage: {fileID: 21300000, guid: e3669f782799a9140a65ad6e30d415db, type: 3}

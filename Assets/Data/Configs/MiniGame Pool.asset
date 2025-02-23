@@ -16,63 +16,84 @@ MonoBehaviour:
   - Tier: 3
     BuffType: 0
     Value: 1
+    Weight: 1
   - Tier: 3
     BuffType: 0
     Value: -1
+    Weight: 1
   - Tier: 1
     BuffType: 1
     Value: -50
+    Weight: 50
   - Tier: 1
     BuffType: 1
     Value: 200
+    Weight: 50
   - Tier: 2
     BuffType: 1
     Value: -15
+    Weight: 1
   - Tier: 2
     BuffType: 1
     Value: 15
+    Weight: 1
   - Tier: 3
     BuffType: 1
     Value: -30
+    Weight: 1
   - Tier: 3
     BuffType: 1
     Value: 30
+    Weight: 1
   - Tier: 1
     BuffType: 2
     Value: -5
+    Weight: 1
   - Tier: 1
     BuffType: 2
     Value: -5
+    Weight: 1
   - Tier: 1
     BuffType: 2
     Value: 5
+    Weight: 1
   - Tier: 2
     BuffType: 2
     Value: -15
+    Weight: 1
   - Tier: 2
     BuffType: 2
     Value: 15
+    Weight: 1
   - Tier: 3
     BuffType: 2
     Value: -30
+    Weight: 1
   - Tier: 3
     BuffType: 2
     Value: 30
+    Weight: 1
   - Tier: 1
     BuffType: 3
     Value: -5
+    Weight: 1
   - Tier: 1
     BuffType: 3
     Value: 5
+    Weight: 1
   - Tier: 2
     BuffType: 3
     Value: -15
+    Weight: 1
   - Tier: 2
     BuffType: 3
     Value: 15
+    Weight: 1
   - Tier: 3
     BuffType: 3
     Value: -30
+    Weight: 1
   - Tier: 3
     BuffType: 3
     Value: 30
+    Weight: 1

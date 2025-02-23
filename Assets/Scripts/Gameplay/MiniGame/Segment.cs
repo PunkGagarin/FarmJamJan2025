@@ -23,7 +23,11 @@ namespace Farm.Gameplay.MiniGame
         public void SetEffect(MiniGameEffect miniGameEffect)
         {
             MiniGameEffect = miniGameEffect;
-            _image.color = miniGameEffect.Value > 0 ? _positiveColor : _negativeColor;
+            
+            if (miniGameEffect.BuffType == BuffType.GrowthSpeed)
+                _image.color = miniGameEffect.Value > 0 ? _negativeColor : _positiveColor;
+            else
+                _image.color = miniGameEffect.Value > 0 ? _positiveColor : _negativeColor;
         }
         public void SetStartAngle(float startAngle)
         {

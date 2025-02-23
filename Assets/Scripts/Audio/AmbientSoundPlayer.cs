@@ -29,5 +29,6 @@ public class AmbientSoundPlayer : MonoBehaviour
     private void OnDestroy()
     {
         _timerHandle?.FinalizeTimer();
+        _timerHandle = null;
     }
 }

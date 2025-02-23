@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Farm.Gameplay.Configs.MiniGame;
+using Farm.Utils.Pause;
 using Farm.Utils.Timer;
 using TMPro;
 using UnityEngine;
@@ -11,11 +12,10 @@ using Random = UnityEngine.Random;
 
 namespace Farm.Gameplay.MiniGame
 {
-    public class MiniGameVisual : MonoBehaviour
+    public class MiniGameVisual : MonoBehaviour, IPauseHandler
     {
         [SerializeField] private MiniGameConfig _miniGameConfig;
         [SerializeField] private Transform _drum;
-        [SerializeField] private float _speed;
         [SerializeField] private Button _actionButton;
         [SerializeField] private TMP_Text _actionButtonText;
         [SerializeField] private MiniGameSpeedometer _miniGameSpeedometer;
@@ -23,25 +23,31 @@ namespace Farm.Gameplay.MiniGame
         [SerializeField] private Transform _segmentsContainer;
         
         [Inject] private TimerService _timerService;
+        
         public event Action<MiniGameEffect> OnMiniGameEnds;
         private bool _isStarted;
+        private bool _isPaused;
+        private bool _isEnded;
         private TimerHandle _miniGameTimer;
         private TimerHandle _delayTimer;
         private Queue<Segment> _segments = new();
-        private float _totalAngle = 0f;
         private int _currentTapCount = 0;
+        private int _currentTier, _maxTier;
+        private float _speed;
+        private float _deceleration;
         
         private const string START_GAME = "Start Game";
         private const string TAP = "Tap me!";
         private const string END_GAME = "Collect!";
         private const float FULL_CIRCLE_ANGLE = 360f;
         private const int MAX_ATTEMPTS_TO_FIT_SEGMENT = 10;
-        
 
-        public void Initialize()
+        public void Initialize(int currentTier, int maxTier)
         {
+            _currentTier = currentTier;
+            _maxTier = maxTier;
             ResetState();
-
+            
             _actionButtonText.text = START_GAME;
             _actionButton.onClick.RemoveAllListeners();
             _actionButton.onClick.AddListener(StartGame);
@@ -50,11 +56,14 @@ namespace Farm.Gameplay.MiniGame
         
         private void ResetState()
         {
-            _miniGameTimer?.EarlyComplete();
+            _currentTapCount = 0;
+            _isEnded = false;
+            _miniGameTimer?.EarlyComplete(true);
             _delayTimer?.EarlyComplete();
+            _miniGameTimer = null;
+            _delayTimer = null;
             foreach (Segment segment in _segments)
                 segment.gameObject.SetActive(false);
-            _totalAngle = 0f;
         }
 
         private void StartGame()
@@ -70,36 +79,43 @@ namespace Farm.Gameplay.MiniGame
         {
             _miniGameTimer = _timerService.AddTimer(_miniGameConfig.PlayTime, FinalizeGame);
             _speed = _miniGameConfig.StartSpeed;
-            
         }
         
         private void FinalizeGame()
         {
+            _miniGameTimer?.EarlyComplete(true);
             _delayTimer?.EarlyComplete();
+            _miniGameTimer = null;
+            _delayTimer = null;
             DisableActionButton();
             _actionButtonText.text = END_GAME;
             _actionButton.onClick.RemoveListener(TapAction);
-            _actionButton.onClick.AddListener(EndGame);
+            _actionButton.onClick.AddListener(StartDeceleration);
         }
         
-        private void EndGame()
+        private void StartDeceleration()
         {
             _isStarted = false;
-            bool isCollected = false;
+            _isEnded = true;
+            _deceleration = _speed / _miniGameConfig.DecelerationTime;
+        }
+        
+        private void DeterminateMiniGameOutput()
+        {
+            _isEnded = false;
             var drumShift = _drum.transform.rotation.eulerAngles.z;
-            _currentTapCount = 0;
+            MiniGameEffect selectedEffect = null;
             foreach (Segment segment in _segments)
             {
                 if ((segment.StartAngle - drumShift) % FULL_CIRCLE_ANGLE <= 0 && 
                     (segment.StartAngle + segment.Angle - drumShift) % FULL_CIRCLE_ANGLE >= 0)
                 {
-                    isCollected = true;
-                    OnMiniGameEnds?.Invoke(segment.MiniGameEffect);
+                    selectedEffect = segment.MiniGameEffect;
                     break;
                 }
             }
-            if (!isCollected)
-                OnMiniGameEnds?.Invoke(null);
+            
+            _timerService.AddTimer(1f, () => OnMiniGameEnds?.Invoke(selectedEffect));
         }
 
         private void TapAction()
@@ -120,13 +136,19 @@ namespace Farm.Gameplay.MiniGame
         {
             int allowedTiers = _miniGameSpeedometer.AllowTiers;
             List<MiniGameEffect> allowedEffects = _miniGameConfig.Effects.Where(buffs => buffs.Tier <= allowedTiers).ToList();
+            List<MiniGameEffect> updateTierEffects = allowedEffects.Where(effect => effect.BuffType == BuffType.UpdateTier).ToList();
+            updateTierEffects.ForEach(updateTier =>
+            {
+                if (updateTier.Value + _currentTier > _maxTier || updateTier.Value + _currentTier < 0)
+                    allowedEffects.Remove(updateTier);
+            });
             
             bool segmentAdded = false;
             int attempts = 0;
 
-            while (!segmentAdded && attempts < MAX_ATTEMPTS_TO_FIT_SEGMENT) 
+            while (!segmentAdded && attempts < MAX_ATTEMPTS_TO_FIT_SEGMENT)
             {
-                MiniGameEffect randomEffect = allowedEffects[Random.Range(0, allowedEffects.Count)];
+                MiniGameEffect randomEffect = GetRandomEffect(allowedEffects);
                 float startAngle = Random.Range(0f, FULL_CIRCLE_ANGLE);
                 float segmentSize = DeterminateFillFromBuff(randomEffect);
                 
@@ -137,7 +159,6 @@ namespace Farm.Gameplay.MiniGame
                     segment.SetStartAngle(startAngle);
                     segment.SetSegmentAngle(segmentSize);
                     segment.SetEffect(randomEffect);
-                    _totalAngle += segmentSize; 
                     segmentAdded = true;
                 }
                 else
@@ -158,6 +179,23 @@ namespace Farm.Gameplay.MiniGame
             }
         }
         
+        private MiniGameEffect GetRandomEffect(List<MiniGameEffect> allowedEffects)
+        {
+            float totalWeight = allowedEffects.Sum(effect => effect.Weight);
+            float randomValue = Random.Range(0f, totalWeight);
+            float currentWeight = 0f;
+
+            foreach (MiniGameEffect miniGameEffect in allowedEffects)
+            {
+                currentWeight += miniGameEffect.Weight;
+                
+                if (randomValue < currentWeight)
+                    return miniGameEffect;
+            }
+            
+            return allowedEffects[^1];
+        }
+
         private bool CanFitSegment(float segmentSize)
         {
             List<float> gaps = new List<float>();
@@ -200,7 +238,6 @@ namespace Farm.Gameplay.MiniGame
             var segmentToReturn = _segments.Dequeue();
             segmentToReturn.gameObject.SetActive(true);
             _segments.Enqueue(segmentToReturn);
-            _totalAngle -= segmentToReturn.Angle;
             segmentToReturn.SetSegmentAngle(0);
             return segmentToReturn;
         }
@@ -235,16 +272,29 @@ namespace Farm.Gameplay.MiniGame
 
         private void DisableActionButton()
         {
-            _delayTimer = _timerService.AddTimer(_miniGameConfig.DelayTime, () => _actionButton.interactable = true);
+            _delayTimer = _timerService.AddTimer(_miniGameConfig.DelayTimeBetweenTaps, () => _actionButton.interactable = true);
             _actionButton.interactable = false;
         }
 
         private void Update()
         {
-            if (!_isStarted) 
+            if (_isPaused)
                 return;
+
+            if (_isEnded)
+            {
+                _speed -= _deceleration * Time.deltaTime;
+                _drum.Rotate(0, 0, _speed * Time.deltaTime);
+                
+                if (_speed <= 0)
+                    DeterminateMiniGameOutput();
+            }
             
-            _drum.Rotate(0, 0, _speed * Time.deltaTime);
+            if (_isStarted) 
+                _drum.Rotate(0, 0, _speed * Time.deltaTime);
         }
+        
+        public void SetPaused(bool isPaused) => 
+            _isPaused = isPaused;
     }
 }

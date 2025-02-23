@@ -55,18 +55,24 @@ namespace Farm.Gameplay
         public void Feed(int amount)
         {
             _currentSatiety += amount;
-            if (_currentSatiety > _definition.MaxSatiety) 
+            if (_currentSatiety > _definition.MaxSatiety)
                 _currentSatiety = _definition.MaxSatiety;
-            
+
             OnSatietyChanged?.Invoke(_currentSatiety, _maxSatiety);
         }
-        
+
         private void Sealed()
         {
             _lifeTimer?.FinalizeTimer();
             _starveTimer?.FinalizeTimer();
             _rampageTimer?.FinalizeTimer();
-            
+            _phaseTimer?.FinalizeTimer();
+
+            _lifeTimer = null;
+            _starveTimer = null;
+            _rampageTimer = null;
+            _phaseTimer = null;
+
             Debug.Log($"The old one sealed!");
         }
 
@@ -82,7 +88,7 @@ namespace Farm.Gameplay
             _currentStage++;
             Debug.Log($"Stage changed to {_currentStage}");
             OnPhaseChanged?.Invoke(_currentStage);
-            
+
             if (_currentStage + 1 < _definition.SatietyPhasesData.Count)
             {
                 float phaseTime = _definition.SatietyPhasesData[_currentStage + 1].PhaseStartTime - _definition.SatietyPhasesData[_currentStage].PhaseStartTime;
@@ -98,23 +104,23 @@ namespace Farm.Gameplay
             if (_currentSatiety <= 0)
             {
                 _starveTimer?.FinalizeTimer();
-                    
+
                 Rampage();
             }
         }
-        
+
         private void Rampage()
         {
             _blinkingTween = DOTween.Sequence();
 
             _blinkingTween.Append(_sprite.DOFade(0, 1));
             _blinkingTween.Append(_sprite.DOFade(1, 1)).OnComplete(() => _blinkingTween.Restart());
-            
+
             _blinkingTween.Restart();
             _inRampage = true;
             _rampageTimer = _timerService.AddTimer(_definition.RampageTime, Defeat);
         }
-        
+
         private void Defeat()
         {
             _inRampage = false;
@@ -128,11 +134,14 @@ namespace Farm.Gameplay
             _starveTimer?.FinalizeTimer();
             _rampageTimer?.FinalizeTimer();
             _lifeTimer?.FinalizeTimer();
+            _starveTimer = null;
+            _rampageTimer = null;
+            _lifeTimer = null;
             OnPhaseChanged -= _theOldOneUI.PhaseChanged;
             OnSatietyChanged -= _theOldOneUI.UpdateSatietyBar;
             _blinkingTween.Kill();
         }
-        
+
         public void SetPaused(bool isPaused)
         {
             if (_inRampage)

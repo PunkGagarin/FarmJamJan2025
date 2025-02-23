@@ -1,19 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Farm.Gameplay.Definitions;
+using Farm.Utils.Pause;
 using Farm.Utils.Timer;
 using UnityEngine;
+using Zenject;
 
 namespace Farm.Interface.TheOldOne
 {
-    public class TheOldOneLifeTimeUI : MonoBehaviour
+    public class TheOldOneLifeTimeUI : MonoBehaviour, IPauseHandler
     {
         [SerializeField] private RectTransform _markPrefab;
         [SerializeField] private Transform _timerTransform;
 
+        [Inject] private PauseService _pauseService;
+        
         private List<RectTransform> _marks = new List<RectTransform>();
         private TimerHandle _lifeTime;
         private float _circleSpinTime;
-        
+        private bool _isPaused;
+
         private const float FULL_CIRCLE_EDGE = 360f;
         private const float POINTER_SHIFT = 90f;
 
@@ -42,7 +48,7 @@ namespace Farm.Interface.TheOldOne
                 _marks[i].gameObject.name = $"mark = {i}";
 
                 float normalizedTime = definition.SatietyPhasesData[i + 1].PhaseStartTime / definition.LifeTime;
-                float rotateAmount = normalizedTime * FULL_CIRCLE_EDGE + POINTER_SHIFT;
+                float rotateAmount = -normalizedTime * FULL_CIRCLE_EDGE + POINTER_SHIFT;
 
                 _marks[i].transform.localRotation = Quaternion.Euler(0, 0, rotateAmount);
             }
@@ -50,8 +56,20 @@ namespace Farm.Interface.TheOldOne
 
         private void Update()
         {
-            if (_lifeTime.IsActive)
-                _timerTransform.Rotate(Vector3.forward, -_circleSpinTime * Time.deltaTime);
+            if (_isPaused) 
+                return;
+            
+            if (_lifeTime is { IsActive: true })
+                _timerTransform.Rotate(Vector3.forward, _circleSpinTime * Time.deltaTime);
         }
+
+        private void Awake() => 
+            _pauseService.Register(this);
+
+        private void OnDestroy() => 
+            _pauseService.Unregister(this);
+
+        public void SetPaused(bool isPaused) => 
+            _isPaused = isPaused;
     }
 }
