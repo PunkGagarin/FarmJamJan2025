@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Minigame Config
   m_EditorClassIdentifier: 
   _pool: {fileID: 11400000, guid: 1246d17cc9803f34d9f3df885387b2eb, type: 2}
-  _tier1Angle: 35
+  _tier1Angle: 30
   _tier2Angle: 25
-  _tier3Angle: 15
+  _tier3Angle: 20
   _startSpeed: 30
   _speedToAddPerTap: 50
   _maxSpeed: 300

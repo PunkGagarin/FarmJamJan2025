@@ -12,10 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eeffbc7b0f054cf48ebdfab026ccb5d3, type: 3}
   m_Name: Ctulhu
   m_EditorClassIdentifier: 
-  _headerInfo: 'Cthulhu
-
-    Lord of Worlds'
-  _maxSatiety: 2500
+  _name: Ctulhu
+  _maxSatiety: 5000
   _startSatiety: 400
   _timeToStarveTick: 1
   _lifeTime: 1500
@@ -33,6 +31,6 @@ MonoBehaviour:
   - PhaseStartTime: 1200
     SatietyLoseByTick: 8
   _rampageTime: 5
-  _humanSatietyModifier: 0
-  _animalSatietyModifier: 0
-  _fishSatietyModifier: 0
+  _humanFeedModifier: 0
+  _animalFeedModifier: 0
+  _fishFeedModifier: 0

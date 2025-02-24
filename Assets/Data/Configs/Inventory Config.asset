@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5383462406244a07a0dcbcd8ea7fd335, type: 3}
   m_Name: Inventory Config
   m_EditorClassIdentifier: 
-  _canBuyColor: {r: 0.18498707, g: 1, b: 0, a: 1}
-  _canNotBuyColor: {r: 1, g: 0, b: 0, a: 1}
-  _regularColor: {r: 1, g: 1, b: 1, a: 1}
-  _startEnergy: 500
+  _canBuyColor: {r: 0.18498707, g: 1, b: 0, a: 0}
+  _canNotBuyColor: {r: 1, g: 0, b: 0, a: 0}
+  _regularColor: {r: 1, g: 1, b: 1, a: 0}
+  _startEnergy: 100
   _shakeDuration: 1
   _shakePower: 4
   _maxSlotsCount: 8
-  _baseModuleCost: 5
+  _baseModuleCost: 100
   _moduleCostMultiplier: 0.15
