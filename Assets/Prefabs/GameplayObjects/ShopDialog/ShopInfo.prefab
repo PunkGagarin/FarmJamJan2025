@@ -183,7 +183,7 @@ MonoBehaviour:
   _energyPanel: {fileID: 1788556296369042110}
   _energyAmount: {fileID: 2799080850570603620}
   _inventorySlotsContent: {fileID: 3274876963639651713}
-  _inventorySlotPrefab: {fileID: 6444807241088782044, guid: 48151ffdba9ea4a32b23ae6d2b98430a, type: 3}
+  _inventorySlotPrefab: {fileID: 764428883857621304, guid: c413bedf5bd1af24283fb224fa7b7924, type: 3}
   _buyModuleButton: {fileID: 8654245242820644667}
   _openInventoryButton: {fileID: 5408392231828927711}
   _placedSlotsCountText: {fileID: 7263063137368777497}

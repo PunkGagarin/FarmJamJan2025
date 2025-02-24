@@ -1,4 +1,5 @@
 using System;
+using Farm.Gameplay.DragNDrop;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -9,6 +10,10 @@ namespace Farm
         public event Action<IDraggable> OnDragStart;
         public static event Action OnModuleChanged;
 
+        [SerializeField] private StatInfo _firstStatInfo;
+        [SerializeField] private StatInfo _secondStatInfo;
+        [SerializeField] private StatInfo _thirdStatInfo;
+        
         public Sprite Icon => null;
         public UpgradeModule UpgradeModule { get; private set; }
 
@@ -20,6 +25,24 @@ namespace Farm
         public void SetModule(UpgradeModule module)
         {
             UpgradeModule = module;
+            for (var i = 0; i < module.Stats.Count; i++)
+            {
+                switch (i)
+                {
+                    case 0:
+                        _firstStatInfo.SetStatInfo(module.Stats[i]);
+                        _firstStatInfo.gameObject.SetActive(true);
+                        break;
+                    case 1:
+                        _secondStatInfo.SetStatInfo(module.Stats[i]);
+                        _secondStatInfo.gameObject.SetActive(true);
+                        break;
+                    default:
+                        _thirdStatInfo.SetStatInfo(module.Stats[i]);
+                        _thirdStatInfo.gameObject.SetActive(true);
+                        break;
+                }
+            }
             OnModuleChanged?.Invoke();
             gameObject.SetActive(true);
         }
