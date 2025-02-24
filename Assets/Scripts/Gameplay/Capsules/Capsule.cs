@@ -151,7 +151,7 @@ namespace Farm.Gameplay.Capsules
         {
             _info.gameObject.SetActive(false);
             _isFeedReady = false;
-            _feedMediator.FeedTheOldOne(CalculateFeedAmount());
+            _feedMediator.FeedTheOldOne(CalculateFeedAmount(), Embryo.EmbryoType);
             _inventory.CurrentEnergy += Embryo.EnergyValue;
             Embryo = null;
             _embryoImage.gameObject.SetActive(false);

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Farm.Enums;
+using UnityEngine;
 
 namespace Farm.Gameplay
 {
@@ -11,7 +12,7 @@ namespace Farm.Gameplay
             _theOldOne = theOldOne;
         }
 
-        public void FeedTheOldOne(int amount)
+        public void FeedTheOldOne(int amount, EmbryoType embryoType)
         {
             if (_theOldOne == null)
             {
@@ -19,7 +20,7 @@ namespace Farm.Gameplay
                 return;
             }
             
-            _theOldOne.Feed(amount);
+            _theOldOne.Feed(amount, embryoType);
         }
     }
 }

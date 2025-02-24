@@ -1,5 +1,6 @@
 ﻿using System;
 using DG.Tweening;
+using Farm.Enums;
 using Farm.Gameplay.Definitions;
 using Farm.Interface.Popups;
 using Farm.Interface.TheOldOne;
@@ -52,9 +53,26 @@ namespace Farm.Gameplay
             InitializeInterface();
         }
 
-        public void Feed(int amount)
+        public void Feed(int amount, EmbryoType embryoType)
         {
-            _currentSatiety += amount;
+            float modifier = 0;
+
+            switch (embryoType)
+            {
+                case EmbryoType.Human:
+                    modifier = _definition.HumanSatietyModifier;
+                    break;
+                case EmbryoType.Animal:
+                    modifier = _definition.AnimalSatietyModifier;
+                    break;
+                case EmbryoType.Fish:
+                    modifier = _definition.FishSatietyModifier;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(embryoType), embryoType, null);
+            }
+            
+            _currentSatiety += amount * modifier;
             if (_currentSatiety > _definition.MaxSatiety)
                 _currentSatiety = _definition.MaxSatiety;
 
