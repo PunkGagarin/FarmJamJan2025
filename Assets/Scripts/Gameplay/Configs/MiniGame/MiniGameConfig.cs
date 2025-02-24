@@ -15,8 +15,8 @@ namespace Farm.Gameplay.Configs.MiniGame
         [SerializeField] private float _maxSpeed;
         [SerializeField] private int _maxSegmentsOnWheel;
         [SerializeField] private float _playTime;
-        [SerializeField] private float _delayTime;
-
+        [SerializeField] private float _delayTimeBetweenTaps;
+        [SerializeField] private float _decelerationTime;
         [SerializeField] private int _maxTapCount;
         [SerializeField, Range(0, 1), Tooltip("Процент заполнения шкалы скорости до получение следующего тира мутаций")] private float _tier1SpeedCap, _tier2SpeedCap;
 
@@ -29,9 +29,10 @@ namespace Farm.Gameplay.Configs.MiniGame
         public float MaxSpeed => _maxSpeed;
         public int MaxSegmentsOnWheel => _maxSegmentsOnWheel;
         public float PlayTime => _playTime;
-        public float DelayTime => _delayTime;
+        public float DelayTimeBetweenTaps => _delayTimeBetweenTaps;
         public float Tier1SpeedCap => _tier1SpeedCap;
         public float Tier2SpeedCap => _tier2SpeedCap;
+        public float DecelerationTime => _decelerationTime;
         public int MaxTaps => _maxTapCount;
     }
 }

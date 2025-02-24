@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8cb9c059e34d80a88d5ef2a2a1edea, type: 3}
   m_Name: _Configs Installer
   m_EditorClassIdentifier: 
-  _baitConfig: {fileID: 11400000, guid: 3915d3091884c1e46bbc33a4b8eaeba2, type: 2}
+  _embryoConfig: {fileID: 11400000, guid: 3915d3091884c1e46bbc33a4b8eaeba2, type: 2}
   _capsuleConfig: {fileID: 11400000, guid: 32d83e61e53ed5845943cc93b988bc2a, type: 2}
   _inventoryConfig: {fileID: 11400000, guid: 2097d571683674ff68ec717bfa652761, type: 2}
   _upgradeModuleConfig: {fileID: 11400000, guid: 87639d5810273466eab8113c718081e6, type: 2}

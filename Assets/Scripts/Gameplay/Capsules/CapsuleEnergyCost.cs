@@ -12,24 +12,23 @@ namespace Farm.Gameplay.Capsules
     {
         [SerializeField] private Button _button;
         [SerializeField] private TMP_Text _costAmount;
+        [SerializeField] private Image _upgradeImage;
         [Inject] private InventoryUI _inventory;
         private int _cost;
 
         private bool CanBuy => _inventory.CanBuy(_cost);
 
         public event Action OnBoughtSuccess;
-        public void Initialize(int cost)
+        
+        public void UpdateInfo(int cost, bool isUpdate)
         {
+            _upgradeImage.enabled = isUpdate;
             _cost = cost;
             _costAmount.text = _cost.ToString();
-            gameObject.SetActive(true);
         }
 
-        private void Awake()
-        {
-            gameObject.SetActive(false);
+        private void Awake() => 
             _button.onClick.AddListener(OnBuy);
-        }
 
         [UsedImplicitly]
         public void MouseEnter()
@@ -51,7 +50,6 @@ namespace Farm.Gameplay.Capsules
             if (CanBuy)
             {
                 _inventory.CurrentEnergy -= _cost;
-                gameObject.SetActive(false);
                 _inventory.ResetColor();
                 OnBoughtSuccess?.Invoke();
             }

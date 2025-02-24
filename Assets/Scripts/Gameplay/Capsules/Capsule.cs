@@ -25,71 +25,51 @@ namespace Farm.Gameplay.Capsules
         [SerializeField] private CapsuleEnergyCost _capsuleEnergyCost;
         [SerializeField] private int _capsuleNumber;
         [SerializeField] private List<CapsuleSlotProvider> _capsuleSlots;
+        
         [Inject] private PopupManager _popupManager;
-        [Inject] private EmbryoRepository _embryoRepository;
         [Inject] private TimerService _timerService;
         [Inject] private FeedMediator _feedMediator;
         [Inject] private InventoryUI _inventory;
         [Inject] private CapsuleConfig _capsuleConfig;
         [Inject] private UpgradeModuleConfig _upgradeModuleConfig;
+        [Inject] private EmbryoConfig _embryoConfig;
+        
         private TimerHandle _embryoTimer;
-        private EmbryoDefinition _embryo;
-        private int _currentTier;
+        private int _tier;
         private bool _isOwn;
         private bool _isFeedReady;
 
-        public EmbryoDefinition Embryo => _embryo;
         public List<CapsuleSlotProvider> CapsuleSlots => _capsuleSlots;
+        public Embryo Embryo { get; private set; }
+        public int Tier => _tier;
 
         public event Action OnEmbryoStateChanged;
 
-        public void StartEmbryoProcess()
+        public void StartEmbryoProcess(Embryo embryo)
         {
-            _embryo = GetRandomEmbryo();
+            Embryo = embryo;
 
             _embryoImage.gameObject.SetActive(true);
-            _embryoImage.sprite = _embryo.Image;
+            _embryoImage.sprite = Embryo.Image;
 
             OnEmbryoStateChanged?.Invoke();
-            float timeToGrow = CalculateTimeToGrow();
 
-            _embryoTimer = _timerService.AddTimer(timeToGrow, EmbryoGrewUp);
+            _embryoTimer = _timerService.AddTimer(Embryo.TimeToGrowth, EmbryoGrewUp);
             _growProgress.gameObject.SetActive(true);
             _capsuleSlots.ForEach(slot => slot.IsCapsuleInGrowthProcess = true);
         }
 
-        private float CalculateTimeToGrow() =>
-            _embryo.TimeToGrowth;
-
         private void EmbryoGrewUp()
         {
+            _embryoTimer = null;
             _isFeedReady = true;
             _growProgress.gameObject.SetActive(false);
             _info.gameObject.SetActive(true);
             _capsuleSlots.ForEach(slot => slot.IsCapsuleInGrowthProcess = false);
         }
 
-        private EmbryoDefinition GetRandomEmbryo()
-        {
-            float totalChance = 0;
-            totalChance += _capsuleConfig.BaseHumanChance;
-            float humanProcChance = totalChance;
-            totalChance += _capsuleConfig.BaseAnimalChance;
-            float animalProcChance = totalChance;
-            totalChance += _capsuleConfig.BaseFishChance;
-
-            var chance = Random.Range(0, totalChance);
-
-            if (chance < humanProcChance)
-                return _embryoRepository.GetEmbryoByType(EmbryoType.Human);
-
-            if (chance < animalProcChance)
-                return _embryoRepository.GetEmbryoByType(EmbryoType.Animal);
-
-            return _embryoRepository.GetEmbryoByType(EmbryoType.Fish);
-        }
-
-        private void BuyCapsule() => UpdateOwnership();
+        private void BuyCapsule() => 
+            UpdateOwnership();
 
         private void Awake()
         {
@@ -97,24 +77,43 @@ namespace Farm.Gameplay.Capsules
             _info.gameObject.SetActive(false);
             _embryoImage.gameObject.SetActive(false);
 
-            _capsuleEnergyCost.OnBoughtSuccess += BuyCapsule;
+            SetupCapsule();
 
+            CapsuleSlotProvider.OnAnyModuleChanged += OnModuleChanged;
+        }
+        
+        private void SetupCapsule()
+        {
             if (_capsuleConfig.CapsuleCosts[_capsuleNumber] == 0)
             {
                 UpdateOwnership();
             }
             else
             {
-                _capsuleEnergyCost.Initialize(_capsuleConfig.CapsuleCosts[_capsuleNumber]);
+                _capsuleEnergyCost.OnBoughtSuccess += BuyCapsule;
+                _capsuleEnergyCost.UpdateInfo(_capsuleConfig.CapsuleCosts[_capsuleNumber], false);
             }
-
-            CapsuleSlotProvider.OnAnyModuleChanged += OnModuleChanged;
         }
 
         private void UpdateOwnership()
         {
             _isOwn = true;
             _capsuleSlots.ForEach(slot => slot.IsOwn = true);
+            _capsuleEnergyCost.UpdateInfo(_capsuleConfig.UpgradeCost, true);
+
+            _capsuleEnergyCost.OnBoughtSuccess -= BuyCapsule;
+            _capsuleEnergyCost.OnBoughtSuccess += UpgradeCapsule;
+        }
+        
+        private void UpgradeCapsule()
+        {
+            _tier++;
+            
+            if (_tier + 1 <= _embryoConfig.EmbryoTiers.Count)
+                return;
+            
+            _capsuleEnergyCost.OnBoughtSuccess -= UpgradeCapsule;
+            _capsuleEnergyCost.gameObject.SetActive(false);
         }
 
         private void OnModuleChanged(CapsuleSlotProvider slot)
@@ -131,7 +130,7 @@ namespace Farm.Gameplay.Capsules
 
         private void Update()
         {
-            if (_embryo != null)
+            if (Embryo != null && _embryoTimer != null)
                 _growProgress.fillAmount = 1 - _embryoTimer.Progress;
         }
 
@@ -140,17 +139,13 @@ namespace Farm.Gameplay.Capsules
             if (EventSystem.current.IsPointerOverGameObject())
                 return;
 
-            if (_isOwn)
-            {
-                if (_isFeedReady)
-                {
-                    FeedTheOldOne();
-                }
-                else
-                {
-                    _popupManager.OpenCapsule(this);
-                }
-            }
+            if (!_isOwn)
+                return;
+
+            if (_isFeedReady)
+                FeedTheOldOne();
+            else
+                _popupManager.OpenCapsule(this);
         }
 
         private void FeedTheOldOne()
@@ -158,18 +153,19 @@ namespace Farm.Gameplay.Capsules
             _info.gameObject.SetActive(false);
             _isFeedReady = false;
             _feedMediator.FeedTheOldOne(CalculateFeedAmount());
-            _inventory.CurrentEnergy += _embryo.EnergyValue;
-            _embryo = null;
+            _inventory.CurrentEnergy += Embryo.EnergyValue;
+            Embryo = null;
             _embryoImage.gameObject.SetActive(false);
             OnEmbryoStateChanged?.Invoke();
         }
 
-        private int CalculateFeedAmount() => 
-            _embryo.StarvationValue;
+        private int CalculateFeedAmount() =>
+            Embryo.StarvationValue;
 
         private void OnDestroy()
         {
             _capsuleEnergyCost.OnBoughtSuccess -= BuyCapsule;
+            _capsuleEnergyCost.OnBoughtSuccess -= UpgradeCapsule;
             CapsuleSlotProvider.OnAnyModuleChanged -= OnModuleChanged;
         }
     }

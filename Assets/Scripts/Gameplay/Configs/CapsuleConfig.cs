@@ -13,9 +13,6 @@ namespace Farm.Gameplay.Configs
         [SerializeField, Range(0, 100)] private float _baseMutationChance;
         [SerializeField, Range(0, 100)] private float _basePositiveMutationChance;
         [SerializeField, Tooltip("Нужно выставить по списку стоимость покупки капсулы, при цене 0 - капсула будет доступна со старта игры")] private List<int> _capsuleCosts;
-        [SerializeField] private Sprite _humanCapsuleImage;
-        [SerializeField] private Sprite _animalCapsuleImage;
-        [SerializeField] private Sprite _fishCapsuleImage;
 
         public List<int> CapsuleCosts => _capsuleCosts;
         public int UpgradeCost => _upgradeCost;
@@ -24,8 +21,5 @@ namespace Farm.Gameplay.Configs
         public float BaseFishChance => _baseFishChance;
         public float BaseMutationChance => _baseMutationChance;
         public float BasePositiveMutationChance => _basePositiveMutationChance;
-        public Sprite HumanCapsuleImage => _humanCapsuleImage;
-        public Sprite AnimalCapsuleImage => _animalCapsuleImage;
-        public Sprite FishCapsuleImage => _fishCapsuleImage;
     }
 }
