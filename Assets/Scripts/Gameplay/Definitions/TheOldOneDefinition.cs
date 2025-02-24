@@ -14,27 +14,26 @@ namespace Farm.Gameplay.Definitions
             public float SatietyLoseByTick;
         }
         
-        [SerializeField] private string _name;
-        [SerializeField] private float _maxSatiety;
-        [SerializeField] private float _startSatiety;
-        [SerializeField] private float _timeToStarveTick;
-        [SerializeField] private float _lifeTime;
+        [SerializeField, Multiline(2), Tooltip("Информация отображающаяся в заголовке")] private string _headerInfo;
+        [SerializeField, Tooltip("Максимальное количество сытости")] private float _maxSatiety;
+        [SerializeField, Tooltip("Начальное количество сытости")] private float _startSatiety;
+        [SerializeField, Tooltip("Периодичность уменьшения сытости")] private float _timeToStarveTick;
+        [SerializeField, Tooltip("Время игры бога")] private float _lifeTime;
         [SerializeField] private List<PhasesData> _satietyPhasesData;
         [SerializeField] private float _rampageTime;
-        [SerializeField] private float _humanFeedModifier;
-        [SerializeField] private float _animalFeedModifier;
-        [SerializeField] private float _fishFeedModifier;
+        [SerializeField] private float _humanSatietyModifier;
+        [SerializeField] private float _animalSatietyModifier;
+        [SerializeField] private float _fishSatietyModifier;
 
-        public string Name => _name;
+        public string HeaderInfo => _headerInfo;
         public float MaxSatiety => _maxSatiety;
         public float StartSatiety => _startSatiety;
         public float TimeToStarveTick => _timeToStarveTick;
         public List<PhasesData> SatietyPhasesData => _satietyPhasesData;
         public float LifeTime => _lifeTime;
         public float RampageTime => _rampageTime;
-        public float HumanFeedModifier => _humanFeedModifier;
-        public float AnimalFeedModifier => _animalFeedModifier;
-        public float FishFeedModifier => _fishFeedModifier;
-
+        public float HumanSatietyModifier => _humanSatietyModifier;
+        public float AnimalSatietyModifier => _animalSatietyModifier;
+        public float FishSatietyModifier => _fishSatietyModifier;
     }
 }

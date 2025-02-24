@@ -73,7 +73,6 @@ namespace Farm.Utils.Timer
             {
                 foreach (TimerHandle timer in _timersToRemove)
                 {
-                    timer.Dispose();
                     _timers.Remove(timer);
                 }
 

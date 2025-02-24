@@ -21,7 +21,8 @@ MonoBehaviour:
   _maxSpeed: 300
   _maxSegmentsOnWheel: 7
   _playTime: 9
-  _delayTime: 0.1
+  _delayTimeBetweenTaps: 1.5
+  _decelerationTime: 2
   _maxTapCount: 10
   _tier1SpeedCap: 0.33
   _tier2SpeedCap: 0.67

@@ -1,49 +1,54 @@
-﻿using System.Collections.Generic;
-using Farm.Gameplay;
+﻿using System;
+using System.Collections.Generic;
 using Farm.Gameplay.Definitions;
+using Farm.Utils.Pause;
 using Farm.Utils.Timer;
 using UnityEngine;
+using Zenject;
 
 namespace Farm.Interface.TheOldOne
 {
-    public class TheOldOneLifeTimeUI : MonoBehaviour
+    public class TheOldOneLifeTimeUI : MonoBehaviour, IPauseHandler
     {
         [SerializeField] private RectTransform _markPrefab;
         [SerializeField] private Transform _timerTransform;
 
+        [Inject] private PauseService _pauseService;
+        
         private List<RectTransform> _marks = new List<RectTransform>();
-        private const float FULL_CIRCLE_EDGE = 360;
         private TimerHandle _lifeTime;
-        private float _fixedAngle;
+        private float _circleSpinTime;
+        private bool _isPaused;
 
-        public void Initialize(TheOldOneDefinition definition, TimerHandle lifeTime)
+        private const float FULL_CIRCLE_EDGE = 360f;
+        private const float POINTER_SHIFT = 90f;
+
+        public void Initialize(TheOldOneDefinition definition, TimerHandle lifeTimer)
         {
             InstantiateMarks(definition);
-            _lifeTime = lifeTime;
+            _lifeTime = lifeTimer;
+            _circleSpinTime = FULL_CIRCLE_EDGE / definition.LifeTime;
         }
         
         private void InstantiateMarks(TheOldOneDefinition definition)
         {
             _marks.ForEach(mark => mark.gameObject.SetActive(false));
             
-            if (_marks.Count < definition.SatietyPhasesData.Count)
+            if (_marks.Count < definition.SatietyPhasesData.Count - 1)
             {
-                int marksToSpawn = definition.SatietyPhasesData.Count - _marks.Count;
+                int marksToSpawn = definition.SatietyPhasesData.Count - _marks.Count - 1;
 
                 for (int i = 0; i < marksToSpawn; i++)
                     _marks.Add(Instantiate(_markPrefab, _timerTransform));
             }
-
-
-            _fixedAngle = -(definition.SatietyPhasesData[1].PhaseStartTime / definition.LifeTime) * FULL_CIRCLE_EDGE / 2;
             
-            for (int i = 0; i < definition.SatietyPhasesData.Count; i++)
+            for (int i = 0; i < definition.SatietyPhasesData.Count - 1; i++)
             {
                 _marks[i].gameObject.SetActive(true);
                 _marks[i].gameObject.name = $"mark = {i}";
 
-                float normalizedTime = definition.SatietyPhasesData[i].PhaseStartTime / definition.LifeTime;
-                float rotateAmount = -normalizedTime * FULL_CIRCLE_EDGE - _fixedAngle;
+                float normalizedTime = definition.SatietyPhasesData[i + 1].PhaseStartTime / definition.LifeTime;
+                float rotateAmount = -normalizedTime * FULL_CIRCLE_EDGE + POINTER_SHIFT;
 
                 _marks[i].transform.localRotation = Quaternion.Euler(0, 0, rotateAmount);
             }
@@ -51,11 +56,20 @@ namespace Farm.Interface.TheOldOne
 
         private void Update()
         {
-            if (_lifeTime != null)
-            {
-                Vector3 angle = new Vector3(0, 0, FULL_CIRCLE_EDGE * (1 - _lifeTime.Progress) - _fixedAngle);
-                _timerTransform.localRotation = Quaternion.Euler(angle);
-            }
+            if (_isPaused) 
+                return;
+            
+            if (_lifeTime is { IsActive: true })
+                _timerTransform.Rotate(Vector3.forward, _circleSpinTime * Time.deltaTime);
         }
+
+        private void Awake() => 
+            _pauseService.Register(this);
+
+        private void OnDestroy() => 
+            _pauseService.Unregister(this);
+
+        public void SetPaused(bool isPaused) => 
+            _isPaused = isPaused;
     }
 }

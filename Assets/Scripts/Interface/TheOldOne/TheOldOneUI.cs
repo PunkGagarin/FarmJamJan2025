@@ -11,6 +11,7 @@ namespace Farm.Interface.TheOldOne
     public class TheOldOneUI : MonoBehaviour
     {
         [SerializeField] private TheOldOneLifeTimeUI _theOldOneLifeTimeUI;
+        [SerializeField] private TMP_Text _name;
         [SerializeField] private Image _satietyBar;
         [SerializeField] private TMP_Text _satietyAmount;
         [SerializeField] private float _timeToUpdateBar;
@@ -20,10 +21,11 @@ namespace Farm.Interface.TheOldOne
         
         private int _maxPhases;
 
-        public void Initialize(TheOldOneDefinition definition, TimerHandle lifeTime)
+        public void Initialize(TheOldOneDefinition definition, TimerHandle lifeTimer)
         {
+            _name.text = definition.HeaderInfo;
             _maxPhases = definition.SatietyPhasesData.Count;
-            _theOldOneLifeTimeUI.Initialize(definition, lifeTime);
+            _theOldOneLifeTimeUI.Initialize(definition, lifeTimer);
             UpdateSatietyBar(definition.StartSatiety, definition.MaxSatiety, true);
         }
         

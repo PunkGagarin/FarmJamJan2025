@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace Farm.Utils.Timer
 {
-    public class TimerHandle : IDisposable
+    public class TimerHandle
     {
         private float _speedMultiplier = 1f;
         private bool _isLooping;
 
-        public float RemainingTime { get; internal set; }
+        public float RemainingTime { get; private set; }
         public float Duration { get; }
         public bool IsLooping => _isLooping;
         public Action OnTimerExpire { get; private set; }
@@ -20,7 +20,9 @@ namespace Farm.Utils.Timer
             get => _speedMultiplier;
             set => _speedMultiplier = Mathf.Max(0.01f, value);
         }
-
+        
+        public bool IsActive => RemainingTime > 0;
+        
         public TimerHandle(float duration, Action onTimerExpire, bool isLooping)
         {
             Duration = duration;
@@ -29,8 +31,13 @@ namespace Farm.Utils.Timer
             _isLooping = isLooping;
         }
         
-        public void EarlyComplete() => 
+        public void EarlyComplete(bool withoutAction = false)
+        {
+            if (withoutAction)
+                OnTimerExpire = null;
+            
             RemainingTime = 0;
+        }
 
         public void AddTime(float additionalTime) => 
             RemainingTime = Mathf.Min(RemainingTime + additionalTime, Duration);
@@ -41,19 +48,12 @@ namespace Farm.Utils.Timer
         public void Tick(float deltaTime) => 
             RemainingTime -= deltaTime * _speedMultiplier;
 
-        public void Reset(bool isHard = false)
+        public void Reset()
         {
-            if (isHard)
-                OnTimerExpire = null;
             RemainingTime = Duration;
         }
 
         public void FinalizeTimer() => 
             _isLooping = false;
-
-        public void Dispose()
-        {
-            OnTimerExpire = null;
-        }
     }
 }
