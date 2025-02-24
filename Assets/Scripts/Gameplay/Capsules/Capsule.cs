@@ -106,12 +106,11 @@ namespace Farm.Gameplay.Capsules
         private void UpgradeCapsule()
         {
             _tier++;
-            
-            if (_tier + 1 <= _embryoConfig.EmbryoTiers.Count)
-                return;
-            
-            _capsuleEnergyCost.OnBoughtSuccess -= UpgradeCapsule;
-            _capsuleEnergyCost.gameObject.SetActive(false);
+            if (_tier >= _embryoConfig.EmbryoTiers.Count - 1)
+            {
+                _capsuleEnergyCost.OnBoughtSuccess -= UpgradeCapsule;
+                _capsuleEnergyCost.gameObject.SetActive(false);
+            }
         }
 
         private void OnModuleChanged(CapsuleSlotProvider slot)
