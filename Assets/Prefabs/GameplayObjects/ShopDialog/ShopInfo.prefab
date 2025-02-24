@@ -183,7 +183,7 @@ MonoBehaviour:
   _energyPanel: {fileID: 1788556296369042110}
   _energyAmount: {fileID: 2799080850570603620}
   _inventorySlotsContent: {fileID: 3274876963639651713}
-  _inventorySlotPrefab: {fileID: 6444807241088782044, guid: 48151ffdba9ea4a32b23ae6d2b98430a, type: 3}
+  _inventorySlotPrefab: {fileID: 2980058525818860976, guid: 4acb1b8c0390d4afc94801e1edd9c65f, type: 3}
   _buyModuleButton: {fileID: 8654245242820644667}
   _openInventoryButton: {fileID: 5408392231828927711}
   _placedSlotsCountText: {fileID: 7263063137368777497}
@@ -275,7 +275,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &3533907129903784973
 MonoBehaviour:
   m_ObjectHideFlags: 0

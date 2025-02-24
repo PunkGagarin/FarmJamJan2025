@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Zenject;
 
-namespace Farm
+namespace Farm.Gameplay.Capsules
 {
     public class CapsuleSlotProvider : MonoBehaviour, IPointerDownHandler, ISlot
     {
@@ -28,7 +28,6 @@ namespace Farm
         {
             _soundManager.PlaySoundByType(GameAudioType.ModuleAdded, 0);
             _upgradeModule = item;
-            _icon.sprite = item.Icon;
             _icon.enabled = true;
             OnAnyModuleChanged?.Invoke(this);
         }

@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace Farm
 {
@@ -10,9 +9,7 @@ namespace Farm
         public event Action<IDraggable> OnDragStart;
         public static event Action OnModuleChanged;
 
-        [SerializeField] private Image _image;
-
-        public Sprite Icon => _image.sprite;
+        public Sprite Icon => null;
         public UpgradeModule UpgradeModule { get; private set; }
 
         public void Initialize()
@@ -24,7 +21,6 @@ namespace Farm
         {
             UpgradeModule = module;
             OnModuleChanged?.Invoke();
-            _image.sprite = module.Icon;
             gameObject.SetActive(true);
         }
 

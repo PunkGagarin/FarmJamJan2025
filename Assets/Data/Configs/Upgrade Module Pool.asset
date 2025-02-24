@@ -14,17 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats:
   - ModuleCharacteristicType: 0
+    Description: Human Roll
+    Icon: {fileID: 21300000, guid: 4f5cf3927d11df04e89da0f34ac465cb, type: 3}
     MinValue: 0
     MaxValue: 100
   - ModuleCharacteristicType: 1
+    Description: Animal Roll
+    Icon: {fileID: 21300000, guid: 399470700809f2f4493aef42cc3a56b6, type: 3}
     MinValue: 0
     MaxValue: 100
   - ModuleCharacteristicType: 2
-    MinValue: 0
-    MaxValue: 100
-  - ModuleCharacteristicType: 3
+    Description: Energy Charge
+    Icon: {fileID: 21300000, guid: 00f9e0b48b6293d4aa69ef0867e7e075, type: 3}
     MinValue: 0
     MaxValue: 100
   - ModuleCharacteristicType: 4
+    Description: Satiety
+    Icon: {fileID: 21300000, guid: 8b1c27abe0824a6428ab0e0aff008b47, type: 3}
+    MinValue: 0
+    MaxValue: 100
+  - ModuleCharacteristicType: 3
+    Description: Growth Speed
+    Icon: {fileID: 21300000, guid: e3669f782799a9140a65ad6e30d415db, type: 3}
     MinValue: 0
     MaxValue: 100

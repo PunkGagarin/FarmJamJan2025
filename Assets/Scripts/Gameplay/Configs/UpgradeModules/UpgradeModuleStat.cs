@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Farm.Gameplay.Configs.UpgradeModules
 {
@@ -6,6 +7,8 @@ namespace Farm.Gameplay.Configs.UpgradeModules
     public class UpgradeModuleStat
     {
         public ModuleCharacteristicType ModuleCharacteristicType;
+        public String Description;
+        public Sprite Icon;
         public float MinValue;
         public float MaxValue;
 

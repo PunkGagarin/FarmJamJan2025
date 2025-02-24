@@ -5,7 +5,8 @@ namespace Farm.Interface
     [CreateAssetMenu(fileName = "Inventory Config", menuName = "Game Resources/Configs/Inventory")]
     public class InventoryConfig : ScriptableObject
     {
-        [Header("Энергия")] [SerializeField] private Color _canBuyColor;
+        [Header("Энергия")] 
+        [SerializeField] private Color _canBuyColor;
         [SerializeField] private Color _canNotBuyColor;
         [SerializeField] private Color _regularColor;
         [SerializeField] private int _startEnergy;

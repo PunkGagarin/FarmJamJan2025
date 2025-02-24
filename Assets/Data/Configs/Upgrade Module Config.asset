@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Upgrade Module Config
   m_EditorClassIdentifier: 
   _pool: {fileID: 11400000, guid: 36796e51cd1e841fca74551401697934, type: 2}
-  _oneStatPercent: 25
-  _twoStatPercent: 25
-  _threeStatPercent: 50
+  _oneStatPercent: 5
+  _twoStatPercent: 5
+  _threeStatPercent: 680
   _negativePercentForTwo: 100
   _negativePercentForThree: 100
   _canBeThreeStatCount: 0
