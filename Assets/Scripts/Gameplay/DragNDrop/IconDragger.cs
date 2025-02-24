@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Farm.Interface;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Zenject;
 
@@ -15,7 +14,7 @@ namespace Farm
         [SerializeField] private Image _icon;
         [SerializeField] private CapsuleManager _capsuleManager;
 
-        [FormerlySerializedAs("_raycaster")] [SerializeField] private GraphicRaycaster _busketSlotRaycaster;
+        [SerializeField] private GraphicRaycaster _busketSlotRaycaster;
         [SerializeField] private EventSystem _eventSystem;
 
         private IDraggable _draggable;
@@ -99,7 +98,6 @@ namespace Farm
         private void ChangeSprite(IDraggable draggable)
         {
             _draggable = draggable;
-            _icon.sprite = _draggable.Icon;
             SetActive(true);
         }
 

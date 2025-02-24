@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Audio;
 using DG.Tweening;
-using Farm.Gameplay.Repositories;
+using Farm.Gameplay.Configs.UpgradeModules;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,15 +20,15 @@ namespace Farm.Interface
         [SerializeField] private Button _openInventoryButton;
         [SerializeField] private TMP_Text _placedSlotsCountText;
 
-        [Inject] private UpgradeModuleRepository _upgradeModuleRepository;
         [Inject] private SoundManager _soundManager;
         [Inject] private InventoryConfig _inventoryConfig;
+        [Inject] private UpgradeModuleConfig _upgradeModuleConfig;
 
         private InventorySlot[] _inventorySlots;
         private float _currentModuleCost;
         private int _currentEnergy;
         private bool _isOpen = false;
-        private RectTransform _inventorySlotsContentRect;
+        private int _moduleBoughtCount = 0;
 
         public InventorySlot[] InventorySlots => _inventorySlots;
 
@@ -70,7 +70,12 @@ namespace Farm.Interface
             CurrentEnergy -= (int)_currentModuleCost;
             _currentModuleCost += Mathf.Round(_currentModuleCost * _inventoryConfig.ModuleCostMultiplier);
             UpdateBuyModuleButtonText();
-            UpgradeModule newModule = _upgradeModuleRepository.GetRandomModule();
+            UpgradeModule newModule = _upgradeModuleConfig.GetRandomModule(_moduleBoughtCount++ >= _upgradeModuleConfig.CanBeThreeStatCount);
+            Debug.Log($"Module moduleBoughtCount{_moduleBoughtCount}");
+            newModule.Stats.ForEach(stat =>
+            {
+                Debug.Log(stat.ToString());
+            });
             SetItem(newModule);
         }
 
@@ -130,10 +135,9 @@ namespace Farm.Interface
 
         private void ToggleOpenAnimation()
         {
-            float screenWidth = Screen.width;
-            var closedX = screenWidth + _inventorySlotsContentRect.rect.width;
-            var openedX = closedX - _inventorySlotsContentRect.rect.width;
-            _inventoryRectTransform.DOMoveX(endValue: _isOpen ? closedX : openedX, duration: 0.5f);
+            var closedX = _inventoryRectTransform.rect.width;
+            var openedX = 0;
+            _inventoryRectTransform.DOAnchorPosX(endValue: _isOpen ? closedX : openedX, duration: 0.5f);
             _isOpen = !_isOpen;
         }
 
@@ -146,8 +150,6 @@ namespace Farm.Interface
             _buyModuleButton.onClick.AddListener(OnBuyUpgradeModuleClicked);
             _openInventoryButton.onClick.AddListener(ToggleOpenAnimation);
             InventorySlot.OnModuleChanged += UpdatePlacedSlotsCountText;
-
-            _inventorySlotsContentRect = _inventorySlotsContent.GetComponent<RectTransform>();
         }
 
         private void OnDestroy()

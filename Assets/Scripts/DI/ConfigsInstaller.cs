@@ -1,4 +1,5 @@
 ﻿using Farm.Gameplay.Configs;
+using Farm.Gameplay.Configs.UpgradeModules;
 using Farm.Interface;
 using UnityEngine;
 using UnityEngine.Serialization;

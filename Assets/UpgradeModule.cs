@@ -1,14 +1,17 @@
-using Farm.Gameplay.Definitions;
+using System.Collections.Generic;
+using Farm.Gameplay.Configs.UpgradeModules;
 using UnityEngine;
 
 public class UpgradeModule
 {
-    public UpgradeModuleDefinition Definition;
+    private List<UpgradeModuleStat> _stats;
+    public Sprite Icon { get; set; }
 
-    public Sprite Icon => Definition.Icon;
-    
-    public UpgradeModule(UpgradeModuleDefinition definition)
+    public List<UpgradeModuleStat> Stats => _stats;
+
+    public UpgradeModule(List<UpgradeModuleStat> stats, Sprite icon)
     {
-        Definition = definition;
+        _stats = stats;
+        Icon = icon;
     }
 }
