@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Ctulhu
   m_EditorClassIdentifier: 
   _name: Ctulhu
-  _maxSatiety: 2500
+  _maxSatiety: 5000
   _startSatiety: 400
   _timeToStarveTick: 1
   _lifeTime: 1500
