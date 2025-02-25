@@ -6,16 +6,16 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Zenject;
 
-namespace Farm
+namespace Farm.Gameplay.DragNDrop
 {
     public class IconDragger : MonoBehaviour
     {
         [Inject] private InventoryUI _inventoryUI;
-        
+
         [SerializeField] private Image _icon;
         [SerializeField] private CapsuleManager _capsuleManager;
 
-        [SerializeField] private GraphicRaycaster _busketSlotRaycaster;
+        [SerializeField] private GraphicRaycaster _uiRaycaster;
         [SerializeField] private EventSystem _eventSystem;
 
         private IDraggable _draggable;
@@ -23,8 +23,7 @@ namespace Farm
         private void Start()
         {
             foreach (var slot in _inventoryUI.InventorySlots) slot.OnDragStart += ChangeSprite;
-            _capsuleManager.Capsules.ForEach(capsule =>
-                capsule.CapsuleSlots.ForEach(slot => slot.OnClick += ReturnModuleToInventory));
+            CapsuleSlot.OnSlotClick += ReturnModuleToInventory;
             SetActive(false);
         }
 
@@ -54,13 +53,13 @@ namespace Farm
                     };
 
                     List<RaycastResult> results = new List<RaycastResult>();
-                    _busketSlotRaycaster.Raycast(pointerData, results);
+                    _uiRaycaster.Raycast(pointerData, results);
 
                     foreach (RaycastResult result in results)
                     {
-                        if (result.gameObject.TryGetComponent(out ISlot busketSlot))
+                        if (result.gameObject.TryGetComponent(out ISlot newSlot))
                         {
-                            SetItemNewToSlot(busketSlot);
+                            SetItemNewToSlot(newSlot);
                             return;
                         }
                     }
@@ -102,7 +101,7 @@ namespace Farm
             SetActive(true);
         }
 
-        public void SetActive(bool active)
+        private void SetActive(bool active)
         {
             _icon.enabled = active;
         }
@@ -110,8 +109,7 @@ namespace Farm
         private void OnDestroy()
         {
             foreach (var slot in _inventoryUI.InventorySlots) slot.OnDragStart -= ChangeSprite;
-            _capsuleManager.Capsules.ForEach(capsule =>
-                capsule.CapsuleSlots.ForEach(slot => slot.OnClick -= ReturnModuleToInventory));
+            CapsuleSlot.OnSlotClick -= ReturnModuleToInventory;
         }
     }
 }

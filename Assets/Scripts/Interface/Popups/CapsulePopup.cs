@@ -7,6 +7,7 @@ using Farm.Gameplay.MiniGame;
 using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Zenject;
 using Random = UnityEngine.Random;
@@ -25,6 +26,10 @@ namespace Farm.Interface.Popups
         [Header("Tier buttons")]
         [SerializeField] private Button _minusTier;
         [SerializeField] private Button _plusTier;
+        [FormerlySerializedAs("_firstModuleSlot")]
+        [Header("Module Slots")]
+        [SerializeField] private CapsuleSlotProvider _firstSlotProvider;
+        [SerializeField] private CapsuleSlotProvider _secondSlotProvider;
 
         [Inject] private CapsuleConfig _capsuleConfig;
         [Inject] private EmbryoConfig _embryoConfig;
@@ -56,8 +61,16 @@ namespace Farm.Interface.Popups
             UpdateButtonsInfo();
             
             UpdateEmbryoView();
+
+            UpdateModulesSots();
         }
-        
+
+        private void UpdateModulesSots()
+        {
+            _firstSlotProvider.SetSlot(_capsule.CapsuleSlots[0]);
+            _secondSlotProvider.SetSlot(_capsule.CapsuleSlots[1]);
+        }
+
         private void UpdatePopupInfo()
         {
             _capsuleInfo.SetCapsuleInfo(_capsule.Tier, _capsuleConfig.BaseHumanChance, _capsuleConfig.BaseAnimalChance, _capsuleConfig.BaseFishChance);

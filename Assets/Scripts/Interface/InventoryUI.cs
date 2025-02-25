@@ -29,7 +29,7 @@ namespace Farm.Interface
         private InventorySlot[] _inventorySlots;
         private float _currentModuleCost;
         private int _currentEnergy;
-        private bool _isOpen = false;
+        private bool _isInventoryOpen = true;
         private int _moduleBoughtCount = 0;
 
         public InventorySlot[] InventorySlots => _inventorySlots;
@@ -138,10 +138,10 @@ namespace Farm.Interface
 
         private void ToggleOpenAnimation()
         {
-            var closedX = _inventoryRectTransform.rect.width;
-            var openedX = 0;
-            _inventoryRectTransform.DOAnchorPosX(endValue: _isOpen ? closedX : openedX, duration: 0.5f);
-            _isOpen = !_isOpen;
+            var closedX = 0;
+            var openedX = -_inventoryRectTransform.rect.width;
+            _inventoryRectTransform.DOAnchorPosX(endValue: _isInventoryOpen ? closedX : openedX, duration: 0.5f);
+            _isInventoryOpen = !_isInventoryOpen;
         }
 
         private void CollectQuestInfo()
