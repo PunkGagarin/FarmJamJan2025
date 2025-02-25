@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Farm.Gameplay.Definitions;
 using Farm.Utils.Pause;
 using Farm.Utils.Timer;

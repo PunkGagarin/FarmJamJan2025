@@ -7,6 +7,7 @@ namespace Farm.Utils.Timer
     {
         private float _speedMultiplier = 1f;
         private bool _isLooping;
+        private bool _manualPaused;
 
         public float RemainingTime { get; private set; }
         public float Duration { get; }
@@ -45,9 +46,14 @@ namespace Farm.Utils.Timer
         public void RemoveTime(float additionalTime) => 
             RemainingTime = Mathf.Max(RemainingTime - additionalTime, 0);
 
-        public void Tick(float deltaTime) => 
+        public void Tick(float deltaTime)
+        {
+            if (_manualPaused)
+                return;
+            
             RemainingTime -= deltaTime * _speedMultiplier;
-
+        }
+        
         public void Reset()
         {
             RemainingTime = Duration;
@@ -55,5 +61,8 @@ namespace Farm.Utils.Timer
 
         public void FinalizeTimer() => 
             _isLooping = false;
+
+        public void SetManualPause(bool pauseState) => 
+            _manualPaused = pauseState;
     }
 }

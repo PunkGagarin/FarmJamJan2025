@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using Farm.Enums;
 using Farm.Gameplay.Definitions;
+using Farm.Gameplay.Quests;
 using Farm.Interface.Popups;
 using Farm.Interface.TheOldOne;
 using Farm.Utils.Pause;
@@ -20,6 +22,7 @@ namespace Farm.Gameplay
         [Inject] private PopupManager _popupManager;
         [Inject] private TimerService _timerService;
         [Inject] private FeedMediator _feedMediator;
+        [Inject] private QuestProvider _questProvider;
         private TheOldOneDefinition _definition;
         private float _maxSatiety;
         private float _currentSatiety;
@@ -39,18 +42,51 @@ namespace Farm.Gameplay
             _definition = definition;
             _inRampage = false;
 
-            _currentStage = 0;
-            _currentSatiety = _definition.StartSatiety;
-            _maxSatiety = _definition.MaxSatiety;
+            SetupStats();
 
-            _lifeTimer = _timerService.AddTimer(_definition.LifeTime, Sealed);
-            _phaseTimer = _timerService.AddTimer(_definition.SatietyPhasesData[_currentStage + 1].PhaseStartTime, ChangePhase);
-            _starveTimer = _timerService.AddTimer(_definition.TimeToStarveTick, Starve, true);
+            SetupTimers();
+
             OnSatietyChanged?.Invoke(_currentSatiety, _maxSatiety);
-
+            OnPhaseChanged += UpdateQuest;
+            UpdateQuest(_currentStage);
             _feedMediator.UpdateTheOldOne(this);
 
             InitializeInterface();
+        }
+
+        private void UpdateQuest(int stage)
+        {
+            _questProvider.FinalizeQuest();
+            if (_definition.SatietyPhasesData[stage].Quest == null)
+            {
+                _questProvider.SetupQuest(null);
+                _theOldOneUI.UpdateQuestButtonAction(null);
+            }
+            else
+            {
+                _questProvider.SetupQuest(_definition.SatietyPhasesData[stage].Quest);
+                _theOldOneUI.UpdateQuestButtonAction(OpenQuestPopup);
+            }
+        }
+
+        private void OpenQuestPopup()
+        {
+            (string, List<QuestInfo>) questPopupInfo = _questProvider.GetQuestDescriptionAndInfos();
+            _popupManager.OpenQuest(questPopupInfo.Item1, questPopupInfo.Item2);
+        }
+
+        private void SetupStats()
+        {
+            _currentStage = 0;
+            _currentSatiety = _definition.StartSatiety;
+            _maxSatiety = _definition.MaxSatiety;
+        }
+
+        private void SetupTimers()
+        {
+            _lifeTimer = _timerService.AddTimer(_definition.LifeTime, Sealed);
+            _phaseTimer = _timerService.AddTimer(_definition.SatietyPhasesData[_currentStage + 1].PhaseStartTime, ChangePhase);
+            _starveTimer = _timerService.AddTimer(_definition.TimeToStarveTick, Starve, true);
         }
 
         public void Feed(int amount, EmbryoType embryoType)
@@ -60,22 +96,26 @@ namespace Farm.Gameplay
             switch (embryoType)
             {
                 case EmbryoType.Human:
+                    _questProvider.AddRequirement(RequirementType.Human);
                     modifier = _definition.HumanSatietyModifier;
                     break;
                 case EmbryoType.Animal:
+                    _questProvider.AddRequirement(RequirementType.Animal);
                     modifier = _definition.AnimalSatietyModifier;
                     break;
                 case EmbryoType.Fish:
+                    _questProvider.AddRequirement(RequirementType.Fish);
                     modifier = _definition.FishSatietyModifier;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(embryoType), embryoType, null);
             }
-            
+
             _currentSatiety += amount * modifier;
             if (_currentSatiety > _definition.MaxSatiety)
                 _currentSatiety = _definition.MaxSatiety;
 
+            _questProvider.SetRequirement(RequirementType.Satiety, (int)_currentSatiety);
             OnSatietyChanged?.Invoke(_currentSatiety, _maxSatiety);
         }
 
@@ -118,13 +158,6 @@ namespace Farm.Gameplay
         {
             _currentSatiety -= _definition.SatietyPhasesData[_currentStage].SatietyLoseByTick;
             OnSatietyChanged?.Invoke(_currentSatiety, _maxSatiety);
-
-            if (_currentSatiety <= 0)
-            {
-                _starveTimer?.FinalizeTimer();
-
-                Rampage();
-            }
         }
 
         private void Rampage()
@@ -136,7 +169,19 @@ namespace Farm.Gameplay
 
             _blinkingTween.Restart();
             _inRampage = true;
-            _rampageTimer = _timerService.AddTimer(_definition.RampageTime, Defeat);
+            
+            if (_rampageTimer == null)
+                _rampageTimer = _timerService.AddTimer(_definition.RampageTime, Defeat);
+            else 
+                _rampageTimer.SetManualPause(false);
+        }
+        
+        private void StopRampage()
+        {
+            _inRampage = false;
+            _rampageTimer.SetManualPause(true);
+            _sprite.DOFade(1, 0);
+            _blinkingTween.Kill();
         }
 
         private void Defeat()
@@ -145,6 +190,39 @@ namespace Farm.Gameplay
             _blinkingTween.Kill();
 
             _popupManager.OpenGameOver();
+        }
+
+        public void SetPaused(bool isPaused)
+        {
+            if (_inRampage)
+                _blinkingTween.TogglePause();
+        }
+        
+        private void CollectQuestInfo()
+        {
+            _questProvider.SetRequirement(RequirementType.Satiety, (int)_currentSatiety);
+        }
+        
+        private void SatietyChanged(float current, float _)
+        {
+            if (current <= 0)
+                Rampage();
+
+            if (current > 0 && _inRampage)
+                StopRampage();
+        }
+
+        private void Awake()
+        {
+            _questProvider.OnQuestStarted += CollectQuestInfo;
+            _questProvider.OnQuestFailed += OnQuestFailed;
+            OnSatietyChanged += SatietyChanged;
+        }
+        
+        private void OnQuestFailed(int satietyPenalty)
+        {
+            _currentSatiety -= satietyPenalty;
+            OnSatietyChanged?.Invoke(_currentSatiety, _maxSatiety);
         }
 
         private void OnDestroy()
@@ -158,12 +236,8 @@ namespace Farm.Gameplay
             OnPhaseChanged -= _theOldOneUI.PhaseChanged;
             OnSatietyChanged -= _theOldOneUI.UpdateSatietyBar;
             _blinkingTween.Kill();
-        }
-
-        public void SetPaused(bool isPaused)
-        {
-            if (_inRampage)
-                _blinkingTween.TogglePause();
+            _questProvider.OnQuestStarted -= CollectQuestInfo;
+            OnSatietyChanged -= SatietyChanged;
         }
     }
 }

@@ -42,8 +42,11 @@ namespace Farm.Gameplay.Capsules
         public List<CapsuleSlotProvider> CapsuleSlots => _capsuleSlots;
         public Embryo Embryo { get; private set; }
         public int Tier => _tier;
+        public bool IsOwn => _isOwn;
 
         public event Action OnEmbryoStateChanged;
+        public static event Action OnCapsuleBought;
+        public static event Action OnCapsuleUpgrade;
 
         public void StartEmbryoProcess(Embryo embryo)
         {
@@ -100,6 +103,7 @@ namespace Farm.Gameplay.Capsules
             _isOwn = true;
             _capsuleSlots.ForEach(slot => slot.IsOwn = true);
             _capsuleEnergyCost.UpdateInfo(_capsuleConfig.UpgradeCost, true);
+            OnCapsuleBought?.Invoke();
 
             _capsuleEnergyCost.OnBoughtSuccess -= BuyCapsule;
             _capsuleEnergyCost.OnBoughtSuccess += UpgradeCapsule;
@@ -108,6 +112,7 @@ namespace Farm.Gameplay.Capsules
         private void UpgradeCapsule()
         {
             _tier++;
+            OnCapsuleUpgrade?.Invoke();
             if (_tier >= _embryoConfig.EmbryoTiers.Count - 1)
             {
                 _capsuleEnergyCost.OnBoughtSuccess -= UpgradeCapsule;

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e75a5946f17c4c94b1c373e23e15ae72, type: 3}
+  m_Name: CtulhuQuest 4
+  m_EditorClassIdentifier: 
+  _description: "Cthulhu\u2019s awakening is near, and we need to gather energy to
+    complete the ritual. Harness every source of power you can find to prevent the
+    world from falling into darkness."
+  _requirements:
+  - RequirementType: 3
+    RequiredAmount: 500
+    RequiredTier: 0
+  _energyReward: 200
+  _satietyPenalty: 100

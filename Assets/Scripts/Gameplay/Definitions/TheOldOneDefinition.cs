@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Farm.Gameplay.Quests;
 using UnityEngine;
 
 namespace Farm.Gameplay.Definitions
@@ -12,6 +13,7 @@ namespace Farm.Gameplay.Definitions
         {
             public float PhaseStartTime;
             public float SatietyLoseByTick;
+            public QuestDefinition Quest;
         }
         
         [SerializeField, Multiline(2), Tooltip("Информация отображающаяся в заголовке")] private string _headerInfo;

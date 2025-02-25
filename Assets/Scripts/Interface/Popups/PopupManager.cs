@@ -1,5 +1,6 @@
-﻿using Farm.Gameplay;
+﻿using System.Collections.Generic;
 using Farm.Gameplay.Capsules;
+using Farm.Gameplay.Quests;
 using UnityEngine;
 
 namespace Farm.Interface.Popups
@@ -10,6 +11,7 @@ namespace Farm.Interface.Popups
         [SerializeField] private CapsulePopup _capsulePopup;
         [SerializeField] private OptionsPopup _optionsPopup;
         [SerializeField] private CreditsPopup _creditsPopup;
+        [SerializeField] private QuestPopup _questPopup;
 
         public GameOverPopup OpenGameOver()
         {
@@ -35,6 +37,13 @@ namespace Farm.Interface.Popups
         {
             _creditsPopup.Open(false);
             return _creditsPopup;
+        }
+        
+        public QuestPopup OpenQuest(string questDescription, List<QuestInfo> questInfos)
+        {
+            _questPopup.Open(questDescription, questInfos);
+            
+            return _questPopup;
         }
     }
 }

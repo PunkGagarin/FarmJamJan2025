@@ -2,6 +2,7 @@
 using Audio;
 using DG.Tweening;
 using Farm.Gameplay.Configs.UpgradeModules;
+using Farm.Gameplay.Quests;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,6 +24,7 @@ namespace Farm.Interface
         [Inject] private SoundManager _soundManager;
         [Inject] private InventoryConfig _inventoryConfig;
         [Inject] private UpgradeModuleConfig _upgradeModuleConfig;
+        [Inject] private QuestProvider _questProvider;
 
         private InventorySlot[] _inventorySlots;
         private float _currentModuleCost;
@@ -42,6 +44,7 @@ namespace Farm.Interface
 
                 _currentEnergy = value;
                 _energyAmount.text = _currentEnergy.ToString();
+                _questProvider.SetRequirement(RequirementType.Energy, _currentEnergy);
             }
         }
 
@@ -141,6 +144,16 @@ namespace Farm.Interface
             _isOpen = !_isOpen;
         }
 
+        private void CollectQuestInfo()
+        {
+            _questProvider.SetRequirement(RequirementType.Energy, _currentEnergy);
+        }
+        
+        private void OnQuestCompleted(int questEnergyReward)
+        {
+            _currentEnergy += questEnergyReward;
+        }
+        
         private void Awake()
         {
             CurrentEnergy = _inventoryConfig.StartEnergy;
@@ -150,6 +163,8 @@ namespace Farm.Interface
             _buyModuleButton.onClick.AddListener(OnBuyUpgradeModuleClicked);
             _openInventoryButton.onClick.AddListener(ToggleOpenAnimation);
             InventorySlot.OnModuleChanged += UpdatePlacedSlotsCountText;
+            _questProvider.OnQuestStarted += CollectQuestInfo;
+            _questProvider.OnQuestCompleted += OnQuestCompleted;
         }
 
         private void OnDestroy()
@@ -157,6 +172,8 @@ namespace Farm.Interface
             _buyModuleButton.onClick.RemoveListener(OnBuyUpgradeModuleClicked);
             _openInventoryButton.onClick.AddListener(ToggleOpenAnimation);
             InventorySlot.OnModuleChanged -= UpdatePlacedSlotsCountText;
+            _questProvider.OnQuestStarted -= CollectQuestInfo;
+            _questProvider.OnQuestCompleted -= OnQuestCompleted;
         }
     }
 }

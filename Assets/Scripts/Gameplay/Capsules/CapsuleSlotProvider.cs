@@ -17,12 +17,13 @@ namespace Farm.Gameplay.Capsules
         [Inject] private SoundManager _soundManager;
 
         [SerializeField] private Image _icon;
+        
+        private UpgradeModule _upgradeModule;
 
         public bool IsOwn { get; set; }
         public bool IsCapsuleInGrowthProcess { get; set; }
         public bool CanPlaceItem => IsOwn && _upgradeModule == null && !IsCapsuleInGrowthProcess;
-
-        private UpgradeModule _upgradeModule;
+        public UpgradeModule UpgradeModule => _upgradeModule;
 
         public void SetItem(UpgradeModule item)
         {
