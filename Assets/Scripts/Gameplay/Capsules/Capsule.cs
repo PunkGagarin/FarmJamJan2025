@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Farm.Enums;
 using Farm.Gameplay.Configs;
+using Farm.Gameplay.Configs.MiniGame;
 using Farm.Gameplay.Configs.UpgradeModules;
-using Farm.Gameplay.Definitions;
-using Farm.Gameplay.Repositories;
 using Farm.Interface;
 using Farm.Interface.Popups;
 using Farm.Utils.Timer;
@@ -13,7 +11,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Zenject;
-using Random = UnityEngine.Random;
 
 namespace Farm.Gameplay.Capsules
 {
@@ -44,6 +41,8 @@ namespace Farm.Gameplay.Capsules
         public int Tier => _tier;
         public bool IsOwn => _isOwn;
 
+        private const float PERCENT_VALUE = 100f;
+        
         public event Action OnEmbryoStateChanged;
         public static event Action OnCapsuleBought;
         public static event Action OnCapsuleUpgrade;
@@ -84,7 +83,8 @@ namespace Farm.Gameplay.Capsules
 
             CapsuleSlotProvider.OnAnyModuleChanged += OnModuleChanged;
         }
-        
+
+
         private void SetupCapsule()
         {
             if (_capsuleConfig.CapsuleCosts[_capsuleNumber] == 0)
@@ -156,15 +156,12 @@ namespace Farm.Gameplay.Capsules
         {
             _info.gameObject.SetActive(false);
             _isFeedReady = false;
-            _feedMediator.FeedTheOldOne(CalculateFeedAmount(), Embryo.EmbryoType);
+            _feedMediator.FeedTheOldOne(Embryo.StarvationValue, Embryo.EmbryoType);
             _inventory.CurrentEnergy += Embryo.EnergyValue;
             Embryo = null;
             _embryoImage.gameObject.SetActive(false);
             OnEmbryoStateChanged?.Invoke();
         }
-
-        private int CalculateFeedAmount() =>
-            Embryo.StarvationValue;
 
         private void OnDestroy()
         {

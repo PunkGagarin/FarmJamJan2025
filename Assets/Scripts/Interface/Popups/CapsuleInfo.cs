@@ -18,14 +18,15 @@ namespace Farm.Interface.Popups
         [SerializeField] private GameObject _statsPanel;
 
         private const string CAPSULE_TIER = "Capsule Tier ";
-
+        private const float PERCENT_VALUE = 100f;
+        
         public void SetCapsuleInfo(int tier, float chanceHuman, float chanceAnimal, float chanceFish)
         {
             _capsuleTier.text = $"{CAPSULE_TIER}{tier}";
             float totalChance = chanceAnimal+chanceHuman+chanceFish;
-            _humanChance.text = (chanceHuman / totalChance * 100f).ToString("0") + "%";
-            _animalChance.text = (chanceAnimal / totalChance * 100f).ToString("0") + "%";
-            _fishChance.text = (chanceFish / totalChance * 100f).ToString("0") + "%";
+            _humanChance.text = (chanceHuman / totalChance * PERCENT_VALUE).ToString("0") + "%";
+            _animalChance.text = (chanceAnimal / totalChance * PERCENT_VALUE).ToString("0") + "%";
+            _fishChance.text = (chanceFish / totalChance * PERCENT_VALUE).ToString("0") + "%";
         }
 
         public void SetEmbryoInfo(Embryo embryo)

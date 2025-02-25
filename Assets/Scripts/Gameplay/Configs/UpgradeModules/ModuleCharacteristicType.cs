@@ -4,6 +4,7 @@ namespace Farm.Gameplay.Configs.UpgradeModules
     {
         HumanRoll,
         AnimalRoll,
+        FishRoll,
         EnergyCharge,
         GrowthSpeed,
         Satiety

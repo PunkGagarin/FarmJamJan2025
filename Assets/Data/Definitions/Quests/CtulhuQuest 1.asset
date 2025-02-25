@@ -17,11 +17,5 @@ MonoBehaviour:
   - RequirementType: 0
     RequiredAmount: 5
     RequiredTier: 0
-  - RequirementType: 1
-    RequiredAmount: 1
-    RequiredTier: 0
-  - RequirementType: 2
-    RequiredAmount: 2
-    RequiredTier: 0
   _energyReward: 200
   _satietyPenalty: 100

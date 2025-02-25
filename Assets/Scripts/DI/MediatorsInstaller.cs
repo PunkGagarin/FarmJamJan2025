@@ -3,12 +3,17 @@ using Zenject;
 
 namespace Farm.DI
 {
-    public class FeedMediatorInstaller : MonoInstaller
+    public class MediatorsInstaller : MonoInstaller
     {
         public override void InstallBindings()
         {
             Container
                 .Bind<FeedMediator>()
+                .FromNew()
+                .AsSingle();
+            
+            Container
+                .Bind<MiniGameEffectsMediator>()
                 .FromNew()
                 .AsSingle();
         }

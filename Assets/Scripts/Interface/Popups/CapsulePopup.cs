@@ -1,9 +1,9 @@
 ﻿using System;
 using Farm.Enums;
+using Farm.Gameplay;
 using Farm.Gameplay.Capsules;
 using Farm.Gameplay.Configs;
 using Farm.Gameplay.Configs.MiniGame;
-using Farm.Gameplay.MiniGame;
 using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
@@ -17,7 +17,6 @@ namespace Farm.Interface.Popups
     {
         [SerializeField] private Image _embryoView;
         [SerializeField] private Button _closeButton;
-        [SerializeField] private MiniGameVisual _miniGame;
         [SerializeField] private Button _createEmbryoButton;
         [SerializeField] private TMP_Text _cost;
         [SerializeField] private TMP_Text _createEmbryoButtonText;
@@ -29,10 +28,12 @@ namespace Farm.Interface.Popups
         [Inject] private CapsuleConfig _capsuleConfig;
         [Inject] private EmbryoConfig _embryoConfig;
         [Inject] private InventoryUI _inventory;
+        [Inject] private MiniGameEffectsMediator _miniGameEffectsMediator;
         
         private int _selectedTier;
         private Capsule _capsule;
         private Embryo _selectedEmbryo;
+        private MiniGameEffect _miniGameEffect; 
 
         private const float PERCENT_VALUE = 100f;
         private const string CREATE_EMBRYO_TEXT = "Create embryo Tier ";
@@ -42,7 +43,6 @@ namespace Farm.Interface.Popups
         
         public void Initialize(Capsule capsule)
         {
-            _miniGame.gameObject.SetActive(false);
             _capsule = capsule;
             _selectedEmbryo = capsule.Embryo;
             _createEmbryoButton.interactable = _capsule.Embryo == null;
@@ -57,7 +57,8 @@ namespace Farm.Interface.Popups
             
             UpdateEmbryoView();
         }
-        
+    
+
         private void UpdatePopupInfo()
         {
             _capsuleInfo.SetCapsuleInfo(_capsule.Tier, _capsuleConfig.BaseHumanChance, _capsuleConfig.BaseAnimalChance, _capsuleConfig.BaseFishChance);
@@ -65,9 +66,8 @@ namespace Farm.Interface.Popups
             _capsuleInfo.SetEmbryoInfo(_selectedEmbryo);
         }
 
-        public override void Close()
+        protected override void Close()
         {
-            _createEmbryoButton.onClick.RemoveListener(ShowMiniGame);
             _closeButton.onClick.RemoveListener(Close);
             _capsule.OnEmbryoStateChanged -= UpdateEmbryoView;
             _createEmbryoButton.interactable = false;
@@ -88,49 +88,47 @@ namespace Farm.Interface.Popups
             UpdateButtonsInfo();
             UpdatePopupInfo();
         }
-        
-        private void ShowMiniGame()
-        {
-            _closeButton.gameObject.SetActive(false);
-            _miniGame.gameObject.SetActive(true);
-            _miniGame.Initialize(_selectedTier, _embryoConfig.EmbryoTiers.Count);
-            _miniGame.OnMiniGameEnds += StartEmbryoProcess;
-        }
 
-        private void StartEmbryoProcess(MiniGameEffect miniGameResult)
+        private void StartEmbryoProcess()
         {
-            Debug.Log(miniGameResult == null ? "Mini game result: none" : $"Mini game result: {miniGameResult.BuffType} : {miniGameResult.Value}");
-
             _closeButton.gameObject.SetActive(true);
-            _miniGame.gameObject.SetActive(false);
-            _miniGame.OnMiniGameEnds -= StartEmbryoProcess;
-            if (miniGameResult != null)
-                switch (miniGameResult.BuffType)
-                {
-                    case BuffType.UpdateTier:
-                        int newTier = _selectedTier + miniGameResult.Value;
-                        _selectedEmbryo.EnergyValue = _embryoConfig.EmbryoTiers[newTier].BaseEnergyAmount;
-                        _selectedEmbryo.TimeToGrowth = _embryoConfig.EmbryoTiers[newTier].BaseGrowthSpeed;
-                        _selectedEmbryo.StarvationValue = _embryoConfig.EmbryoTiers[newTier].BaseFoodAmount;
-                        break;
-                    case BuffType.GrowthSpeed:
-                        _selectedEmbryo.TimeToGrowth += _selectedEmbryo.TimeToGrowth * (miniGameResult.Value / PERCENT_VALUE);
-                        break;
-                    case BuffType.EnergyAmount:
-                        _selectedEmbryo.EnergyValue += Mathf.RoundToInt(_selectedEmbryo.EnergyValue * (miniGameResult.Value / PERCENT_VALUE));
-                        break;
-                    case BuffType.SatietyAmount:
-                        _selectedEmbryo.StarvationValue += Mathf.RoundToInt(_selectedEmbryo.StarvationValue * (miniGameResult.Value / PERCENT_VALUE));
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+            ApplyMiniGameEffects();
             
             UpdatePopupInfo();
             _capsule.StartEmbryoProcess(_selectedEmbryo);
             _embryoView.sprite = _capsule.Embryo.Image;
         }
-        
+
+        private void ApplyMiniGameEffects()
+        {
+            if (_miniGameEffect == null)
+                return;
+            
+            switch (_miniGameEffect.BuffType)
+            {
+                case BuffType.UpdateTier:
+                    int newTier = _selectedTier + _miniGameEffect.Value;
+                    if (newTier < 0 || newTier >= _embryoConfig.EmbryoTiers.Count)
+                        break;
+
+                    _selectedEmbryo.EnergyValue = _embryoConfig.EmbryoTiers[newTier].BaseEnergyAmount;
+                    _selectedEmbryo.TimeToGrowth = _embryoConfig.EmbryoTiers[newTier].BaseGrowthSpeed;
+                    _selectedEmbryo.StarvationValue = _embryoConfig.EmbryoTiers[newTier].BaseFoodAmount;
+                    break;
+                case BuffType.GrowthSpeed:
+                    _selectedEmbryo.TimeToGrowth += _selectedEmbryo.TimeToGrowth * (_miniGameEffect.Value / PERCENT_VALUE);
+                    break;
+                case BuffType.EnergyAmount:
+                    _selectedEmbryo.EnergyValue += Mathf.RoundToInt(_selectedEmbryo.EnergyValue * (_miniGameEffect.Value / PERCENT_VALUE));
+                    break;
+                case BuffType.SatietyAmount:
+                    _selectedEmbryo.StarvationValue += Mathf.RoundToInt(_selectedEmbryo.StarvationValue * (_miniGameEffect.Value / PERCENT_VALUE));
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
         private void CreateEmbryo()
         {
             _createEmbryoButton.onClick.RemoveListener(OnBuy);
@@ -141,6 +139,7 @@ namespace Farm.Interface.Popups
             _selectedEmbryo = new Embryo(type, embryoTier.BaseFoodAmount, embryoTier.BaseGrowthSpeed, embryoTier.BaseEnergyAmount, _embryoConfig.GetSprite(type));
             UpdatePopupInfo();
             UpdateEmbryoView();
+            StartEmbryoProcess();
         }
 
         private EmbryoType GetEmbryoType()
@@ -192,7 +191,6 @@ namespace Farm.Interface.Popups
             if (_selectedTier == 0)
             {
                 CreateEmbryo();
-                ShowMiniGame();
             }
             else
             {
@@ -201,7 +199,6 @@ namespace Farm.Interface.Popups
                     _inventory.CurrentEnergy -= Cost;
                     _inventory.ResetColor();
                     CreateEmbryo();
-                    ShowMiniGame();
                 }
                 else
                 {
@@ -217,16 +214,21 @@ namespace Farm.Interface.Popups
             _cost.text = Cost.ToString();
         }
 
+        private void MiniGameEffectChanged(MiniGameEffect miniGameEffect) => 
+            _miniGameEffect = miniGameEffect;
+        
         private void Awake()
         {
             _plusTier.onClick.AddListener(PlusTier);
             _minusTier.onClick.AddListener(MinusTier);
+            _miniGameEffectsMediator.OnEffectChanged += MiniGameEffectChanged;
         }
 
         private void OnDestroy()
         {
             _plusTier.onClick.RemoveListener(PlusTier);
             _minusTier.onClick.RemoveListener(MinusTier);
+            _miniGameEffectsMediator.OnEffectChanged -= MiniGameEffectChanged;
         }
     }
 }

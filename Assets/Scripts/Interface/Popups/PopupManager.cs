@@ -12,6 +12,7 @@ namespace Farm.Interface.Popups
         [SerializeField] private OptionsPopup _optionsPopup;
         [SerializeField] private CreditsPopup _creditsPopup;
         [SerializeField] private QuestPopup _questPopup;
+        [SerializeField] private MiniGamePopup _miniGamePopup;
 
         public GameOverPopup OpenGameOver()
         {
@@ -45,5 +46,13 @@ namespace Farm.Interface.Popups
             
             return _questPopup;
         }
+
+        public MiniGamePopup OpenMiniGame()
+        {
+            _miniGamePopup.Open();
+
+            return _miniGamePopup;
+        }
     }
+
 }

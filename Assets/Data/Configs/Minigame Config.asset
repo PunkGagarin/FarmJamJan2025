@@ -16,13 +16,20 @@ MonoBehaviour:
   _tier1Angle: 30
   _tier2Angle: 25
   _tier3Angle: 20
-  _startSpeed: 30
-  _speedToAddPerTap: 50
-  _maxSpeed: 300
-  _maxSegmentsOnWheel: 7
-  _playTime: 9
-  _delayTimeBetweenTaps: 1.5
   _decelerationTime: 2
-  _maxTapCount: 10
-  _tier1SpeedCap: 0.33
-  _tier2SpeedCap: 0.67
+  _effectTime: 60
+  _lowRiskStats:
+    Speed: 80
+    SegmentsOnWheel: 5
+    HighestAllowedTier: 1
+    CostToRun: 50
+  _mediumRiskStats:
+    Speed: 160
+    SegmentsOnWheel: 6
+    HighestAllowedTier: 2
+    CostToRun: 100
+  _highRiskStats:
+    Speed: 240
+    SegmentsOnWheel: 8
+    HighestAllowedTier: 3
+    CostToRun: 200

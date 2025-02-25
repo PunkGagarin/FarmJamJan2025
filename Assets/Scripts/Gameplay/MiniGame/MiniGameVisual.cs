@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Farm.Gameplay.Configs.MiniGame;
+using Farm.Interface;
 using Farm.Utils.Pause;
 using Farm.Utils.Timer;
 using TMPro;
@@ -14,6 +14,14 @@ namespace Farm.Gameplay.MiniGame
 {
     public class MiniGameVisual : MonoBehaviour, IPauseHandler
     {
+        public delegate void MiniGameEnds(MiniGameEffect miniGameEffect, float effectTime);
+        
+        [SerializeField] private Button _lowRiskButton;
+        [SerializeField] private Button _mediumRiskButton;
+        [SerializeField] private Button _highRiskButton;
+        [SerializeField] private TMP_Text _lowRiskCost;
+        [SerializeField] private TMP_Text _mediumRiskCost;
+        [SerializeField] private TMP_Text _highRiskCost;
         [SerializeField] private MiniGameConfig _miniGameConfig;
         [SerializeField] private Transform _drum;
         [SerializeField] private Button _actionButton;
@@ -23,73 +31,103 @@ namespace Farm.Gameplay.MiniGame
         [SerializeField] private Transform _segmentsContainer;
         
         [Inject] private TimerService _timerService;
+        [Inject] private InventoryUI _inventory;
         
-        public event Action<MiniGameEffect> OnMiniGameEnds;
+        public event MiniGameEnds OnMiniGameEnds;
         private bool _isStarted;
         private bool _isPaused;
         private bool _isEnded;
-        private TimerHandle _miniGameTimer;
-        private TimerHandle _delayTimer;
         private Queue<Segment> _segments = new();
-        private int _currentTapCount = 0;
-        private int _currentTier, _maxTier;
         private float _speed;
         private float _deceleration;
+        private MiniGameRisk _selectedRisk;
         
-        private const string START_GAME = "Start Game";
-        private const string TAP = "Tap me!";
-        private const string END_GAME = "Collect!";
         private const float FULL_CIRCLE_ANGLE = 360f;
-        private const int MAX_ATTEMPTS_TO_FIT_SEGMENT = 10;
 
-        public void Initialize(int currentTier, int maxTier)
+        public void Initialize()
         {
-            _currentTier = currentTier;
-            _maxTier = maxTier;
             ResetState();
             
-            _actionButtonText.text = START_GAME;
-            _actionButton.onClick.RemoveAllListeners();
-            _actionButton.onClick.AddListener(StartGame);
+            InitializeButtons();
+
             _miniGameSpeedometer.Init(_miniGameConfig);
         }
         
+        private void InitializeButtons()
+        {
+            _actionButton.onClick.RemoveAllListeners();
+            _actionButton.gameObject.SetActive(false);
+            _lowRiskButton.gameObject.SetActive(true);
+            _mediumRiskButton.gameObject.SetActive(true);
+            _highRiskButton.gameObject.SetActive(true);
+            
+            _lowRiskButton.onClick.AddListener(StartLowRiskGame);
+            _mediumRiskButton.onClick.AddListener(StartMediumRiskGame);
+            _highRiskButton.onClick.AddListener(StartHighRiskGame);
+            
+            _lowRiskCost.text = _miniGameConfig.LowRiskStats.CostToRun.ToString();
+            _mediumRiskCost.text = _miniGameConfig.MediumRiskStats.CostToRun.ToString();
+            _highRiskCost.text = _miniGameConfig.HighRiskStats.CostToRun.ToString();
+        }
+
         private void ResetState()
         {
-            _currentTapCount = 0;
             _isEnded = false;
-            _miniGameTimer?.EarlyComplete(true);
-            _delayTimer?.EarlyComplete();
-            _miniGameTimer = null;
-            _delayTimer = null;
             foreach (Segment segment in _segments)
                 segment.gameObject.SetActive(false);
+        }
+        
+        private void StartLowRiskGame()
+        {
+            if (_inventory.CanBuy(_miniGameConfig.LowRiskStats.CostToRun))
+            {
+                _inventory.CurrentEnergy -= _miniGameConfig.LowRiskStats.CostToRun;
+                _selectedRisk = _miniGameConfig.LowRiskStats;
+                StartGame();
+            }
+            else
+            {
+                _inventory.ShakeCanNotBuy();
+            }
+        }
+        
+        private void StartMediumRiskGame()
+        {
+            if (_inventory.CanBuy(_miniGameConfig.MediumRiskStats.CostToRun))
+            {
+                _inventory.CurrentEnergy -= _miniGameConfig.MediumRiskStats.CostToRun;
+                _selectedRisk = _miniGameConfig.MediumRiskStats;
+                StartGame();
+            }
+            else
+            {
+                _inventory.ShakeCanNotBuy();
+            }
+        }
+        
+        private void StartHighRiskGame()
+        {
+            if (_inventory.CanBuy(_miniGameConfig.HighRiskStats.CostToRun))
+            {
+                _inventory.CurrentEnergy -= _miniGameConfig.HighRiskStats.CostToRun;
+                _selectedRisk = _miniGameConfig.HighRiskStats;
+                StartGame();
+            }
+            else
+            {
+                _inventory.ShakeCanNotBuy();
+            }
         }
 
         private void StartGame()
         {
+            GenerateSegment();
+            _speed = _selectedRisk.Speed;
             _isStarted = true;
-            _actionButtonText.text = TAP;
-            _actionButton.onClick.RemoveListener(StartGame);
-            _actionButton.onClick.AddListener(TapAction);
-            SetupGame();
-        }
-        
-        private void SetupGame()
-        {
-            _miniGameTimer = _timerService.AddTimer(_miniGameConfig.PlayTime, FinalizeGame);
-            _speed = _miniGameConfig.StartSpeed;
-        }
-        
-        private void FinalizeGame()
-        {
-            _miniGameTimer?.EarlyComplete(true);
-            _delayTimer?.EarlyComplete();
-            _miniGameTimer = null;
-            _delayTimer = null;
-            DisableActionButton();
-            _actionButtonText.text = END_GAME;
-            _actionButton.onClick.RemoveListener(TapAction);
+            _actionButton.gameObject.SetActive(true);
+            _lowRiskButton.gameObject.SetActive(false);
+            _mediumRiskButton.gameObject.SetActive(false);
+            _highRiskButton.gameObject.SetActive(false);
             _actionButton.onClick.AddListener(StartDeceleration);
         }
         
@@ -115,67 +153,24 @@ namespace Farm.Gameplay.MiniGame
                 }
             }
             
-            _timerService.AddTimer(1f, () => OnMiniGameEnds?.Invoke(selectedEffect));
-        }
-
-        private void TapAction()
-        {
-            DisableActionButton();
-            _currentTapCount += 1;
-            
-            _speed = Mathf.Min(_speed + _miniGameConfig.SpeedToAddPerTap, _miniGameConfig.MaxSpeed);
-            _miniGameSpeedometer.SetSpeed(_speed);
-            GenerateSegment();
-            if (_currentTapCount >= _miniGameConfig.MaxTaps)
-            {
-                FinalizeGame();
-            }
+            _timerService.AddTimer(1f, () => OnMiniGameEnds?.Invoke(selectedEffect, _miniGameConfig.EffectTime));
         }
         
         private void GenerateSegment()
         {
-            int allowedTiers = _miniGameSpeedometer.AllowTiers;
-            List<MiniGameEffect> allowedEffects = _miniGameConfig.Effects.Where(buffs => buffs.Tier <= allowedTiers).ToList();
-            List<MiniGameEffect> updateTierEffects = allowedEffects.Where(effect => effect.BuffType == BuffType.UpdateTier).ToList();
-            updateTierEffects.ForEach(updateTier =>
-            {
-                if (updateTier.Value + _currentTier > _maxTier || updateTier.Value + _currentTier < 0)
-                    allowedEffects.Remove(updateTier);
-            });
-            
-            bool segmentAdded = false;
-            int attempts = 0;
+            List<MiniGameEffect> allowedEffects = _miniGameConfig.Effects.Where(buffs => buffs.Tier <= _selectedRisk.HighestAllowedTier).ToList();
 
-            while (!segmentAdded && attempts < MAX_ATTEMPTS_TO_FIT_SEGMENT)
+            for (int i = 0; i < _selectedRisk.SegmentsOnWheel; i++)
             {
                 MiniGameEffect randomEffect = GetRandomEffect(allowedEffects);
-                float startAngle = Random.Range(0f, FULL_CIRCLE_ANGLE);
+                float startAngle = FULL_CIRCLE_ANGLE / _selectedRisk.SegmentsOnWheel * i;
                 float segmentSize = DeterminateFillFromBuff(randomEffect);
                 
-                if (!IsSegmentOverlap(startAngle, segmentSize))
-                {
-                    Segment segment = PickSegment();
+                Segment segment = PickSegment();
                     
-                    segment.SetStartAngle(startAngle);
-                    segment.SetSegmentAngle(segmentSize);
-                    segment.SetEffect(randomEffect);
-                    segmentAdded = true;
-                }
-                else
-                {
-                    float fitSegmentAngle = allowedTiers switch
-                    {
-                        1 => _miniGameConfig.Tier1Angle,
-                        2 => _miniGameConfig.Tier2Angle,
-                        3 => _miniGameConfig.Tier3Angle,
-                        _ => 0
-                    };
-                    
-                    if (!CanFitSegment(fitSegmentAngle))
-                        ResetFirstSegment();
-                }
-                
-                attempts++;
+                segment.SetStartAngle(startAngle);
+                segment.SetSegmentAngle(segmentSize);
+                segment.SetEffect(randomEffect);
             }
         }
         
@@ -219,7 +214,7 @@ namespace Farm.Gameplay.MiniGame
         
         private Segment PickSegment()
         {
-            if (_segments.Count == _miniGameConfig.MaxSegmentsOnWheel)
+            if (_segments.Count == _selectedRisk.SegmentsOnWheel)
                 return ResetFirstSegment();
             
             foreach (Segment segment in _segments)
@@ -255,26 +250,14 @@ namespace Farm.Gameplay.MiniGame
             return false;
         }
         
-        private float DeterminateFillFromBuff(MiniGameEffect randomEffect)
-        {
-            switch (randomEffect.Tier)
+        private float DeterminateFillFromBuff(MiniGameEffect randomEffect) =>
+            randomEffect.Tier switch
             {
-                case 1:
-                    return _miniGameConfig.Tier1Angle;
-                case 2:
-                    return _miniGameConfig.Tier2Angle;
-                case 3:
-                    return _miniGameConfig.Tier3Angle;
-                default:
-                    return 0;
-            }
-        }
-
-        private void DisableActionButton()
-        {
-            _delayTimer = _timerService.AddTimer(_miniGameConfig.DelayTimeBetweenTaps, () => _actionButton.interactable = true);
-            _actionButton.interactable = false;
-        }
+                1 => _miniGameConfig.Tier1Angle,
+                2 => _miniGameConfig.Tier2Angle,
+                3 => _miniGameConfig.Tier3Angle,
+                _ => 0
+            };
 
         private void Update()
         {
