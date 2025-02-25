@@ -24,6 +24,9 @@ namespace Farm.Interface.Popups
         [Header("Tier buttons")]
         [SerializeField] private Button _minusTier;
         [SerializeField] private Button _plusTier;
+        [Header("Module Slots")]
+        [SerializeField] private CapsuleSlotProvider _firstSlotProvider;
+        [SerializeField] private CapsuleSlotProvider _secondSlotProvider;
 
         [Inject] private CapsuleConfig _capsuleConfig;
         [Inject] private EmbryoConfig _embryoConfig;
@@ -56,8 +59,15 @@ namespace Farm.Interface.Popups
             UpdateButtonsInfo();
             
             UpdateEmbryoView();
+
+            UpdateModulesSots();
         }
-    
+
+        private void UpdateModulesSots()
+        {
+            _firstSlotProvider.SetSlot(_capsule.CapsuleSlots[0]);
+            _secondSlotProvider.SetSlot(_capsule.CapsuleSlots[1]);
+        }
 
         private void UpdatePopupInfo()
         {
@@ -128,7 +138,7 @@ namespace Farm.Interface.Popups
                     throw new ArgumentOutOfRangeException();
             }
         }
-
+        
         private void CreateEmbryo()
         {
             _createEmbryoButton.onClick.RemoveListener(OnBuy);

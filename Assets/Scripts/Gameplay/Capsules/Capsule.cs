@@ -21,7 +21,7 @@ namespace Farm.Gameplay.Capsules
         [SerializeField] private TMP_Text _info;
         [SerializeField] private CapsuleEnergyCost _capsuleEnergyCost;
         [SerializeField] private int _capsuleNumber;
-        [SerializeField] private List<CapsuleSlotProvider> _capsuleSlots;
+        [SerializeField] private List<CapsuleSlot> _capsuleSlots;
         
         [Inject] private PopupManager _popupManager;
         [Inject] private TimerService _timerService;
@@ -36,7 +36,7 @@ namespace Farm.Gameplay.Capsules
         private bool _isOwn;
         private bool _isFeedReady;
 
-        public List<CapsuleSlotProvider> CapsuleSlots => _capsuleSlots;
+        public List<CapsuleSlot> CapsuleSlots => _capsuleSlots;
         public Embryo Embryo { get; private set; }
         public int Tier => _tier;
         public bool IsOwn => _isOwn;
@@ -81,7 +81,7 @@ namespace Farm.Gameplay.Capsules
 
             SetupCapsule();
 
-            CapsuleSlotProvider.OnAnyModuleChanged += OnModuleChanged;
+            CapsuleSlot.OnAnyModuleChanged += OnModuleChanged;
         }
 
 
@@ -120,7 +120,7 @@ namespace Farm.Gameplay.Capsules
             }
         }
 
-        private void OnModuleChanged(CapsuleSlotProvider slot)
+        private void OnModuleChanged(CapsuleSlot slot)
         {
             _capsuleSlots.ForEach(capsuleSlot =>
             {
@@ -167,7 +167,7 @@ namespace Farm.Gameplay.Capsules
         {
             _capsuleEnergyCost.OnBoughtSuccess -= BuyCapsule;
             _capsuleEnergyCost.OnBoughtSuccess -= UpgradeCapsule;
-            CapsuleSlotProvider.OnAnyModuleChanged -= OnModuleChanged;
+            CapsuleSlot.OnAnyModuleChanged -= OnModuleChanged;
         }
     }
 }

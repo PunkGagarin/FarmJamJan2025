@@ -17,7 +17,7 @@ namespace Farm.Gameplay.Capsules
         {
             Capsule.OnCapsuleBought += CountOwnCapsules;
             Capsule.OnCapsuleUpgrade += CountCapsulesTiers;
-            CapsuleSlotProvider.OnAnyModuleChanged += CountCapsuleModules;
+            CapsuleSlot.OnAnyModuleChanged += CountCapsuleModules;
             _questProvider.OnQuestStarted += CollectQuestInfo;
         }
 
@@ -49,7 +49,7 @@ namespace Farm.Gameplay.Capsules
                 _questProvider.SetRequirement(RequirementType.CapsulesWithTierUpgrade, keyValuePair.Value, keyValuePair.Key);
         }
     
-        private void CountCapsuleModules(CapsuleSlotProvider _) => CountCapsuleModules();
+        private void CountCapsuleModules(CapsuleSlot _) => CountCapsuleModules();
     
         private void CountCapsuleModules()
         {
@@ -62,7 +62,7 @@ namespace Farm.Gameplay.Capsules
         {
             Capsule.OnCapsuleBought -= CountOwnCapsules;
             Capsule.OnCapsuleUpgrade -= CountCapsulesTiers;
-            CapsuleSlotProvider.OnAnyModuleChanged -= CountCapsuleModules;
+            CapsuleSlot.OnAnyModuleChanged -= CountCapsuleModules;
             _questProvider.OnQuestStarted -= CollectQuestInfo;
         }
 

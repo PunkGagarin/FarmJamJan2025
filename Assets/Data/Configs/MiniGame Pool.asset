@@ -28,7 +28,7 @@ MonoBehaviour:
   - Tier: 1
     BuffType: 1
     Value: 200
-    Weight: 50
+    Weight: 1
   - Tier: 2
     BuffType: 1
     Value: -15

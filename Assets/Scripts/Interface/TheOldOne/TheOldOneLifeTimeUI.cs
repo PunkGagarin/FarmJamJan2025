@@ -65,8 +65,8 @@ namespace Farm.Interface.TheOldOne
         private void Awake() => 
             _pauseService.Register(this);
 
-        private void OnDestroy() => 
-            _pauseService.Unregister(this);
+        /*private void OnDestroy() => 
+            _pauseService.Unregister(this);*/ //todo
 
         public void SetPaused(bool isPaused) => 
             _isPaused = isPaused;

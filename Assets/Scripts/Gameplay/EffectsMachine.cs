@@ -3,6 +3,7 @@ using Farm.Gameplay.MiniGame;
 using Farm.Interface.Popups;
 using Farm.Utils.Timer;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Zenject;
 
 namespace Farm.Gameplay
@@ -18,9 +19,17 @@ namespace Farm.Gameplay
 
         private void OnMouseDown()
         {
-            if (_effectTime != null)
+            if (IsPointerOverUI())
                 return;
 
+            Interact();
+        }
+        
+        private void Interact()
+        {
+            if (_effectTime != null)
+                return;
+            
             if (_miniGameVisual == null)
             {
                 _miniGameVisual = _popupManager.OpenMiniGame().MiniGameVisual;
@@ -30,7 +39,11 @@ namespace Farm.Gameplay
             {
                 _popupManager.OpenMiniGame();
             }
-            
+        }
+
+        private bool IsPointerOverUI()
+        {
+            return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
         }
         
         private void SetupMiniGameEffect(MiniGameEffect miniGameEffect, float effectTime)
