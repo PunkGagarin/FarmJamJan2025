@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Farm.Gameplay.Configs;
-using Farm.Gameplay.Configs.MiniGame;
 using Farm.Gameplay.Configs.UpgradeModules;
 using Farm.Interface;
 using Farm.Interface.Popups;
@@ -41,8 +40,6 @@ namespace Farm.Gameplay.Capsules
         public int Tier => _tier;
         public bool IsOwn => _isOwn;
 
-        private const float PERCENT_VALUE = 100f;
-        
         public event Action OnEmbryoStateChanged;
         public static event Action OnCapsuleBought;
         public static event Action OnCapsuleUpgrade;
@@ -55,10 +52,15 @@ namespace Farm.Gameplay.Capsules
             _embryoImage.sprite = Embryo.Image;
 
             OnEmbryoStateChanged?.Invoke();
-
+            ApplyModulesToGrowthSpeed();
             _embryoTimer = _timerService.AddTimer(Embryo.TimeToGrowth, EmbryoGrewUp);
             _growProgress.gameObject.SetActive(true);
             _capsuleSlots.ForEach(slot => slot.IsCapsuleInGrowthProcess = true);
+        }
+
+        private void ApplyModulesToGrowthSpeed()
+        {
+            Embryo.TimeToGrowth = UpgradeModuleUtils.ApplyStatsWithType(Embryo.TimeToGrowth, _capsuleSlots, ModuleCharacteristicType.GrowthSpeed);
         }
 
         private void EmbryoGrewUp()
@@ -80,10 +82,7 @@ namespace Farm.Gameplay.Capsules
             _embryoImage.gameObject.SetActive(false);
 
             SetupCapsule();
-
-            CapsuleSlot.OnAnyModuleChanged += OnModuleChanged;
         }
-
 
         private void SetupCapsule()
         {
@@ -120,18 +119,6 @@ namespace Farm.Gameplay.Capsules
             }
         }
 
-        private void OnModuleChanged(CapsuleSlot slot)
-        {
-            _capsuleSlots.ForEach(capsuleSlot =>
-            {
-                if (capsuleSlot == slot)
-                {
-                    //todo
-                    Debug.Log($"OnModuleChanged {name}, {slot.name}");
-                }
-            });
-        }
-
         private void Update()
         {
             if (Embryo != null && _embryoTimer != null)
@@ -156,18 +143,23 @@ namespace Farm.Gameplay.Capsules
         {
             _info.gameObject.SetActive(false);
             _isFeedReady = false;
-            _feedMediator.FeedTheOldOne(Embryo.StarvationValue, Embryo.EmbryoType);
-            _inventory.CurrentEnergy += Embryo.EnergyValue;
+            _feedMediator.FeedTheOldOne(CalculateFeedAmount(), Embryo.EmbryoType);
+            _inventory.CurrentEnergy += CalculateEnergyValue();
             Embryo = null;
             _embryoImage.gameObject.SetActive(false);
             OnEmbryoStateChanged?.Invoke();
         }
 
+        private int CalculateEnergyValue() =>
+            Embryo.EnergyValue;
+
+        private int CalculateFeedAmount() =>
+            Embryo.StarvationValue;
+
         private void OnDestroy()
         {
             _capsuleEnergyCost.OnBoughtSuccess -= BuyCapsule;
             _capsuleEnergyCost.OnBoughtSuccess -= UpgradeCapsule;
-            CapsuleSlot.OnAnyModuleChanged -= OnModuleChanged;
         }
     }
 }
