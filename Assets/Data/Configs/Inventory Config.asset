@@ -19,5 +19,5 @@ MonoBehaviour:
   _shakeDuration: 1
   _shakePower: 4
   _maxSlotsCount: 8
-  _baseModuleCost: 100
+  _baseModuleCost: 5
   _moduleCostMultiplier: 0.15

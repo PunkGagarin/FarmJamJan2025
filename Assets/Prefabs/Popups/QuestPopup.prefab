@@ -49,7 +49,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61da839599c046e28b2257c39850e714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rectTransform: {fileID: 5467795256997176755}
   _closeButton: {fileID: 1016745545446915883}
   _questDescription: {fileID: 8979521430396913098}
   _questRequirements: {fileID: 451931217516325214}
