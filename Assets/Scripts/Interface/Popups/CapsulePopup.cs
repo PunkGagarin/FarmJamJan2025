@@ -19,6 +19,7 @@ namespace Farm.Interface.Popups
     {
         [SerializeField] private Image _embryoView;
         [SerializeField] private Button _closeButton;
+        [SerializeField] private Button _additionalCloseButton;
         [SerializeField] private Button _createEmbryoButton;
         [SerializeField] private TMP_Text _cost;
         [SerializeField] private TMP_Text _createEmbryoButtonText;
@@ -52,8 +53,10 @@ namespace Farm.Interface.Popups
             _createEmbryoButton.interactable = _capsule.Embryo == null;
             _createEmbryoButton.onClick.AddListener(OnBuy);
             _closeButton.onClick.AddListener(Close);
+            _additionalCloseButton.onClick.AddListener(Close);
             _capsule.OnEmbryoStateChanged += UpdateEmbryoView;
             _selectedTier = 0;
+            _additionalCloseButton.gameObject.SetActive(_capsule.Embryo != null);
 
             UpdatePopupInfo();
 
@@ -90,6 +93,7 @@ namespace Farm.Interface.Popups
         protected override void Close()
         {
             _closeButton.onClick.RemoveListener(Close);
+            _additionalCloseButton.onClick.RemoveListener(Close);
             _capsule.OnEmbryoStateChanged -= UpdateEmbryoView;
             _createEmbryoButton.interactable = false;
 
@@ -113,6 +117,7 @@ namespace Farm.Interface.Popups
         private void StartEmbryoProcess()
         {
             _closeButton.gameObject.SetActive(true);
+            _additionalCloseButton.gameObject.SetActive(true);
             ApplyMiniGameEffects();
             ApplyModulesEffects();
 
