@@ -8,6 +8,7 @@ namespace Farm.Gameplay.Quests
     {
         private QuestDefinition _currentQuest;
         private List<QuestInfo> _currentQuestRequirements;
+        private bool _isQuestCompleted;
         
         public event Action OnQuestStarted;
         public event Action<int> OnQuestFailed;
@@ -16,6 +17,7 @@ namespace Farm.Gameplay.Quests
         public void SetupQuest(QuestDefinition questDefinition)
         {
             _currentQuest = questDefinition;
+            _isQuestCompleted = false;
             if (questDefinition == null)
             {
                 _currentQuestRequirements = null;
@@ -53,7 +55,7 @@ namespace Farm.Gameplay.Quests
 
         public void SetRequirement(RequirementType requirementType, int value, int requiredTier = -1)
         {
-            if (_currentQuestRequirements == null)
+            if (_currentQuestRequirements == null || _isQuestCompleted)
                 return;
             
             foreach (QuestInfo questInfo in _currentQuestRequirements)
@@ -71,7 +73,10 @@ namespace Farm.Gameplay.Quests
             }
             
             if (_currentQuestRequirements.All(questRequirement => questRequirement.IsCompleted))
-                OnQuestCompleted?.Invoke(_currentQuest.EnergyReward);       
+            {
+                _isQuestCompleted = true;
+                OnQuestCompleted?.Invoke(_currentQuest.EnergyReward);
+            }
         }
         
         public (string, List<QuestInfo>) GetQuestDescriptionAndInfos() => 
