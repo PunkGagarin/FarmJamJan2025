@@ -28,7 +28,7 @@ public class OptionsPopup : Popup
 
     private void OnAcceptButtonClicked()
     {
-        _soundManager.PlaySoundByType(GameAudioType.ButtonCLick, 0);
+        _soundManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
 
         _soundManager.SaveCurrentValue();
         _musicManager.SaveCurrentValue();
@@ -38,7 +38,7 @@ public class OptionsPopup : Popup
 
     private void OnDeclineButtonClicked()
     {
-        _soundManager.PlaySoundByType(GameAudioType.ButtonCLick, 0);
+        _soundManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
 
         _masterSoundManager.RestorePrevValue(_masterSoundManager.Volume);
         _musicManager.RestorePrevValue(_masterSoundManager.Volume);

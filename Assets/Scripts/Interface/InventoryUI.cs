@@ -64,7 +64,7 @@ namespace Farm.Interface
                 return;
             }
 
-            _soundManager.PlaySoundByType(GameAudioType.ModuleAdded, 0);
+            _soundManager.PlaySoundByType(GameAudioType.ModuleAddedAction, 0);
             BuyUpgradeModule();
         }
 
@@ -142,6 +142,7 @@ namespace Farm.Interface
             var openedX = -_inventoryRectTransform.rect.width;
             _inventoryRectTransform.DOAnchorPosX(endValue: _isInventoryOpen ? closedX : openedX, duration: 0.5f);
             _isInventoryOpen = !_isInventoryOpen;
+            _soundManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
         }
 
         private void CollectQuestInfo()

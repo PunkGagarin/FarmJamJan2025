@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Audio;
 using Farm.Enums;
 using Farm.Gameplay;
 using Farm.Gameplay.Capsules;
@@ -33,6 +34,7 @@ namespace Farm.Interface.Popups
         [Inject] private EmbryoConfig _embryoConfig;
         [Inject] private InventoryUI _inventory;
         [Inject] private MiniGameEffectsMediator _miniGameEffectsMediator;
+        [Inject] private SoundManager _sfxManager;
 
         private int _selectedTier;
         private Capsule _capsule;
@@ -92,6 +94,7 @@ namespace Farm.Interface.Popups
             _closeButton.onClick.RemoveListener(Close);
             _capsule.OnEmbryoStateChanged -= UpdateEmbryoView;
             _createEmbryoButton.interactable = false;
+            _sfxManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
 
             base.Close();
         }
@@ -101,6 +104,7 @@ namespace Farm.Interface.Popups
             _selectedTier = Mathf.Clamp(_selectedTier + 1, 0, _capsule.Tier);
             UpdateButtonsInfo();
             UpdatePopupInfo();
+            _sfxManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
         }
 
         private void MinusTier()
@@ -108,6 +112,7 @@ namespace Farm.Interface.Popups
             _selectedTier = Mathf.Clamp(_selectedTier - 1, 0, _capsule.Tier);
             UpdateButtonsInfo();
             UpdatePopupInfo();
+            _sfxManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
         }
 
         private void StartEmbryoProcess()
@@ -119,6 +124,7 @@ namespace Farm.Interface.Popups
             UpdatePopupInfo();
             _capsule.StartEmbryoProcess(_selectedEmbryo);
             _embryoView.sprite = _capsule.Embryo.Image;
+            _sfxManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
         }
 
         private void ApplyMiniGameEffects()

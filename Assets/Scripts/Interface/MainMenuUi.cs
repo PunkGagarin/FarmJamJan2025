@@ -1,3 +1,4 @@
+using System;
 using Audio;
 using Farm.Interface.Popups;
 using UnityEngine;
@@ -19,6 +20,10 @@ public class MainMenuUi : MonoBehaviour
         _startGameButton.onClick.AddListener(OnStartGameClicked);
         _optionsButton.onClick.AddListener(OnOptionsClicked);
         _creditsButton.onClick.AddListener(OnCreditsClicked);
+    }
+
+    private void Start()
+    {
         _musicManager.PlaySoundByType(GameAudioType.MainMenuBgm, 0);
     }
 

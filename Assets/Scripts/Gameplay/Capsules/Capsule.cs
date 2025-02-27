@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Audio;
 using Farm.Gameplay.Configs;
 using Farm.Gameplay.Configs.UpgradeModules;
 using Farm.Interface;
@@ -21,7 +22,7 @@ namespace Farm.Gameplay.Capsules
         [SerializeField] private CapsuleEnergyCost _capsuleEnergyCost;
         [SerializeField] private int _capsuleNumber;
         [SerializeField] private List<CapsuleSlot> _capsuleSlots;
-        
+
         [Inject] private PopupManager _popupManager;
         [Inject] private TimerService _timerService;
         [Inject] private FeedMediator _feedMediator;
@@ -29,7 +30,8 @@ namespace Farm.Gameplay.Capsules
         [Inject] private CapsuleConfig _capsuleConfig;
         [Inject] private UpgradeModuleConfig _upgradeModuleConfig;
         [Inject] private EmbryoConfig _embryoConfig;
-        
+        [Inject] private SoundManager _sfxManager;
+
         private TimerHandle _embryoTimer;
         private int _tier;
         private bool _isOwn;
@@ -60,7 +62,8 @@ namespace Farm.Gameplay.Capsules
 
         private void ApplyModulesToGrowthSpeed()
         {
-            Embryo.TimeToGrowth = UpgradeModuleUtils.ApplyStatsWithType(Embryo.TimeToGrowth, _capsuleSlots, ModuleCharacteristicType.GrowthSpeed);
+            Embryo.TimeToGrowth = UpgradeModuleUtils.ApplyStatsWithType(Embryo.TimeToGrowth, _capsuleSlots,
+                ModuleCharacteristicType.GrowthSpeed);
         }
 
         private void EmbryoGrewUp()
@@ -72,7 +75,7 @@ namespace Farm.Gameplay.Capsules
             _capsuleSlots.ForEach(slot => slot.IsCapsuleInGrowthProcess = false);
         }
 
-        private void BuyCapsule() => 
+        private void BuyCapsule() =>
             UpdateOwnership();
 
         private void Awake()
@@ -107,7 +110,7 @@ namespace Farm.Gameplay.Capsules
             _capsuleEnergyCost.OnBoughtSuccess -= BuyCapsule;
             _capsuleEnergyCost.OnBoughtSuccess += UpgradeCapsule;
         }
-        
+
         private void UpgradeCapsule()
         {
             _tier++;
@@ -134,9 +137,15 @@ namespace Farm.Gameplay.Capsules
                 return;
 
             if (_isFeedReady)
+            {
                 FeedTheOldOne();
+                _sfxManager.PlaySoundByType(GameAudioType.FeedingAction, 0);
+            }
             else
+            {
                 _popupManager.OpenCapsule(this);
+                _sfxManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
+            }
         }
 
         private void FeedTheOldOne()

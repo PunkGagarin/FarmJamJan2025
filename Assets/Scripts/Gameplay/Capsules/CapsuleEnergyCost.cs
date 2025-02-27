@@ -1,4 +1,5 @@
 ﻿using System;
+using Audio;
 using Farm.Interface;
 using JetBrains.Annotations;
 using TMPro;
@@ -14,6 +15,7 @@ namespace Farm.Gameplay.Capsules
         [SerializeField] private TMP_Text _costAmount;
         [SerializeField] private Image _upgradeImage;
         [Inject] private InventoryUI _inventory;
+        [Inject] private SoundManager _sfxManager;
         private int _cost;
 
         private bool CanBuy => _inventory.CanBuy(_cost);
@@ -52,10 +54,12 @@ namespace Farm.Gameplay.Capsules
                 _inventory.CurrentEnergy -= _cost;
                 _inventory.ResetColor();
                 OnBoughtSuccess?.Invoke();
+                _sfxManager.PlaySoundByType(GameAudioType.CapsuleBoughtAction, 0);
             }
             else
             {
                 _inventory.ShakeCanNotBuy();
+                _sfxManager.PlaySoundByType(GameAudioType.ActionError, 0);
             }
         }
 

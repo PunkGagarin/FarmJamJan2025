@@ -22,7 +22,7 @@ public class AmbientSoundPlayer : MonoBehaviour
     {
         if (Random.value < _playChance)
         {
-            _sfxManager.PlayRandomSoundByType(GameAudioType.AmbientSound);
+            _sfxManager.PlayRandomSoundByType(GameAudioType.AmbientSounds);
         }
     }
 
