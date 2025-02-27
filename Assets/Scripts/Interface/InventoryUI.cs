@@ -151,7 +151,7 @@ namespace Farm.Interface
         
         private void OnQuestCompleted(int questEnergyReward)
         {
-            _currentEnergy += questEnergyReward;
+            CurrentEnergy += questEnergyReward;
         }
         
         private void Awake()

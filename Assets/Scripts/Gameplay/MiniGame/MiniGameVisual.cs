@@ -163,7 +163,7 @@ namespace Farm.Gameplay.MiniGame
             for (int i = 0; i < _selectedRisk.SegmentsOnWheel; i++)
             {
                 MiniGameEffect randomEffect = GetRandomEffect(allowedEffects);
-                Debug.Log($"Random effect: {randomEffect.BuffType}, {randomEffect.Value}");
+                //Debug.Log($"Random effect: {randomEffect.BuffType}, {randomEffect.Value}");
                 float startAngle = FULL_CIRCLE_ANGLE / _selectedRisk.SegmentsOnWheel * i;
                 float segmentSize = DeterminateFillFromBuff(randomEffect);
                 
@@ -180,7 +180,7 @@ namespace Farm.Gameplay.MiniGame
             float totalWeight = allowedEffects.Sum(effect => effect.Weight);
             float randomValue = Random.Range(0f, totalWeight);
             float currentWeight = 0f;
-            Debug.Log($"total weight = {totalWeight}, random value = {randomValue}");
+            //Debug.Log($"total weight = {totalWeight}, random value = {randomValue}");
             foreach (MiniGameEffect miniGameEffect in allowedEffects)
             {
                 currentWeight += miniGameEffect.Weight;
