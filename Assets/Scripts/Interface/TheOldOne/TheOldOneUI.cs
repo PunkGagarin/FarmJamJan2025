@@ -19,6 +19,7 @@ namespace Farm.Interface.TheOldOne
         [SerializeField] private Color _goodColor;
         [SerializeField] private Color _badColor;
         [SerializeField] private Button _questButton;
+        [SerializeField] private FoodInfo _foodInfo;
 
         private int _maxPhases;
 
@@ -27,6 +28,7 @@ namespace Farm.Interface.TheOldOne
             _name.text = definition.HeaderInfo;
             _maxPhases = definition.SatietyPhasesData.Count;
             _theOldOneLifeTimeUI.Initialize(definition, lifeTimer);
+            _foodInfo.SetFoodInfo(definition);
             UpdateSatietyBar(definition.StartSatiety, definition.MaxSatiety, true);
         }
 

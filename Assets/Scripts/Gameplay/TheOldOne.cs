@@ -16,7 +16,7 @@ namespace Farm.Gameplay
     public class TheOldOne : MonoBehaviour, IPauseHandler
     {
         public delegate void SatietyChangeHandler(float current, float max);
-        [SerializeField] private SpriteRenderer _sprite;
+        [SerializeField] private SpriteRenderer _icon;
         [SerializeField] private TheOldOneUI _theOldOneUI;
 
         [Inject] private PopupManager _popupManager;
@@ -36,20 +36,21 @@ namespace Farm.Gameplay
 
         public event SatietyChangeHandler OnSatietyChanged;
         public event Action<int> OnPhaseChanged;
+        public event Action OnSealed;
+        public event Action OnDefeat;
 
         public void Initialize(TheOldOneDefinition definition)
         {
             _definition = definition;
             _inRampage = false;
+            _icon.sprite = definition.Icon;
 
             SetupStats();
 
             SetupTimers();
 
-            OnSatietyChanged?.Invoke(_currentSatiety, _maxSatiety);
             OnPhaseChanged += UpdateQuest;
             UpdateQuest(_currentStage);
-            _feedMediator.UpdateTheOldOne(this);
 
             InitializeInterface();
         }
@@ -80,6 +81,7 @@ namespace Farm.Gameplay
             _currentStage = 0;
             _currentSatiety = _definition.StartSatiety;
             _maxSatiety = _definition.MaxSatiety;
+            OnSatietyChanged?.Invoke(_currentSatiety, _maxSatiety);
         }
 
         private void SetupTimers()
@@ -111,7 +113,7 @@ namespace Farm.Gameplay
                     throw new ArgumentOutOfRangeException(nameof(embryoType), embryoType, null);
             }
 
-            _currentSatiety += amount * modifier;
+            _currentSatiety += amount * modifier / 100f;
             if (_currentSatiety > _definition.MaxSatiety)
                 _currentSatiety = _definition.MaxSatiety;
 
@@ -130,8 +132,8 @@ namespace Farm.Gameplay
             _starveTimer = null;
             _rampageTimer = null;
             _phaseTimer = null;
-
-            Debug.Log($"The old one sealed!");
+            
+            OnSealed?.Invoke();
         }
 
         private void InitializeInterface()
@@ -164,8 +166,8 @@ namespace Farm.Gameplay
         {
             _blinkingTween = DOTween.Sequence();
 
-            _blinkingTween.Append(_sprite.DOFade(0, 1));
-            _blinkingTween.Append(_sprite.DOFade(1, 1)).OnComplete(() => _blinkingTween.Restart());
+            _blinkingTween.Append(_icon.DOFade(0, 1));
+            _blinkingTween.Append(_icon.DOFade(1, 1)).OnComplete(() => _blinkingTween.Restart());
 
             _blinkingTween.Restart();
             _inRampage = true;
@@ -180,7 +182,7 @@ namespace Farm.Gameplay
         {
             _inRampage = false;
             _rampageTimer.SetManualPause(true);
-            _sprite.DOFade(1, 0);
+            _icon.DOFade(1, 0);
             _blinkingTween.Kill();
         }
 
@@ -188,8 +190,8 @@ namespace Farm.Gameplay
         {
             _inRampage = false;
             _blinkingTween.Kill();
-
-            _popupManager.OpenGameOver();
+            
+            OnDefeat?.Invoke();
         }
 
         public void SetPaused(bool isPaused)
@@ -214,6 +216,7 @@ namespace Farm.Gameplay
 
         private void Awake()
         {
+            _feedMediator.SetupTheOldOne(this);
             _questProvider.OnQuestStarted += CollectQuestInfo;
             _questProvider.OnQuestFailed += OnQuestFailed;
             OnSatietyChanged += SatietyChanged;
