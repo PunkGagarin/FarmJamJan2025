@@ -10,14 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eeffbc7b0f054cf48ebdfab026ccb5d3, type: 3}
-  m_Name: Ctulhu
+  m_Name: Shub-Niggurath
   m_EditorClassIdentifier: 
-  _icon: {fileID: 21300000, guid: 873a76d4eca04ee4e8ae10c0b4ab3eff, type: 3}
-  _headerInfo: 'Cthulhu
-
-    Lord of Worlds'
-  _maxSatiety: 5000
-  _startSatiety: 400
+  _icon: {fileID: 21300000, guid: 3246db2c78c27334e8a2029aee65686e, type: 3}
+  _headerInfo: "Shub-Niggurath \nMother of Darkness"
+  _maxSatiety: 2000
+  _startSatiety: 1000
   _timeToStarveTick: 1
   _lifeTime: 1500
   _satietyPhasesData:
@@ -40,8 +38,8 @@ MonoBehaviour:
     SatietyLoseByTick: 8
     Quest: {fileID: 0}
   _rampageTime: 5
-  _humanSatietyModifier: 100
-  _animalSatietyModifier: 100
-  _fishSatietyModifier: 100
+  _humanSatietyModifier: 75
+  _animalSatietyModifier: 150
+  _fishSatietyModifier: 50
   _endPhaseText: Ctulhu will sleep for few years. Humankind are save for now... But
     other Great One about to rise

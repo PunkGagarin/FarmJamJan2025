@@ -7,7 +7,7 @@ namespace Farm.Gameplay
     {
         private TheOldOne _theOldOne;
 
-        public void UpdateTheOldOne(TheOldOne theOldOne)
+        public void SetupTheOldOne(TheOldOne theOldOne)
         {
             _theOldOne = theOldOne;
         }

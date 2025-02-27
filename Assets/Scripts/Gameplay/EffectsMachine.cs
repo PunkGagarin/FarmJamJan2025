@@ -61,7 +61,8 @@ namespace Farm.Gameplay
 
         private void OnDestroy()
         {
-            _miniGameVisual.OnMiniGameEnds -= SetupMiniGameEffect;
+            if (_miniGameVisual != null)
+                _miniGameVisual.OnMiniGameEnds -= SetupMiniGameEffect;
         }
     }
 }
