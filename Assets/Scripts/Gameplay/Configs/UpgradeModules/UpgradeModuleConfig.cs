@@ -22,10 +22,10 @@ namespace Farm.Gameplay.Configs.UpgradeModules
         public UpgradeModule GetRandomModule(bool canBeThree)
         {
             var hasNegativeStat = false;
-            var maxStatsCount = Random.Range(1, (canBeThree ? 3 : 2) + 1);
+            var maxStatsCount = CalculateStatsCount(canBeThree);
             var finalStats = new List<UpgradeModuleStat>();
             var shuffledStatsPool = new List<UpgradeModuleStat>(Stats);
-            
+
             Shuffle(shuffledStatsPool);
             var moduleRandomizedStats = shuffledStatsPool.GetRange(0, maxStatsCount);
             for (var i = 0; i < moduleRandomizedStats.Count; i++)
@@ -42,7 +42,7 @@ namespace Farm.Gameplay.Configs.UpgradeModules
                             stat.SetValue(stat.Value * -1);
                             hasNegativeStat = true;
                             break;
-                    }   
+                    }
                 }
 
                 finalStats.Add(stat);
@@ -51,14 +51,25 @@ namespace Farm.Gameplay.Configs.UpgradeModules
             return new UpgradeModule(finalStats, _icons[Random.Range(0, _icons.Count)]); // todo ask GD about icon;
         }
 
-        private static void Shuffle<T>(IList<T> ts) {
+        private int CalculateStatsCount(bool canBeThree)
+        {
+            var totalChance = _oneStatPercent + _twoStatPercent + _threeStatPercent;
+            var chance = Random.Range(0f, totalChance);
+
+            if (chance <= _oneStatPercent) return 1;
+            if (chance <= _oneStatPercent + _twoStatPercent) return 2;
+            return canBeThree ? 3 : 2;
+        }
+
+        private static void Shuffle<T>(IList<T> ts)
+        {
             var count = ts.Count;
             var last = count - 1;
-            for (var i = 0; i < last; ++i) {
+            for (var i = 0; i < last; ++i)
+            {
                 var r = Random.Range(i, count);
                 (ts[i], ts[r]) = (ts[r], ts[i]);
             }
         }
     }
-    
 }

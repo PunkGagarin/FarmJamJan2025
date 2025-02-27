@@ -28,7 +28,7 @@ namespace Farm.Gameplay.Capsules
 
         public void SetItem(UpgradeModule item)
         {
-            _soundManager.PlaySoundByType(GameAudioType.ModuleAdded, 0);
+            _soundManager.PlaySoundByType(GameAudioType.ModuleAddedAction, 0);
             _upgradeModule = item;
             _icon.DOColor(new Color(1, 1, 1, 1), 0f);
             OnAnyModuleChanged?.Invoke(this);
@@ -56,7 +56,7 @@ namespace Farm.Gameplay.Capsules
                 return;
             }
 
-            _soundManager.PlaySoundByType(GameAudioType.ModuleRemovedFromCapsule, 0);
+            _soundManager.PlaySoundByType(GameAudioType.ModuleRemovedFromCapsuleAction, 0);
             OnSlotClick?.Invoke(_upgradeModule);
             _upgradeModule = null;
             _icon.DOColor(new Color(1, 1, 1, 0), 0f);

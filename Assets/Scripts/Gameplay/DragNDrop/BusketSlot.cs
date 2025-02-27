@@ -12,7 +12,7 @@ namespace Farm
 
         public void SetItem(UpgradeModule item)
         {
-            _soundManager.PlaySoundByType(GameAudioType.ModuleDestroyed, 0);
+            _soundManager.PlaySoundByType(GameAudioType.ModuleDestroyedAction, 0);
         }
     }
 }

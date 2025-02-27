@@ -4,22 +4,15 @@
     {
         MainMenuBgm = 1,
         GamePlayBgm = 2,
-        
-        CtulhuSirenBgm = 3,
-        AbhothSirenBgm = 4,
-        ShubNiggurathSirenBgm = 5,
-        
-        CycleComplete = 6,
-        CycleFailed = 7,
-        
-        ButtonCLick = 9,
-        
-        BeingAfterEating = 10,
-        
-        AmbientSound = 20,
-        ModuleAdded = 21,
-        ModuleDestroyed = 22,
-        ModuleRemovedFromCapsule = 23,
-        ActionError = 24,
+        RampageBgm = 3,
+        UiButtonClick = 9,
+        FeedingAction = 11,
+        AmbientSounds = 20,
+        ModuleAddedAction = 21,
+        ModuleDestroyedAction = 22,
+        ModuleRemovedFromCapsuleAction = 23,
+        CapsuleBoughtAction = 24,
+        ActionError = 25,
+        GameOver = 26
     }
 }

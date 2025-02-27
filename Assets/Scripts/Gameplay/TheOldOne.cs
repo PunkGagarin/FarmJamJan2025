@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Audio;
 using DG.Tweening;
 using Farm.Enums;
 using Farm.Gameplay.Definitions;
@@ -23,6 +24,9 @@ namespace Farm.Gameplay
         [Inject] private TimerService _timerService;
         [Inject] private FeedMediator _feedMediator;
         [Inject] private QuestProvider _questProvider;
+        [Inject] private SoundManager _sfxManager;
+        [Inject] private MusicManager _musicManager;
+
         private TheOldOneDefinition _definition;
         private float _maxSatiety;
         private float _currentSatiety;
@@ -41,6 +45,7 @@ namespace Farm.Gameplay
 
         public void Initialize(TheOldOneDefinition definition)
         {
+            _musicManager.PlaySoundByType(GameAudioType.GamePlayBgm, 0);
             _definition = definition;
             _inRampage = false;
             _icon.sprite = definition.Icon;
@@ -72,6 +77,7 @@ namespace Farm.Gameplay
 
         private void OpenQuestPopup()
         {
+            _sfxManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
             (string, List<QuestInfo>) questPopupInfo = _questProvider.GetQuestDescriptionAndInfos();
             _popupManager.OpenQuest(questPopupInfo.Item1, questPopupInfo.Item2);
         }
@@ -172,6 +178,8 @@ namespace Farm.Gameplay
             _blinkingTween.Restart();
             _inRampage = true;
             
+            _musicManager.PlaySoundByType(GameAudioType.RampageBgm, 0);
+            
             if (_rampageTimer == null)
                 _rampageTimer = _timerService.AddTimer(_definition.RampageTime, Defeat);
             else 
@@ -184,6 +192,7 @@ namespace Farm.Gameplay
             _rampageTimer.SetManualPause(true);
             _icon.DOFade(1, 0);
             _blinkingTween.Kill();
+            _musicManager.PlaySoundByType(GameAudioType.GamePlayBgm, 0);
         }
 
         private void Defeat()
@@ -191,6 +200,7 @@ namespace Farm.Gameplay
             _inRampage = false;
             _blinkingTween.Kill();
             
+            _sfxManager.PlaySoundByType(GameAudioType.GameOver, 0);
             OnDefeat?.Invoke();
         }
 

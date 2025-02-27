@@ -16,7 +16,7 @@ public class BaseUIButton : MonoBehaviour
 
     private void OnButtonClicked()
     {
-        _soundManager.PlaySoundByType(GameAudioType.ButtonCLick, 0);
+        _soundManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
     }
 
     private void OnDestroy()
