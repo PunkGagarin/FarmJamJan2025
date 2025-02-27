@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98821e2b3e64469083396742b058f75a, type: 3}
   m_Name: Capsule Config
   m_EditorClassIdentifier: 
-  _upgradeCost: 50
+  _upgradeCost: 500
   _baseHumanChance: 33
   _baseAnimalChance: 33
   _baseFishChance: 33

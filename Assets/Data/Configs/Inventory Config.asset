@@ -15,9 +15,9 @@ MonoBehaviour:
   _canBuyColor: {r: 0.18498707, g: 1, b: 0, a: 1}
   _canNotBuyColor: {r: 1, g: 0, b: 0, a: 1}
   _regularColor: {r: 1, g: 1, b: 1, a: 1}
-  _startEnergy: 100
+  _startEnergy: 0
   _shakeDuration: 1
   _shakePower: 4
   _maxSlotsCount: 8
-  _baseModuleCost: 5
+  _baseModuleCost: 200
   _moduleCostMultiplier: 0.15

@@ -16,8 +16,8 @@ MonoBehaviour:
   _oneStatPercent: 5
   _twoStatPercent: 5
   _threeStatPercent: 680
-  _negativePercentForTwo: 100
-  _negativePercentForThree: 100
+  _negativePercentForTwo: 50
+  _negativePercentForThree: 50
   _canBeThreeStatCount: 0
   _icons:
   - {fileID: 21300000, guid: 399470700809f2f4493aef42cc3a56b6, type: 3}
