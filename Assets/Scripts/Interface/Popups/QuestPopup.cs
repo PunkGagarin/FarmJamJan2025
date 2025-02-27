@@ -12,7 +12,7 @@ namespace Farm.Interface.Popups
         [SerializeField] private TMP_Text _questDescription;
         [SerializeField] private TMP_Text _questRequirements;
         
-        public const string COMPLETED_INFO = "<Color=green>Completed</Color>";
+        public const string COMPLETED_INFO = "<color=green>Completed</color>";
 
         public void Open(string questDefinition, List<QuestInfo> questInfos)
         {
@@ -29,7 +29,7 @@ namespace Farm.Interface.Popups
             {
                 string textToAdd = info.GetCurrentQuestDescription();
                 textToAdd = textToAdd.Replace("[RequiredTier]", info.RequiredTier.ToString());
-                textToAdd += info.IsCompleted ? COMPLETED_INFO : $" {info.CurrentAmount} / {info.RequiredAmount}\n";
+                textToAdd += info.IsCompleted ? $" {COMPLETED_INFO}" : $" {info.CurrentAmount} / {info.RequiredAmount}\n";
                 text += textToAdd;
             }
             
