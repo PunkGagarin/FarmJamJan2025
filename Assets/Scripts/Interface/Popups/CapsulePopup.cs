@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Farm.Enums;
 using Farm.Gameplay;
 using Farm.Gameplay.Capsules;
 using Farm.Gameplay.Configs;
 using Farm.Gameplay.Configs.MiniGame;
+using Farm.Gameplay.Configs.UpgradeModules;
 using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
@@ -24,26 +26,25 @@ namespace Farm.Interface.Popups
         [Header("Tier buttons")]
         [SerializeField] private Button _minusTier;
         [SerializeField] private Button _plusTier;
-        [Header("Module Slots")]
-        [SerializeField] private CapsuleSlotProvider _firstSlotProvider;
-        [SerializeField] private CapsuleSlotProvider _secondSlotProvider;
+        [Header("Module Slots")] 
+        [SerializeField] private List<CapsuleSlotProvider> _slotProviders;
 
         [Inject] private CapsuleConfig _capsuleConfig;
         [Inject] private EmbryoConfig _embryoConfig;
         [Inject] private InventoryUI _inventory;
         [Inject] private MiniGameEffectsMediator _miniGameEffectsMediator;
-        
+
         private int _selectedTier;
         private Capsule _capsule;
         private Embryo _selectedEmbryo;
-        private MiniGameEffect _miniGameEffect; 
+        private MiniGameEffect _miniGameEffect;
 
         private const float PERCENT_VALUE = 100f;
         private const string CREATE_EMBRYO_TEXT = "Create embryo Tier ";
 
         private int Cost => _embryoConfig.EmbryoTiers[_selectedTier].BaseCost;
         private bool CanBuy => _inventory.CanBuy(Cost);
-        
+
         public void Initialize(Capsule capsule)
         {
             _capsule = capsule;
@@ -55,9 +56,9 @@ namespace Farm.Interface.Popups
             _selectedTier = 0;
 
             UpdatePopupInfo();
-        
+
             UpdateButtonsInfo();
-            
+
             UpdateEmbryoView();
 
             UpdateModulesSots();
@@ -65,13 +66,23 @@ namespace Farm.Interface.Popups
 
         private void UpdateModulesSots()
         {
-            _firstSlotProvider.SetSlot(_capsule.CapsuleSlots[0]);
-            _secondSlotProvider.SetSlot(_capsule.CapsuleSlots[1]);
+            for (var i = 0; i < _slotProviders.Count; i++)
+            {
+                _slotProviders[i].SetSlot(_capsule.CapsuleSlots[i]);
+            }
         }
 
         private void UpdatePopupInfo()
         {
-            _capsuleInfo.SetCapsuleInfo(_capsule.Tier, _capsuleConfig.BaseHumanChance, _capsuleConfig.BaseAnimalChance, _capsuleConfig.BaseFishChance);
+            _capsuleInfo.SetCapsuleInfo(
+                _capsule.Tier,
+                Mathf.RoundToInt(UpgradeModuleUtils.ApplyStatsWithType(_capsuleConfig.BaseHumanChance,
+                    _capsule.CapsuleSlots, ModuleCharacteristicType.HumanRoll)),
+                Mathf.RoundToInt(UpgradeModuleUtils.ApplyStatsWithType(_capsuleConfig.BaseAnimalChance,
+                    _capsule.CapsuleSlots, ModuleCharacteristicType.AnimalRoll)),
+                Mathf.RoundToInt(UpgradeModuleUtils.ApplyStatsWithType(_capsuleConfig.BaseFishChance,
+                    _capsule.CapsuleSlots, ModuleCharacteristicType.FishRoll))
+            );
 
             _capsuleInfo.SetEmbryoInfo(_selectedEmbryo);
         }
@@ -91,7 +102,7 @@ namespace Farm.Interface.Popups
             UpdateButtonsInfo();
             UpdatePopupInfo();
         }
-        
+
         private void MinusTier()
         {
             _selectedTier = Mathf.Clamp(_selectedTier - 1, 0, _capsule.Tier);
@@ -103,7 +114,8 @@ namespace Farm.Interface.Popups
         {
             _closeButton.gameObject.SetActive(true);
             ApplyMiniGameEffects();
-            
+            ApplyModulesEffects();
+
             UpdatePopupInfo();
             _capsule.StartEmbryoProcess(_selectedEmbryo);
             _embryoView.sprite = _capsule.Embryo.Image;
@@ -113,7 +125,7 @@ namespace Farm.Interface.Popups
         {
             if (_miniGameEffect == null)
                 return;
-            
+
             switch (_miniGameEffect.BuffType)
             {
                 case BuffType.UpdateTier:
@@ -138,7 +150,20 @@ namespace Farm.Interface.Popups
                     throw new ArgumentOutOfRangeException();
             }
         }
-        
+
+        private void ApplyModulesEffects()
+        {
+            _selectedEmbryo.EnergyValue =
+                Mathf.RoundToInt(UpgradeModuleUtils.ApplyStatsWithType(_selectedEmbryo.EnergyValue,
+                    _capsule.CapsuleSlots, ModuleCharacteristicType.EnergyCharge));
+            _selectedEmbryo.TimeToGrowth =
+                Mathf.RoundToInt(UpgradeModuleUtils.ApplyStatsWithType(_selectedEmbryo.TimeToGrowth,
+                    _capsule.CapsuleSlots, ModuleCharacteristicType.GrowthSpeed));
+            _selectedEmbryo.StarvationValue =
+                Mathf.RoundToInt(UpgradeModuleUtils.ApplyStatsWithType(_selectedEmbryo.StarvationValue,
+                    _capsule.CapsuleSlots, ModuleCharacteristicType.Satiety));
+        }
+
         private void CreateEmbryo()
         {
             _createEmbryoButton.onClick.RemoveListener(OnBuy);
@@ -154,16 +179,19 @@ namespace Farm.Interface.Popups
 
         private EmbryoType GetEmbryoType()
         {
-            //TODO: изменить шансы выпадения в зависимости от модулей капсулы 
+            float humanChance = GetChance(EmbryoType.Human);
+            float animalChance = GetChance(EmbryoType.Animal);
+            float fishChance = GetChance(EmbryoType.Fish);
+
             float totalChance = 0;
-            totalChance += _capsuleConfig.BaseHumanChance;
-            float humanProcChance = totalChance;
-            totalChance += _capsuleConfig.BaseAnimalChance;
-            float animalProcChance = totalChance;
-            totalChance += _capsuleConfig.BaseFishChance;
+            totalChance += humanChance;
+            var humanProcChance = totalChance;
+            totalChance += animalChance;
+            var animalProcChance = totalChance;
+            totalChance += fishChance;
 
             var chance = Random.Range(0, totalChance);
-            
+
             if (chance < humanProcChance)
                 return EmbryoType.Human;
 
@@ -173,12 +201,28 @@ namespace Farm.Interface.Popups
             return EmbryoType.Fish;
         }
 
+        private float GetChance(EmbryoType type)
+        {
+            float chance = type switch
+            {
+                EmbryoType.Human => Mathf.RoundToInt(UpgradeModuleUtils.ApplyStatsWithType(
+                    _capsuleConfig.BaseHumanChance, _capsule.CapsuleSlots, ModuleCharacteristicType.HumanRoll)),
+                EmbryoType.Animal => Mathf.RoundToInt(UpgradeModuleUtils.ApplyStatsWithType(
+                    _capsuleConfig.BaseAnimalChance, _capsule.CapsuleSlots, ModuleCharacteristicType.AnimalRoll)),
+                EmbryoType.Fish => Mathf.RoundToInt(UpgradeModuleUtils.ApplyStatsWithType(_capsuleConfig.BaseFishChance,
+                    _capsule.CapsuleSlots, ModuleCharacteristicType.FishRoll)),
+                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+            };
+
+            return chance;
+        }
+
         private void UpdateEmbryoView()
-        { 
+        {
             _embryoView.gameObject.SetActive(_selectedEmbryo != null);
             _embryoView.sprite = _selectedEmbryo?.Image;
         }
-        
+
         [UsedImplicitly]
         public void MouseEnter()
         {
@@ -226,12 +270,24 @@ namespace Farm.Interface.Popups
 
         private void MiniGameEffectChanged(MiniGameEffect miniGameEffect) => 
             _miniGameEffect = miniGameEffect;
-        
+
+        private void OnAnyModuleChanged(CapsuleSlot obj)
+        {
+            _capsule.CapsuleSlots.ForEach(slot =>
+            {
+                if (slot == obj)
+                {
+                    UpdatePopupInfo();
+                }
+            });
+        }
+
         private void Awake()
         {
             _plusTier.onClick.AddListener(PlusTier);
             _minusTier.onClick.AddListener(MinusTier);
             _miniGameEffectsMediator.OnEffectChanged += MiniGameEffectChanged;
+            CapsuleSlot.OnAnyModuleChanged += OnAnyModuleChanged;
         }
 
         private void OnDestroy()
@@ -239,6 +295,7 @@ namespace Farm.Interface.Popups
             _plusTier.onClick.RemoveListener(PlusTier);
             _minusTier.onClick.RemoveListener(MinusTier);
             _miniGameEffectsMediator.OnEffectChanged -= MiniGameEffectChanged;
+            CapsuleSlot.OnAnyModuleChanged -= OnAnyModuleChanged;
         }
     }
 }

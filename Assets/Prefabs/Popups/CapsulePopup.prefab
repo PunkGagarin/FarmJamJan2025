@@ -1624,8 +1624,9 @@ MonoBehaviour:
     _statsPanel: {fileID: 5628683917633826523}
   _minusTier: {fileID: 1869861278591398745}
   _plusTier: {fileID: 1549499595398951132}
-  _firstSlotProvider: {fileID: 949328847850071499}
-  _secondSlotProvider: {fileID: 470344082016842465}
+  _slotProviders:
+  - {fileID: 949328847850071499}
+  - {fileID: 470344082016842465}
 --- !u!1 &4260459665775563843
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -20,7 +21,7 @@ namespace Farm.Gameplay.Capsules
         {
             if (_capsuleSlot == slot)
             {
-                _icon.enabled = _capsuleSlot.UpgradeModule != null;
+                _icon.DOColor(new Color(1, 1, 1, _capsuleSlot.UpgradeModule != null ? 1 : 0), 0f);
             }
         }
 
@@ -32,7 +33,7 @@ namespace Farm.Gameplay.Capsules
         public void SetSlot(CapsuleSlot slot)
         {
             _capsuleSlot = slot;
-            _icon.enabled = _capsuleSlot.UpgradeModule != null;
+            _icon.DOColor(new Color(1, 1, 1, _capsuleSlot.UpgradeModule != null ? 1 : 0), 0f);
         }
 
         public void OnPointerDown(PointerEventData eventData)
