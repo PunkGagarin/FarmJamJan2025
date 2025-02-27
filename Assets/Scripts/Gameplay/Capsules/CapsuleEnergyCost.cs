@@ -24,13 +24,13 @@ namespace Farm.Gameplay.Capsules
         
         public void UpdateInfo(int cost, bool isUpdate)
         {
-            _upgradeImage.enabled = isUpdate;
+            _upgradeImage.gameObject.SetActive(isUpdate);
             _cost = cost;
             _costAmount.text = _cost.ToString();
         }
 
-        private void Awake() => 
-            _button.onClick.AddListener(OnBuy);
+        public void CheckCanBuy() => 
+            gameObject.SetActive(_inventory.CanBuy(_cost));
 
         [UsedImplicitly]
         public void MouseEnter()
@@ -63,9 +63,11 @@ namespace Farm.Gameplay.Capsules
             }
         }
 
-        private void OnDestroy()
-        {
+        private void Awake() => 
+            _button.onClick.AddListener(OnBuy);
+        
+        private void OnDestroy() => 
             _button.onClick.RemoveListener(OnBuy);
-        }
+
     }
 }

@@ -16,6 +16,11 @@ namespace Farm.Gameplay.Capsules
 {
     public class Capsule : MonoBehaviour
     {
+        [Header("Resources")]
+        [SerializeField] private Color _closedColor;
+        [SerializeField] private Color _openedColor;
+        [Header("Components")]
+        [SerializeField] private SpriteRenderer _capsuleSprite;
         [SerializeField] private Image _growProgress;
         [SerializeField] private SpriteRenderer _embryoImage;
         [SerializeField] private TMP_Text _info;
@@ -83,6 +88,7 @@ namespace Farm.Gameplay.Capsules
             _growProgress.gameObject.SetActive(false);
             _info.gameObject.SetActive(false);
             _embryoImage.gameObject.SetActive(false);
+            _capsuleSprite.color = _closedColor;
 
             SetupCapsule();
         }
@@ -103,10 +109,12 @@ namespace Farm.Gameplay.Capsules
         private void UpdateOwnership()
         {
             _isOwn = true;
+            _capsuleSprite.color = _openedColor;
             _capsuleSlots.ForEach(slot => slot.IsOwn = true);
             _capsuleEnergyCost.UpdateInfo(_capsuleConfig.UpgradeCost, true);
             OnCapsuleBought?.Invoke();
-
+            _inventory.OnEnergyChanged += _capsuleEnergyCost.CheckCanBuy;
+            _capsuleEnergyCost.CheckCanBuy();
             _capsuleEnergyCost.OnBoughtSuccess -= BuyCapsule;
             _capsuleEnergyCost.OnBoughtSuccess += UpgradeCapsule;
         }
@@ -117,6 +125,7 @@ namespace Farm.Gameplay.Capsules
             OnCapsuleUpgrade?.Invoke();
             if (_tier >= _embryoConfig.EmbryoTiers.Count - 1)
             {
+                _inventory.OnEnergyChanged -= _capsuleEnergyCost.CheckCanBuy;
                 _capsuleEnergyCost.OnBoughtSuccess -= UpgradeCapsule;
                 _capsuleEnergyCost.gameObject.SetActive(false);
             }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Audio;
 using DG.Tweening;
 using Farm.Gameplay.Configs.UpgradeModules;
@@ -33,6 +34,8 @@ namespace Farm.Interface
         private int _moduleBoughtCount = 0;
 
         public InventorySlot[] InventorySlots => _inventorySlots;
+        
+        public event Action OnEnergyChanged;
 
         public int CurrentEnergy
         {
@@ -44,6 +47,7 @@ namespace Farm.Interface
 
                 _currentEnergy = value;
                 _energyAmount.text = _currentEnergy.ToString();
+                OnEnergyChanged?.Invoke();
                 _questProvider.SetRequirement(RequirementType.Energy, _currentEnergy);
             }
         }
