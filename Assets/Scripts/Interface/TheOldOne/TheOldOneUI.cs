@@ -3,7 +3,6 @@ using Farm.Gameplay.Definitions;
 using Farm.Utils.Timer;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Farm.Interface.TheOldOne
@@ -47,20 +46,6 @@ namespace Farm.Interface.TheOldOne
             float progress = current / max;
             _satietyAmount.text = $"{current} / {max}";
             _satietyBar.DOFillAmount(progress, instant ? 0 : _timeToUpdateBar);
-        }
-
-        public void UpdateQuestButtonAction(UnityAction questButtonAction)
-        {
-            if (questButtonAction == null)
-            {
-                _questButton.gameObject.SetActive(false);
-                _questButton.onClick.RemoveAllListeners();
-            }
-            else
-            {
-                _questButton.gameObject.SetActive(true);
-                _questButton.onClick.AddListener(questButtonAction);
-            }
         }
     }
 }

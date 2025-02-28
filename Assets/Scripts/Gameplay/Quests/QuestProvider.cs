@@ -13,6 +13,7 @@ namespace Farm.Gameplay.Quests
         public event Action OnQuestStarted;
         public event Action<int> OnQuestFailed;
         public event Action<int> OnQuestCompleted;
+        public event Action OnQuestUpdated;
 
         public void SetupQuest(QuestDefinition questDefinition)
         {
@@ -30,7 +31,9 @@ namespace Farm.Gameplay.Quests
                 QuestInfo questInfo = new QuestInfo(questRequirement.RequirementType, questRequirement.RequiredAmount, questRequirement.RequiredTier);
                 _currentQuestRequirements.Add(questInfo);
             }
+            
             OnQuestStarted?.Invoke();
+            OnQuestUpdated?.Invoke();
         }
 
         public void AddRequirement(RequirementType requirementType, int requiredTier = -1)
@@ -51,6 +54,7 @@ namespace Farm.Gameplay.Quests
                 
                 questInfo.CurrentAmount++;
             }
+            OnQuestUpdated?.Invoke();
         }
 
         public void SetRequirement(RequirementType requirementType, int value, int requiredTier = -1)
@@ -77,10 +81,11 @@ namespace Farm.Gameplay.Quests
                 _isQuestCompleted = true;
                 OnQuestCompleted?.Invoke(_currentQuest.EnergyReward);
             }
+            OnQuestUpdated?.Invoke();
         }
         
-        public (string, List<QuestInfo>) GetQuestDescriptionAndInfos() => 
-            (_currentQuest == null ? "" : _currentQuest.Description, _currentQuestRequirements);
+        public List<QuestInfo> GetQuestRequirements() => 
+            _currentQuestRequirements;
         
         public void FinalizeQuest()
         {

@@ -18,9 +18,9 @@ namespace Farm.Interface.Popups
         
         public const string COMPLETED_INFO = "<color=green>Completed</color>";
 
-        public void Open(string questDefinition, List<QuestInfo> questInfos)
+        public void Open(string questDescription, List<QuestInfo> questInfos)
         {
-            _questDescription.text = questDefinition;
+            _questDescription.text = questDescription;
             _questRequirements.text = GetQuestRequirementsText(questInfos);
             
             Open(true);

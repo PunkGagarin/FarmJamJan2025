@@ -145,8 +145,8 @@ namespace Farm.Gameplay.MiniGame
             MiniGameEffect selectedEffect = null;
             foreach (Segment segment in _segments)
             {
-                if ((segment.StartAngle - drumShift) % FULL_CIRCLE_ANGLE <= 0 && 
-                    (segment.StartAngle + segment.Angle - drumShift) % FULL_CIRCLE_ANGLE >= 0)
+                if ((segment.StartAngle - drumShift) % FULL_CIRCLE_ANGLE <= -_miniGameConfig.AdditionalAngle && 
+                    (segment.StartAngle + segment.Angle - drumShift) % FULL_CIRCLE_ANGLE >= _miniGameConfig.AdditionalAngle)
                 {
                     selectedEffect = segment.MiniGameEffect;
                     break;
