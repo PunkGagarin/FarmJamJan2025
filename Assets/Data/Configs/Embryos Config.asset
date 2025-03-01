@@ -29,6 +29,6 @@ MonoBehaviour:
     _baseEnergyAmount: 300
     _baseGrowthSpeed: 15
     _baseCost: 0
-  _humanImage: {fileID: 21300000, guid: 4f5cf3927d11df04e89da0f34ac465cb, type: 3}
-  _animalImage: {fileID: 21300000, guid: 399470700809f2f4493aef42cc3a56b6, type: 3}
-  _fishImage: {fileID: 21300000, guid: e3669f782799a9140a65ad6e30d415db, type: 3}
+  _humanImage: {fileID: 21300000, guid: 0c918638830191d4a9fd73c0e5f7b7ab, type: 3}
+  _animalImage: {fileID: 21300000, guid: 0c918638830191d4a9fd73c0e5f7b7ab, type: 3}
+  _fishImage: {fileID: 21300000, guid: 0c918638830191d4a9fd73c0e5f7b7ab, type: 3}

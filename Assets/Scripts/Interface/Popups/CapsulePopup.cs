@@ -18,7 +18,12 @@ namespace Farm.Interface.Popups
 {
     public class CapsulePopup : Popup
     {
-        [SerializeField] private Image _embryoView;
+        private static readonly int InstantFill = Animator.StringToHash("InstantFill");
+        private static readonly int Empty = Animator.StringToHash("Empty");
+        private static readonly int Fill = Animator.StringToHash("Fill");
+        
+        [SerializeField] private Animator _animator;
+        [SerializeField] private Image _embryo;
         [SerializeField] private Button _closeButton;
         [SerializeField] private Button _additionalCloseButton;
         [SerializeField] private Button _createEmbryoButton;
@@ -50,6 +55,8 @@ namespace Farm.Interface.Popups
 
         public void Initialize(Capsule capsule)
         {
+            SyncAnimator(capsule);
+
             _capsule = capsule;
             _selectedEmbryo = capsule.Embryo;
             _createEmbryoButton.interactable = _capsule.Embryo == null;
@@ -67,6 +74,13 @@ namespace Farm.Interface.Popups
             UpdateEmbryoView();
 
             UpdateModulesSots();
+        }
+        private void SyncAnimator(Capsule capsule)
+        {
+            if (_capsule != capsule && capsule.Embryo != null)
+                _animator.SetTrigger(InstantFill);
+            else if (capsule.Embryo == null)
+                _animator.SetTrigger(Empty);
         }
 
         private void UpdateModulesSots()
@@ -127,8 +141,9 @@ namespace Farm.Interface.Popups
             ApplyModulesEffects();
 
             UpdatePopupInfo();
+            _animator.SetTrigger(Fill);
             _capsule.StartEmbryoProcess(_selectedEmbryo);
-            _embryoView.sprite = _capsule.Embryo.Image;
+            _embryo.sprite = _capsule.Embryo.Image;
             _sfxManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
         }
 
@@ -230,8 +245,8 @@ namespace Farm.Interface.Popups
 
         private void UpdateEmbryoView()
         {
-            _embryoView.gameObject.SetActive(_selectedEmbryo != null);
-            _embryoView.sprite = _selectedEmbryo?.Image;
+            _embryo.gameObject.SetActive(_selectedEmbryo != null);
+            _embryo.sprite = _selectedEmbryo?.Image;
         }
 
         [UsedImplicitly]
