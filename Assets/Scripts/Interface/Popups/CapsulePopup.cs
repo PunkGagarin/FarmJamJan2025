@@ -55,8 +55,6 @@ namespace Farm.Interface.Popups
 
         public void Initialize(Capsule capsule)
         {
-            SyncAnimator(capsule);
-
             _capsule = capsule;
             _selectedEmbryo = capsule.Embryo;
             _createEmbryoButton.interactable = _capsule.Embryo == null;
@@ -75,12 +73,12 @@ namespace Farm.Interface.Popups
 
             UpdateModulesSots();
         }
-        private void SyncAnimator(Capsule capsule)
+
+        public override void Open(bool withPause)
         {
-            if (_capsule != capsule && capsule.Embryo != null)
-                _animator.SetTrigger(InstantFill);
-            else if (capsule.Embryo == null)
-                _animator.SetTrigger(Empty);
+            base.Open(withPause);
+            
+            _animator.SetTrigger(_capsule.Embryo == null ? Empty : InstantFill);
         }
 
         private void UpdateModulesSots()
