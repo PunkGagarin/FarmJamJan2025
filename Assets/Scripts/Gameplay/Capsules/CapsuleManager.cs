@@ -11,14 +11,11 @@ namespace Farm.Gameplay.Capsules
         [SerializeField] private List<Capsule> _capsules;
         [Inject] private QuestProvider _questProvider;
 
-        public List<Capsule> Capsules => _capsules;
-
         private void Awake()
         {
             Capsule.OnCapsuleBought += CountOwnCapsules;
             Capsule.OnCapsuleUpgrade += CountCapsulesTiers;
             CapsuleSlot.OnAnyModuleChanged += CountCapsuleModules;
-            _questProvider.OnQuestStarted += CollectQuestInfo;
         }
 
         private void CollectQuestInfo()
@@ -65,7 +62,5 @@ namespace Farm.Gameplay.Capsules
             CapsuleSlot.OnAnyModuleChanged -= CountCapsuleModules;
             _questProvider.OnQuestStarted -= CollectQuestInfo;
         }
-
-
     }
 }

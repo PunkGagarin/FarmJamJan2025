@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Audio;
 using DG.Tweening;
 using Farm.Enums;
@@ -64,24 +63,13 @@ namespace Farm.Gameplay
         private void UpdateQuest(int stage)
         {
             _questProvider.FinalizeQuest();
-            if (_definition.SatietyPhasesData[stage].Quest == null)
-            {
-                _questProvider.SetupQuest(null);
-                _theOldOneUI.UpdateQuestButtonAction(null);
-            }
-            else
-            {
-                _questProvider.SetupQuest(_definition.SatietyPhasesData[stage].Quest);
-                _theOldOneUI.UpdateQuestButtonAction(OpenQuestPopup);
-            }
+            _questProvider.SetupQuest(
+                _definition.SatietyPhasesData[stage].Quest == null 
+                    ? null 
+                    : _definition.SatietyPhasesData[stage].Quest);
         }
 
-        private void OpenQuestPopup()
-        {
-            _sfxManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
-            (string, List<QuestInfo>) questPopupInfo = _questProvider.GetQuestDescriptionAndInfos();
-            _popupManager.OpenQuest(questPopupInfo.Item1, questPopupInfo.Item2);
-        }
+
 
         private void SetupStats()
         {

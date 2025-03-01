@@ -16,9 +16,10 @@ namespace Farm.Gameplay.Capsules
 {
     public class Capsule : MonoBehaviour
     {
-        [Header("Resources")]
-        [SerializeField] private Color _closedColor;
-        [SerializeField] private Color _openedColor;
+        private static readonly int Open = Animator.StringToHash("Open");
+        private static readonly int InstantOpen = Animator.StringToHash("InstantOpen");
+        
+        [SerializeField] private Animator _platformAnimator;
         [Header("Components")]
         [SerializeField] private SpriteRenderer _capsuleSprite;
         [SerializeField] private Image _growProgress;
@@ -79,16 +80,17 @@ namespace Farm.Gameplay.Capsules
             _info.gameObject.SetActive(true);
             _capsuleSlots.ForEach(slot => slot.IsCapsuleInGrowthProcess = false);
         }
-
-        private void BuyCapsule() =>
+        
+        private void BuyCapsule()
+        {
+            _platformAnimator.SetTrigger(Open);
             UpdateOwnership();
-
+        }
         private void Awake()
         {
             _growProgress.gameObject.SetActive(false);
             _info.gameObject.SetActive(false);
             _embryoImage.gameObject.SetActive(false);
-            _capsuleSprite.color = _closedColor;
 
             SetupCapsule();
         }
@@ -97,6 +99,7 @@ namespace Farm.Gameplay.Capsules
         {
             if (_capsuleConfig.CapsuleCosts[_capsuleNumber] == 0)
             {
+                _platformAnimator.SetTrigger(InstantOpen);
                 UpdateOwnership();
             }
             else
@@ -105,11 +108,10 @@ namespace Farm.Gameplay.Capsules
                 _capsuleEnergyCost.UpdateInfo(_capsuleConfig.CapsuleCosts[_capsuleNumber], false);
             }
         }
-
+        
         private void UpdateOwnership()
         {
             _isOwn = true;
-            _capsuleSprite.color = _openedColor;
             _capsuleSlots.ForEach(slot => slot.IsOwn = true);
             _capsuleEnergyCost.UpdateInfo(_capsuleConfig.UpgradeCost, true);
             OnCapsuleBought?.Invoke();
