@@ -17,7 +17,9 @@ MonoBehaviour:
   _tier2Angle: 25
   _tier3Angle: 20
   _decelerationTime: 0.2
-  _effectTime: 60
+  _effectTimeLow: 30
+  _effectTimeMedium: 60
+  _effectTimeHigh: 90
   _lowRiskStats:
     Speed: 80
     SegmentsOnWheel: 5
@@ -33,3 +35,4 @@ MonoBehaviour:
     SegmentsOnWheel: 8
     HighestAllowedTier: 3
     CostToRun: 200
+  _additionalAngle: 0

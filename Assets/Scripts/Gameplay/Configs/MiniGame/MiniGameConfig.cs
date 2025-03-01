@@ -12,7 +12,9 @@ namespace Farm.Gameplay.Configs.MiniGame
         [SerializeField, Range(5, 60)] private float _tier2Angle;
         [SerializeField, Range(5, 60)] private float _tier3Angle;
         [SerializeField] private float _decelerationTime;
-        [SerializeField] private float _effectTime;
+        [SerializeField] private float _effectTimeLow;
+        [SerializeField] private float _effectTimeMedium;
+        [SerializeField] private float _effectTimeHigh;
         [SerializeField] private MiniGameRisk _lowRiskStats;
         [SerializeField] private MiniGameRisk _mediumRiskStats;
         [SerializeField] private MiniGameRisk _highRiskStats;
@@ -26,7 +28,9 @@ namespace Farm.Gameplay.Configs.MiniGame
         public MiniGameRisk LowRiskStats => _lowRiskStats;
         public MiniGameRisk MediumRiskStats => _mediumRiskStats;
         public MiniGameRisk HighRiskStats => _highRiskStats;
-        public float EffectTime => _effectTime;
+        public float EffectTimeLow => _effectTimeLow;
+        public float EffectTimeMedium => _effectTimeMedium;
+        public float EffectTimeHigh => _effectTimeHigh;
         public float AdditionalAngle => _additionalAngle;
         public MiniGameEffect FirstEffect => _pool.FirstEffect;
     }
