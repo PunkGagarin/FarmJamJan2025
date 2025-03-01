@@ -2,7 +2,8 @@
 {
     public enum GameAudioType
     {
-        MainMenuBgm = 1,
+        MainMenuBgm = 0,
+        GamePlayIntro = 1,
         GamePlayBgm = 2,
         RampageBgm = 3,
         UiButtonClick = 9,

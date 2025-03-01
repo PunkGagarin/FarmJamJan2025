@@ -1,4 +1,5 @@
-﻿using Farm.Gameplay.Configs.MiniGame;
+﻿using Audio;
+using Farm.Gameplay.Configs.MiniGame;
 using Farm.Gameplay.MiniGame;
 using Farm.Interface.Popups;
 using Farm.Utils.Timer;
@@ -13,7 +14,8 @@ namespace Farm.Gameplay
         [Inject] private PopupManager _popupManager;
         [Inject] private MiniGameEffectsMediator _miniGameEffectsMediator;
         [Inject] private TimerService _timerService;
-
+        [Inject] private SoundManager _soundManager;
+        
         private TimerHandle _effectTime;
         private MiniGameVisual _miniGameVisual;
 
@@ -23,6 +25,7 @@ namespace Farm.Gameplay
                 return;
 
             Interact();
+            _soundManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);   
         }
         
         private void Interact()

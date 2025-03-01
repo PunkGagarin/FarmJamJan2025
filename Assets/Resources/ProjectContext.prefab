@@ -496,4 +496,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 702ec078f83149e4adf9f047c50e746c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playChance: 0.5
+  _soundsFactory: {fileID: 11400000, guid: b2b06eb7d0e184476bfb21d5c57c6091, type: 2}

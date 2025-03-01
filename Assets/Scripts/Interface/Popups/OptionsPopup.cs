@@ -26,6 +26,8 @@ public class OptionsPopup : Popup
         _sfxSlider.onValueChanged.AddListener(OnSoundSliderValueChanged);
     }
 
+    private void Start() => UpdateSliders();
+
     private void OnAcceptButtonClicked()
     {
         _soundManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);

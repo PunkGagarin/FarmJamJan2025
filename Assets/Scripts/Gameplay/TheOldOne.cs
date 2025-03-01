@@ -17,6 +17,7 @@ namespace Farm.Gameplay
     public class TheOldOne : MonoBehaviour, IPauseHandler
     {
         public delegate void SatietyChangeHandler(float current, float max);
+
         [SerializeField] private SpriteRenderer _icon;
         [SerializeField] private TheOldOneUI _theOldOneUI;
 
@@ -45,7 +46,7 @@ namespace Farm.Gameplay
 
         public void Initialize(TheOldOneDefinition definition)
         {
-            _musicManager.PlaySoundByType(GameAudioType.GamePlayBgm, 0);
+            _musicManager.PlayBgmWithIntro();
             _definition = definition;
             _inRampage = false;
             _icon.sprite = definition.Icon;
@@ -93,7 +94,8 @@ namespace Farm.Gameplay
         private void SetupTimers()
         {
             _lifeTimer = _timerService.AddTimer(_definition.LifeTime, Sealed);
-            _phaseTimer = _timerService.AddTimer(_definition.SatietyPhasesData[_currentStage + 1].PhaseStartTime, ChangePhase);
+            _phaseTimer = _timerService.AddTimer(_definition.SatietyPhasesData[_currentStage + 1].PhaseStartTime,
+                ChangePhase);
             _starveTimer = _timerService.AddTimer(_definition.TimeToStarveTick, Starve, true);
         }
 
@@ -138,7 +140,7 @@ namespace Farm.Gameplay
             _starveTimer = null;
             _rampageTimer = null;
             _phaseTimer = null;
-            
+
             OnSealed?.Invoke();
         }
 
@@ -157,7 +159,8 @@ namespace Farm.Gameplay
 
             if (_currentStage + 1 < _definition.SatietyPhasesData.Count)
             {
-                float phaseTime = _definition.SatietyPhasesData[_currentStage + 1].PhaseStartTime - _definition.SatietyPhasesData[_currentStage].PhaseStartTime;
+                float phaseTime = _definition.SatietyPhasesData[_currentStage + 1].PhaseStartTime -
+                                  _definition.SatietyPhasesData[_currentStage].PhaseStartTime;
                 _phaseTimer = _timerService.AddTimer(phaseTime, ChangePhase);
             }
         }
@@ -177,15 +180,15 @@ namespace Farm.Gameplay
 
             _blinkingTween.Restart();
             _inRampage = true;
-            
+
             _musicManager.PlaySoundByType(GameAudioType.RampageBgm, 0);
-            
+
             if (_rampageTimer == null)
                 _rampageTimer = _timerService.AddTimer(_definition.RampageTime, Defeat);
-            else 
+            else
                 _rampageTimer.SetManualPause(false);
         }
-        
+
         private void StopRampage()
         {
             _inRampage = false;
@@ -199,7 +202,7 @@ namespace Farm.Gameplay
         {
             _inRampage = false;
             _blinkingTween.Kill();
-            
+
             _sfxManager.PlaySoundByType(GameAudioType.GameOver, 0);
             OnDefeat?.Invoke();
         }
@@ -209,12 +212,12 @@ namespace Farm.Gameplay
             if (_inRampage)
                 _blinkingTween.TogglePause();
         }
-        
+
         private void CollectQuestInfo()
         {
             _questProvider.SetRequirement(RequirementType.Satiety, (int)_currentSatiety);
         }
-        
+
         private void SatietyChanged(float current, float _)
         {
             if (current <= 0)
@@ -231,7 +234,7 @@ namespace Farm.Gameplay
             _questProvider.OnQuestFailed += OnQuestFailed;
             OnSatietyChanged += SatietyChanged;
         }
-        
+
         private void OnQuestFailed(int satietyPenalty)
         {
             _currentSatiety -= satietyPenalty;

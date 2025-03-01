@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Audio;
 using Farm.Gameplay.Configs.MiniGame;
 using Farm.Interface;
 using Farm.Utils.Pause;
@@ -32,6 +33,7 @@ namespace Farm.Gameplay.MiniGame
         
         [Inject] private TimerService _timerService;
         [Inject] private InventoryUI _inventory;
+        [Inject] private SoundManager _soundManager;
         
         public event MiniGameEnds OnMiniGameEnds;
         private bool _isStarted;
@@ -81,12 +83,14 @@ namespace Farm.Gameplay.MiniGame
         {
             if (_inventory.CanBuy(_miniGameConfig.LowRiskStats.CostToRun))
             {
+                _soundManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
                 _inventory.CurrentEnergy -= _miniGameConfig.LowRiskStats.CostToRun;
                 _selectedRisk = _miniGameConfig.LowRiskStats;
                 StartGame();
             }
             else
             {
+                _soundManager.PlaySoundByType(GameAudioType.ActionError, 0);
                 _inventory.ShakeCanNotBuy();
             }
         }
@@ -95,12 +99,14 @@ namespace Farm.Gameplay.MiniGame
         {
             if (_inventory.CanBuy(_miniGameConfig.MediumRiskStats.CostToRun))
             {
+                _soundManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
                 _inventory.CurrentEnergy -= _miniGameConfig.MediumRiskStats.CostToRun;
                 _selectedRisk = _miniGameConfig.MediumRiskStats;
                 StartGame();
             }
             else
             {
+                _soundManager.PlaySoundByType(GameAudioType.ActionError, 0);
                 _inventory.ShakeCanNotBuy();
             }
         }
@@ -109,12 +115,14 @@ namespace Farm.Gameplay.MiniGame
         {
             if (_inventory.CanBuy(_miniGameConfig.HighRiskStats.CostToRun))
             {
+                _soundManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
                 _inventory.CurrentEnergy -= _miniGameConfig.HighRiskStats.CostToRun;
                 _selectedRisk = _miniGameConfig.HighRiskStats;
                 StartGame();
             }
             else
             {
+                _soundManager.PlaySoundByType(GameAudioType.ActionError, 0);
                 _inventory.ShakeCanNotBuy();
             }
         }
@@ -136,6 +144,7 @@ namespace Farm.Gameplay.MiniGame
             _isStarted = false;
             _isEnded = true;
             _deceleration = _speed / _miniGameConfig.DecelerationTime;
+            _soundManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
         }
         
         private void DeterminateMiniGameOutput()

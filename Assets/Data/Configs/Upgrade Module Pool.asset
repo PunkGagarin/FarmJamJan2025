@@ -29,7 +29,7 @@ MonoBehaviour:
     MinValue: 0
     MaxValue: 100
   - ModuleCharacteristicType: 4
-    Description: Growth Speed
+    Description: Growth Time
     Icon: {fileID: 21300000, guid: 8b1c27abe0824a6428ab0e0aff008b47, type: 3}
     MinValue: 0
     MaxValue: 100
