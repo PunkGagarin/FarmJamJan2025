@@ -8,12 +8,14 @@ namespace Audio
     [CreateAssetMenu(menuName = "Gameplay/Audio/SoundsFactorySO", fileName = "SoundsFactorySO")]
     public class SoundsFactorySO : ScriptableObject
     {
-        [SerializeField]
-        private List<CustomKeyValue<GameAudioType, List<AudioClip>>> _clips;
+        [SerializeField] private float _intervalBetweenAmbientSfx;
+        [SerializeField] private List<CustomKeyValue<GameAudioType, List<CustomKeyValue<int, AudioClip>>>> _clips;
 
-        public AudioClip GetRandomClipByType(GameAudioType type)
+        public float IntervalBetweenAmbientSfx => _intervalBetweenAmbientSfx;
+
+        public CustomKeyValue<int, AudioClip> GetRandomClipByType(GameAudioType type)
         {
-            AudioClip clipToReturn = null;
+            CustomKeyValue<int, AudioClip> clipToReturn = null;
             var audioList = _clips.FirstOrDefault(el => el.key == type);
             if (audioList != null)
             {
@@ -28,9 +30,9 @@ namespace Audio
             return clipToReturn;
         }
 
-        public AudioClip GetClipByTypeAndIndex(GameAudioType type, int index)
+        public CustomKeyValue<int, AudioClip> GetClipByTypeAndIndex(GameAudioType type, int index)
         {
-            AudioClip clipToReturn = null;
+            CustomKeyValue<int, AudioClip> clipToReturn = null;
             var audioList = _clips.FirstOrDefault(el => el.key == type);
             
             if (audioList != null)

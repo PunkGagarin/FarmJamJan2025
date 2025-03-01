@@ -8,6 +8,7 @@ namespace Audio
     {
         private const string PLAYER_PREFS_NAME = "SoundEffectVolume";
         private const float DEFAULT_VOLUME = .5f;
+        private const float PERCENT_VALUE = 100f;
 
         [SerializeField] private SoundsFactorySO _soundsFactory;
 
@@ -22,7 +23,7 @@ namespace Audio
             AudioSource.volume = Volume;
         }
 
-        private AudioClip GetRandomSoundByType(GameAudioType type)
+        private CustomKeyValue<int, AudioClip> GetRandomSoundByType(GameAudioType type)
         {
             return _soundsFactory.GetRandomClipByType(type);
         }
@@ -43,20 +44,37 @@ namespace Audio
         public void PlayRandomSoundByType(GameAudioType type)
         {
             var soundToPlay = GetRandomSoundByType(type);
-            PlaySound(soundToPlay);
+            PlaySound(soundToPlay.value, soundToPlay.key);
         }
 
         public void PlaySoundByType(GameAudioType type, int soundIndex)
         {
             var clip = _soundsFactory.GetClipByTypeAndIndex(type, soundIndex);
-            PlaySound(clip);
+            PlaySound(clip.value, clip.key);
+        }
+        
+        public void PlayRandomSoundByTypeWithRandomChance(GameAudioType type, int soundIndex, bool isRandomPitch)
+        {
+            var chance = Random.Range(0f, 1f);
+            if (chance < .5f) return;
+            var clip = _soundsFactory.GetRandomClipByType(type);
+            PlaySoundWithPitch(clip.value, clip.key, isRandomPitch ? Random.Range(1, 2) : 1);
         }
 
-        private void PlaySound(AudioClip clip)
+        public void PlaySoundWithPitch(AudioClip clip, int clipVolume, int pitch)
         {
             var audioSource = GetAvailableAudioSource();
             audioSource.clip = clip;
-            audioSource.volume = Volume;
+            audioSource.volume = Volume * (clipVolume / PERCENT_VALUE);
+            audioSource.pitch = pitch;
+            audioSource.Play();
+        }
+        
+        private void PlaySound(AudioClip clip, int clipVolume)
+        {
+            var audioSource = GetAvailableAudioSource();
+            audioSource.clip = clip;
+            audioSource.volume = Volume * (clipVolume / PERCENT_VALUE);
             audioSource.Play();
         }
 

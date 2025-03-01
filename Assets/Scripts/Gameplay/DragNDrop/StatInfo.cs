@@ -14,7 +14,10 @@ namespace Farm.Gameplay.DragNDrop
         public void SetStatInfo(UpgradeModuleStat stat)
         {
             _description.text = stat.Description;
-            _value.text = Mathf.Round(stat.Value).ToString();
+            var value = Mathf.Round(stat.Value);
+            var sign = value >= 0 ? "+" : "-";
+            var valueString = $"{sign} {Mathf.Abs(value)}%";
+            _value.text = valueString;
             _icon.sprite = stat.Icon;
         }
     }
