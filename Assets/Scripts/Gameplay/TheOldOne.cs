@@ -45,7 +45,7 @@ namespace Farm.Gameplay
 
         public void Initialize(TheOldOneDefinition definition)
         {
-            _musicManager.PlayBgmWithIntro();
+            _musicManager.PlayBgm();
             _definition = definition;
             _inRampage = false;
             _icon.sprite = definition.Icon;
@@ -169,7 +169,7 @@ namespace Farm.Gameplay
             _blinkingTween.Restart();
             _inRampage = true;
 
-            _musicManager.PlaySoundByType(GameAudioType.RampageBgm, 0);
+            _musicManager.SetNextClipToPlay(GameAudioType.RampageBgm);
 
             if (_rampageTimer == null)
                 _rampageTimer = _timerService.AddTimer(_definition.RampageTime, Defeat);
@@ -183,7 +183,7 @@ namespace Farm.Gameplay
             _rampageTimer.SetManualPause(true);
             _icon.DOFade(1, 0);
             _blinkingTween.Kill();
-            _musicManager.PlaySoundByType(GameAudioType.GamePlayBgm, 0);
+            _musicManager.SetNextClipToPlay(GameAudioType.GamePlayBgm);
         }
 
         private void Defeat()

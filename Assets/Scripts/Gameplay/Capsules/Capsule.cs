@@ -150,7 +150,7 @@ namespace Farm.Gameplay.Capsules
             if (_isFeedReady)
             {
                 FeedTheOldOne();
-                _sfxManager.PlaySoundByTypeWithRandomChance(GameAudioType.FeedingAction, 0, true);
+                _sfxManager.PlayRandomSoundByTypeWithRandomChance(GameAudioType.FeedingAction, 0, true);
             }
             else
             {

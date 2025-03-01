@@ -14,10 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _intervalBetweenAmbientSfx: 55
   _clips:
+  - _key: -1
+    _value:
+    - _key: 100
+      _value: {fileID: 8300000, guid: eb98507a4d30e43f48be7ef68639a37e, type: 3}
   - _key: 0
     _value:
     - _key: 100
-      _value: {fileID: 8300000, guid: d9195837b42cc4950b57785660b2ba82, type: 3}
+      _value: {fileID: 8300000, guid: 83a7d0c69c7224651a835a084e7cff39, type: 3}
   - _key: 1
     _value:
     - _key: 100
@@ -38,16 +42,16 @@ MonoBehaviour:
     _value:
     - _key: 100
       _value: {fileID: 8300000, guid: dccf861a2e0b84b64bb3a5ace565ff55, type: 3}
+    - _key: 100
+      _value: {fileID: 8300000, guid: 62a8be0f6e33142e485596a979effcdf, type: 3}
+    - _key: 100
+      _value: {fileID: 8300000, guid: ec809484e75e54affa834ecd7e7670a3, type: 3}
   - _key: 20
     _value:
     - _key: 100
       _value: {fileID: 8300000, guid: bc5e2084ba6514260a1ba32459dcd5fc, type: 3}
     - _key: 100
       _value: {fileID: 8300000, guid: f4a502bde36d840e8805f1a7b1e46478, type: 3}
-    - _key: 100
-      _value: {fileID: 8300000, guid: 62a8be0f6e33142e485596a979effcdf, type: 3}
-    - _key: 100
-      _value: {fileID: 8300000, guid: ec809484e75e54affa834ecd7e7670a3, type: 3}
   - _key: 6
     _value:
     - _key: 0

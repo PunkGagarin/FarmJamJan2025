@@ -24,7 +24,7 @@ public class MainMenuUi : MonoBehaviour
 
     private void Start()
     {
-        _musicManager.PlaySoundByType(GameAudioType.MainMenuBgm, 0);
+        _musicManager.PlayBgm();
     }
 
     private void OnStartGameClicked()

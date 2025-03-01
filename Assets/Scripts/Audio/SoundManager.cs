@@ -53,11 +53,11 @@ namespace Audio
             PlaySound(clip.value, clip.key);
         }
         
-        public void PlaySoundByTypeWithRandomChance(GameAudioType type, int soundIndex, bool isRandomPitch)
+        public void PlayRandomSoundByTypeWithRandomChance(GameAudioType type, int soundIndex, bool isRandomPitch)
         {
             var chance = Random.Range(0f, 1f);
             if (chance < .5f) return;
-            var clip = _soundsFactory.GetClipByTypeAndIndex(type, soundIndex);
+            var clip = _soundsFactory.GetRandomClipByType(type);
             PlaySoundWithPitch(clip.value, clip.key, isRandomPitch ? Random.Range(1, 2) : 1);
         }
 
