@@ -97,3 +97,8 @@ MonoBehaviour:
     BuffType: 3
     Value: 30
     Weight: 1
+  _firstEffect:
+    Tier: 1
+    BuffType: 1
+    Value: -50
+    Weight: 0

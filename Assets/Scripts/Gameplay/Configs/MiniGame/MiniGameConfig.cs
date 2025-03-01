@@ -28,6 +28,7 @@ namespace Farm.Gameplay.Configs.MiniGame
         public MiniGameRisk HighRiskStats => _highRiskStats;
         public float EffectTime => _effectTime;
         public float AdditionalAngle => _additionalAngle;
+        public MiniGameEffect FirstEffect => _pool.FirstEffect;
     }
     
     [Serializable]

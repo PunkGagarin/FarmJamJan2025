@@ -7,6 +7,9 @@ namespace Farm.Gameplay.Configs.MiniGame
     public class MiniGamePool : ScriptableObject
     {
         [SerializeField] private List<MiniGameEffect> _effects;
+        [SerializeField] private MiniGameEffect _firstEffect;
+
         public List<MiniGameEffect> Effects => _effects;
+        public MiniGameEffect FirstEffect => _firstEffect;
     }
 }

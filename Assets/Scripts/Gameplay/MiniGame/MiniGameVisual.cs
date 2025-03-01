@@ -41,6 +41,7 @@ namespace Farm.Gameplay.MiniGame
         private float _speed;
         private float _deceleration;
         private MiniGameRisk _selectedRisk;
+        private bool _isFirstRun = true;
         
         private const float FULL_CIRCLE_ANGLE = 360f;
 
@@ -148,6 +149,7 @@ namespace Farm.Gameplay.MiniGame
                 if ((segment.StartAngle - drumShift) % FULL_CIRCLE_ANGLE <= -_miniGameConfig.AdditionalAngle && 
                     (segment.StartAngle + segment.Angle - drumShift) % FULL_CIRCLE_ANGLE >= _miniGameConfig.AdditionalAngle)
                 {
+                    _isFirstRun = false;
                     selectedEffect = segment.MiniGameEffect;
                     break;
                 }
@@ -177,6 +179,8 @@ namespace Farm.Gameplay.MiniGame
         
         private MiniGameEffect GetRandomEffect(List<MiniGameEffect> allowedEffects)
         {
+            if (_isFirstRun) 
+                return _miniGameConfig.FirstEffect;
             float totalWeight = allowedEffects.Sum(effect => effect.Weight);
             float randomValue = Random.Range(0f, totalWeight);
             float currentWeight = 0f;
@@ -190,27 +194,6 @@ namespace Farm.Gameplay.MiniGame
             }
             
             return allowedEffects[^1];
-        }
-
-        private bool CanFitSegment(float segmentSize)
-        {
-            List<float> gaps = new List<float>();
-
-            if (_segments.Count == 0)
-                return true;
-
-            var sortedSegments = _segments.OrderBy(segment => segment.StartAngle).ToList();
-
-            for (int i = 0; i < sortedSegments.Count; i++)
-            {
-                float currentSegmentEndAngle = sortedSegments[i].StartAngle + sortedSegments[i].Angle;
-                float nextSegmentStartAngle = (i + 1) < sortedSegments.Count ? sortedSegments[i + 1].StartAngle : 360f;
-
-                float gap = i + 1 < sortedSegments.Count ? nextSegmentStartAngle - currentSegmentEndAngle : (360f + sortedSegments[0].StartAngle) - currentSegmentEndAngle;
-                gaps.Add(gap);
-            }
-
-            return gaps.Any(gap => gap >= segmentSize);
         }
         
         private Segment PickSegment()
@@ -236,19 +219,6 @@ namespace Farm.Gameplay.MiniGame
             _segments.Enqueue(segmentToReturn);
             segmentToReturn.SetSegmentAngle(0);
             return segmentToReturn;
-        }
-
-        private bool IsSegmentOverlap(float startAngle, float segmentSize)
-        {
-            foreach (var segment in _segments)
-            {
-                float segmentEndAngle = segment.StartAngle + segment.Angle;
-        
-                if ((startAngle >= segment.StartAngle && startAngle < segmentEndAngle) ||
-                    (segment.StartAngle >= startAngle && segment.StartAngle < startAngle + segmentSize))
-                    return true;
-            }
-            return false;
         }
         
         private float DeterminateFillFromBuff(MiniGameEffect randomEffect) =>
