@@ -6,7 +6,6 @@ namespace Farm
 {
     public class RestartCurrentSceneButton : MonoBehaviour
     {
-
         private Button _button;
         
         [Inject] private SceneLoader _sceneLoader;

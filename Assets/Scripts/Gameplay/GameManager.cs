@@ -27,23 +27,21 @@ namespace Farm.Gameplay
         private void RampageStateChanged(bool newState)
         {
             _theOldOneUI.OnRampageStateChanged(newState);
-            
         }
 
         private void TheOldOneSealed()
         {
-            _popupManager.OpenEndPhasePopup(_theOldOneRepository.Definitions[_currentStage]);
-
             _currentStage++;
-            
             if (_currentStage >= _theOldOneRepository.Definitions.Count)
             {
                 WinGame();
             }
             else
             {
+                _popupManager.OpenEndPhasePopup(_theOldOneRepository.Definitions[_currentStage - 1]);
                 SetupOldOne();
             }
+            
         }
 
         private void Defeat()
@@ -56,8 +54,7 @@ namespace Farm.Gameplay
 
         private void WinGame()
         {
-            Debug.Log($"Победа");
-            //TODO: Показывать окно победы
+            _popupManager.OpenVictoryPopup();
         }
 
 
