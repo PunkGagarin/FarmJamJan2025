@@ -34,13 +34,7 @@ namespace Farm.Gameplay
         
         private void Interact()
         {
-            if (_effectTime != null)
-            {
-                _soundManager.PlaySoundByType(GameAudioType.ActionError, 0);   
-                return;
-            }
-            
-            _soundManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
+            if (_effectTime != null) return;
             
             if (_miniGameVisual == null)
             {
@@ -101,6 +95,11 @@ namespace Farm.Gameplay
             _button.interactable = true;
         }
 
+        public void OnClickTrigger()
+        {
+            _soundManager.PlaySoundByType(_effectTime == null ? GameAudioType.UiButtonClick : GameAudioType.ActionError, 0);
+        }
+        
         private void Awake()
         {
             _button.onClick.AddListener(Interact);

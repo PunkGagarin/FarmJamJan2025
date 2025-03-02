@@ -30,8 +30,9 @@ namespace Farm.Gameplay.Configs.UpgradeModules
             var moduleRandomizedStats = shuffledStatsPool.GetRange(0, maxStatsCount);
             for (var i = 0; i < moduleRandomizedStats.Count; i++)
             {
-                var stat = moduleRandomizedStats[i];
-                stat.SetValue(Random.Range(stat.MinValue, stat.MaxValue));
+                var initStat = moduleRandomizedStats[i];
+                var stat = new UpgradeModuleStat(initStat.ModuleCharacteristicType, initStat.Description, initStat.Icon, initStat.MinValue, initStat.MaxValue);
+                stat.SetValue(Mathf.RoundToInt(Random.Range(stat.MinValue, stat.MaxValue)));
 
                 if (!hasNegativeStat)
                 {
@@ -48,7 +49,7 @@ namespace Farm.Gameplay.Configs.UpgradeModules
                 finalStats.Add(stat);
             }
 
-            return new UpgradeModule(finalStats, _icons[Random.Range(0, _icons.Count)]); // todo ask GD about icon;
+            return new UpgradeModule(finalStats, _icons[Random.Range(0, _icons.Count)]);
         }
 
         private int CalculateStatsCount(bool canBeThree)

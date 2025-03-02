@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Farm.Gameplay.Capsules;
+using Farm.Gameplay.Configs.UpgradeModules;
 using TMPro;
 using UnityEngine;
 
@@ -16,14 +18,15 @@ namespace Farm.Interface.Popups
         [SerializeField] private TMP_Text _energyAmount;
         [SerializeField] private TMP_Text _growTime;
         [SerializeField] private GameObject _statsPanel;
+        [SerializeField] private CapsulePopupModuleInfo _mosulesStats;
 
         private const string CAPSULE_TIER = "Capsule Tier ";
         private const float PERCENT_VALUE = 100f;
-        
+
         public void SetCapsuleInfo(int tier, float chanceHuman, float chanceAnimal, float chanceFish)
         {
             _capsuleTier.text = $"{CAPSULE_TIER}{tier}";
-            float totalChance = chanceAnimal+chanceHuman+chanceFish;
+            float totalChance = chanceAnimal + chanceHuman + chanceFish;
             _humanChance.text = (chanceHuman / totalChance * PERCENT_VALUE).ToString("0") + "%";
             _animalChance.text = (chanceAnimal / totalChance * PERCENT_VALUE).ToString("0") + "%";
             _fishChance.text = (chanceFish / totalChance * PERCENT_VALUE).ToString("0") + "%";
@@ -42,6 +45,19 @@ namespace Farm.Interface.Popups
                 _energyAmount.text = embryo.EnergyValue.ToString();
                 _growTime.text = embryo.TimeToGrowth.ToString("0.0");
             }
+        }
+
+        public void SetModulesInfo(List<CapsuleSlot> capsuleCapsuleSlots)
+        {
+            var stats = new List<UpgradeModuleStat>();
+            capsuleCapsuleSlots.ForEach(slot =>
+            {
+                slot.UpgradeModule?.Stats.ForEach(stat =>
+                {
+                    stats.Add(stat);
+                });
+            });
+            _mosulesStats.SetInfo(stats);
         }
     }
 }

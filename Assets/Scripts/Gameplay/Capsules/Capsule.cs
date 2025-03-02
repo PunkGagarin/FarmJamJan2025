@@ -92,6 +92,7 @@ namespace Farm.Gameplay.Capsules
         {
             _animator.SetTrigger(Open);
             UpdateOwnership();
+            _sfxManager.PlaySoundByType(GameAudioType.CapsuleAppearing, 0);
         }
         
         private void Awake()
