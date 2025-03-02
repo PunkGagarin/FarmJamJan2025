@@ -36,7 +36,7 @@ namespace Farm.Interface.TheOldOne
             {
                 string textToAdd = info.QuestStateDescription;
                 textToAdd = textToAdd.Replace("[RequiredExtraAmount]", info.RequiredExtraAmount.ToString());
-                textToAdd += $" {info.CurrentAmount} / {info.RequiredAmount}\n";
+                textToAdd += $"\n{info.CurrentAmount} / {info.RequiredAmount}";
                 text += textToAdd;
             }
             
