@@ -10,6 +10,7 @@ using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using Zenject;
 
@@ -42,10 +43,13 @@ namespace Farm.Gameplay.Capsules
         [Inject] private SoundManager _sfxManager;
 
         private TimerHandle _embryoTimer;
+        private Light2D _light2D;
         private int _tier;
         private bool _isOwn;
         private bool _animationInProgress;
         private bool _isFeedReady;
+        private const float ENABLE_LIGHT = 6.7f;
+        private const float DISABLE_LIGHT = 0f;
 
         public List<CapsuleSlot> CapsuleSlots => _capsuleSlots;
         public Embryo Embryo { get; private set; }
@@ -93,6 +97,7 @@ namespace Farm.Gameplay.Capsules
             _animator.SetTrigger(Open);
             UpdateOwnership();
             _sfxManager.PlaySoundByType(GameAudioType.CapsuleAppearing, 0);
+            _timerService.AddTimer(1.4f, () => _light2D.intensity = ENABLE_LIGHT);
         }
         
         private void Awake()
@@ -100,7 +105,8 @@ namespace Farm.Gameplay.Capsules
             _growProgress.gameObject.SetActive(false);
             _info.gameObject.SetActive(false);
             OnEmbryoStateChanged += UpdateView;
-
+            _light2D = GetComponentInChildren<Light2D>();
+            _light2D.intensity = DISABLE_LIGHT;
             SetupCapsule();
         }
         
@@ -127,6 +133,7 @@ namespace Farm.Gameplay.Capsules
             {
                 _animator.SetTrigger(InstantOpen);
                 UpdateOwnership();
+                _light2D.intensity = ENABLE_LIGHT;
             }
             else
             {
