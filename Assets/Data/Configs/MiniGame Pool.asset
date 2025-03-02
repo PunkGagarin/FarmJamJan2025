@@ -13,89 +13,41 @@ MonoBehaviour:
   m_Name: MiniGame Pool
   m_EditorClassIdentifier: 
   _effects:
-  - Tier: 3
-    BuffType: 0
-    Value: 1
-    Weight: 1
-  - Tier: 3
-    BuffType: 0
-    Value: -1
-    Weight: 1
-  - Tier: 1
-    BuffType: 1
-    Value: -30
-    Weight: 1000000
-  - Tier: 1
-    BuffType: 1
-    Value: 200
-    Weight: 1
-  - Tier: 2
-    BuffType: 1
-    Value: -15
-    Weight: 1
-  - Tier: 2
+  - Tier: 0
     BuffType: 1
     Value: 15
     Weight: 1
-  - Tier: 3
-    BuffType: 1
-    Value: -30
-    Weight: 1
-  - Tier: 3
-    BuffType: 1
-    Value: 30
-    Weight: 1
-  - Tier: 1
-    BuffType: 2
-    Value: -5
-    Weight: 1
-  - Tier: 1
-    BuffType: 2
-    Value: -5
-    Weight: 1
-  - Tier: 1
-    BuffType: 2
-    Value: 5
-    Weight: 1
-  - Tier: 2
-    BuffType: 2
-    Value: -15
-    Weight: 1
-  - Tier: 2
+  - Tier: 0
     BuffType: 2
     Value: 15
     Weight: 1
-  - Tier: 3
-    BuffType: 2
-    Value: -30
-    Weight: 1
-  - Tier: 3
-    BuffType: 2
-    Value: 30
-    Weight: 1
-  - Tier: 1
-    BuffType: 3
-    Value: -5
-    Weight: 1
-  - Tier: 1
-    BuffType: 3
-    Value: 5
-    Weight: 1
-  - Tier: 2
-    BuffType: 3
-    Value: -15
-    Weight: 1
-  - Tier: 2
+  - Tier: 0
     BuffType: 3
     Value: 15
     Weight: 1
-  - Tier: 3
+  - Tier: 2
     BuffType: 3
-    Value: -30
+    Value: 25
     Weight: 1
-  - Tier: 3
+  - Tier: 2
+    BuffType: 1
+    Value: 25
+    Weight: 1
+  - Tier: 2
+    BuffType: 2
+    Value: 25
+    Weight: 1
+  - Tier: 2
+    BuffType: 1
+    Value: 45
+    Weight: 1
+  - Tier: 2
+    BuffType: 2
+    Value: 45
+    Weight: 1
+  - Tier: 2
     BuffType: 3
-    Value: 30
+    Value: 45
     Weight: 1
   _firstEffect:
     Tier: 1

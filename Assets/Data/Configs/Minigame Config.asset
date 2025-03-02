@@ -24,12 +24,12 @@ MonoBehaviour:
     Speed: 80
     SegmentsOnWheel: 5
     HighestAllowedTier: 1
-    CostToRun: 30
+    CostToRun: 50
   _mediumRiskStats:
     Speed: 160
     SegmentsOnWheel: 6
     HighestAllowedTier: 2
-    CostToRun: 90
+    CostToRun: 100
   _highRiskStats:
     Speed: 240
     SegmentsOnWheel: 8
