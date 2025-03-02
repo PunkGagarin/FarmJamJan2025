@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: cab9abdbdb46847d694c1919a490e5e4
+guid: f648594d7d7db4257932be0d18bdcd28
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - JMH Cthulhumbus Arcade UGalt2
+  - Ruler 9
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Energy Charge
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 168233b8fe43f4dae8e2bbd962232efa, type: 2}
-  m_sharedMaterial: {fileID: 5683825052000979397, guid: 168233b8fe43f4dae8e2bbd962232efa, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a0ea6ae88685b4905931d51a2e0f3560, type: 2}
+  m_sharedMaterial: {fileID: 3778483385410204777, guid: a0ea6ae88685b4905931d51a2e0f3560, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -92,10 +92,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 36
+  m_fontSize: 22
+  m_fontSizeBase: 22
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -201,8 +201,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: +7
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 168233b8fe43f4dae8e2bbd962232efa, type: 2}
-  m_sharedMaterial: {fileID: 5683825052000979397, guid: 168233b8fe43f4dae8e2bbd962232efa, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a0ea6ae88685b4905931d51a2e0f3560, type: 2}
+  m_sharedMaterial: {fileID: 3778483385410204777, guid: a0ea6ae88685b4905931d51a2e0f3560, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -226,7 +226,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25.55
+  m_fontSize: 26.75
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
