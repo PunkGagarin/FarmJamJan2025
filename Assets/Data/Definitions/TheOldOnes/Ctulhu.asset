@@ -37,7 +37,7 @@ MonoBehaviour:
     SatietyLoseByTick: 8
     Quest: {fileID: 11400000, guid: e2320d5b53ddab342a526149a49ae1af, type: 2}
   - PhaseStartTime: 750
-    SatietyLoseByTick: 9
+    SatietyLoseByTick: 100
     Quest: {fileID: 0}
   _rampageTime: 10
   _humanSatietyModifier: 100
