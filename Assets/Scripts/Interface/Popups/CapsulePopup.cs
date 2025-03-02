@@ -192,6 +192,7 @@ namespace Farm.Interface.Popups
 
         private void CreateEmbryo()
         {
+            _sfxManager.PlaySoundByType(GameAudioType.EmbryoCreating, 0);
             _createEmbryoButton.onClick.RemoveListener(OnBuy);
 
             _createEmbryoButton.interactable = false;

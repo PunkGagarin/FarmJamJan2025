@@ -162,6 +162,7 @@ namespace Farm.Gameplay.MiniGame
         {
             _isEnded = false;
             MiniGameEffect selectedEffect = GetMiniGameEffectUnderSelector();
+            _soundManager.PlaySoundByType(selectedEffect == null ? GameAudioType.MiniGameLose : GameAudioType.MiniGameWin, 0); 
             //type of the game
             _timerService.AddTimer(1f, () => OnMiniGameEnds?.Invoke(selectedEffect, GetEffectByTier()));
         }
