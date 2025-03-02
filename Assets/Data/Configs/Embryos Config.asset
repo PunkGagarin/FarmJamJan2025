@@ -17,17 +17,17 @@ MonoBehaviour:
     _baseEnergyAmount: 25
     _baseGrowthSpeed: 20
     _baseCost: 0
-  - _baseFoodAmount: 100
-    _baseEnergyAmount: 100
-    _baseGrowthSpeed: 10
+  - _baseFoodAmount: 40
+    _baseEnergyAmount: 30
+    _baseGrowthSpeed: 20
     _baseCost: 0
-  - _baseFoodAmount: 200
-    _baseEnergyAmount: 200
-    _baseGrowthSpeed: 12
+  - _baseFoodAmount: 45
+    _baseEnergyAmount: 35
+    _baseGrowthSpeed: 20
     _baseCost: 0
-  - _baseFoodAmount: 300
-    _baseEnergyAmount: 300
-    _baseGrowthSpeed: 15
+  - _baseFoodAmount: 50
+    _baseEnergyAmount: 40
+    _baseGrowthSpeed: 20
     _baseCost: 0
   _humanImageUI: {fileID: 21300000, guid: 834f545ca6631ca4f85b9817c6e9597b, type: 3}
   _animalImageUI: {fileID: 21300000, guid: 60f8cbf65e2ade54bbfade37c96879a9, type: 3}

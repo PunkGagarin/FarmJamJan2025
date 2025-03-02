@@ -14,32 +14,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _icon: {fileID: 21300000, guid: 3246db2c78c27334e8a2029aee65686e, type: 3}
   _headerInfo: "Shub-Niggurath \nMother of Darkness"
-  _maxSatiety: 2000
-  _startSatiety: 1000
+  _maxSatiety: 2500
+  _startSatiety: 300
   _timeToStarveTick: 1
-  _lifeTime: 1500
+  _lifeTime: 760
   _satietyPhasesData:
   - PhaseStartTime: 0
-    SatietyLoseByTick: 3
-    Quest: {fileID: 11400000, guid: e1d3555311c18134d8f58a9b47f59695, type: 2}
-  - PhaseStartTime: 240
-    SatietyLoseByTick: 4
-    Quest: {fileID: 11400000, guid: e1d3555311c18134d8f58a9b47f59695, type: 2}
-  - PhaseStartTime: 480
-    SatietyLoseByTick: 5
-    Quest: {fileID: 11400000, guid: 15a6c8adf95d7a64d803caa5b25d26f0, type: 2}
-  - PhaseStartTime: 720
     SatietyLoseByTick: 6
-    Quest: {fileID: 11400000, guid: 9f2c1530b9479634fb563e4fb0f08adc, type: 2}
-  - PhaseStartTime: 960
-    SatietyLoseByTick: 7
-    Quest: {fileID: 11400000, guid: e2320d5b53ddab342a526149a49ae1af, type: 2}
-  - PhaseStartTime: 1200
+    Quest: {fileID: 11400000, guid: e1d3555311c18134d8f58a9b47f59695, type: 2}
+  - PhaseStartTime: 150
     SatietyLoseByTick: 8
+    Quest: {fileID: 11400000, guid: e1d3555311c18134d8f58a9b47f59695, type: 2}
+  - PhaseStartTime: 300
+    SatietyLoseByTick: 10
+    Quest: {fileID: 11400000, guid: 15a6c8adf95d7a64d803caa5b25d26f0, type: 2}
+  - PhaseStartTime: 450
+    SatietyLoseByTick: 12
+    Quest: {fileID: 11400000, guid: 9f2c1530b9479634fb563e4fb0f08adc, type: 2}
+  - PhaseStartTime: 600
+    SatietyLoseByTick: 14
+    Quest: {fileID: 11400000, guid: e2320d5b53ddab342a526149a49ae1af, type: 2}
+  - PhaseStartTime: 750
+    SatietyLoseByTick: 6
     Quest: {fileID: 0}
-  _rampageTime: 5
-  _humanSatietyModifier: 75
-  _animalSatietyModifier: 150
-  _fishSatietyModifier: 50
+  _rampageTime: 10
+  _humanSatietyModifier: 100
+  _animalSatietyModifier: 80
+  _fishSatietyModifier: 120
   _endPhaseText: Ctulhu will sleep for few years. Humankind are save for now... But
     other Great One about to rise

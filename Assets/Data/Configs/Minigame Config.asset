@@ -29,10 +29,10 @@ MonoBehaviour:
     Speed: 160
     SegmentsOnWheel: 6
     HighestAllowedTier: 2
-    CostToRun: 100
+    CostToRun: 90
   _highRiskStats:
     Speed: 240
     SegmentsOnWheel: 8
     HighestAllowedTier: 3
-    CostToRun: 200
+    CostToRun: 150
   _additionalAngle: 0
