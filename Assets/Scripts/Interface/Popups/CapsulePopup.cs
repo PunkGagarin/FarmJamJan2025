@@ -19,9 +19,9 @@ namespace Farm.Interface.Popups
     public class CapsulePopup : Popup
     {
         private static readonly int InstantFill = Animator.StringToHash("InstantFill");
-        private static readonly int Empty = Animator.StringToHash("Empty");
         private static readonly int Fill = Animator.StringToHash("Fill");
-        
+        private static readonly int IsEmpty = Animator.StringToHash("IsEmpty");
+
         [SerializeField] private Animator _animator;
         [SerializeField] private Image _embryo;
         [SerializeField] private Button _closeButton;
@@ -69,7 +69,7 @@ namespace Farm.Interface.Popups
 
             UpdateButtonsInfo();
 
-            UpdateEmbryoView();
+            UpdateEmbryoView(capsule.CurrentEmbryoState);
 
             UpdateModulesSots();
         }
@@ -78,15 +78,16 @@ namespace Farm.Interface.Popups
         {
             base.Open(withPause);
             
-            _animator.SetTrigger(_capsule.Embryo == null ? Empty : InstantFill);
+            _animator.SetBool(IsEmpty, _capsule.Embryo == null);
+            
+            if (_capsule.Embryo != null)
+                _animator.SetTrigger(InstantFill);
         }
 
         private void UpdateModulesSots()
         {
             for (var i = 0; i < _slotProviders.Count; i++)
-            {
                 _slotProviders[i].SetSlot(_capsule.CapsuleSlots[i]);
-            }
         }
 
         private void UpdatePopupInfo()
@@ -133,6 +134,7 @@ namespace Farm.Interface.Popups
 
         private void StartEmbryoProcess()
         {
+            _animator.SetBool(IsEmpty, false);
             _closeButton.gameObject.SetActive(true);
             _additionalCloseButton.gameObject.SetActive(true);
             ApplyMiniGameEffects();
@@ -141,7 +143,6 @@ namespace Farm.Interface.Popups
             UpdatePopupInfo();
             _animator.SetTrigger(Fill);
             _capsule.StartEmbryoProcess(_selectedEmbryo);
-            _embryo.sprite = _capsule.Embryo.Image;
             _sfxManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
         }
 
@@ -195,9 +196,8 @@ namespace Farm.Interface.Popups
             _createEmbryoButton.interactable = false;
             EmbryoType type = GetEmbryoType();
             var embryoTier = _embryoConfig.EmbryoTiers[_selectedTier];
-            _selectedEmbryo = new Embryo(type, embryoTier.BaseFoodAmount, embryoTier.BaseGrowthSpeed, embryoTier.BaseEnergyAmount, _embryoConfig.GetSprite(type));
+            _selectedEmbryo = new Embryo(type, embryoTier.BaseFoodAmount, embryoTier.BaseGrowthSpeed, embryoTier.BaseEnergyAmount);
             UpdatePopupInfo();
-            UpdateEmbryoView();
             StartEmbryoProcess();
         }
 
@@ -241,12 +241,22 @@ namespace Farm.Interface.Popups
             return chance;
         }
 
-        private void UpdateEmbryoView()
+        private void UpdateEmbryoView(EmbryoStates newEmbryoState)
         {
-            _embryo.gameObject.SetActive(_selectedEmbryo != null);
-            _embryo.sprite = _selectedEmbryo?.Image;
+            if (_capsule.Embryo == null)
+            {
+                _embryo.sprite = null;
+                return;
+            }
+            
+            _embryo.sprite = newEmbryoState switch
+            {
+                EmbryoStates.Empty => null,
+                EmbryoStates.Growing => _embryoConfig.GetUISprite(_capsule.Embryo.EmbryoType),
+                EmbryoStates.End => _embryoConfig.GetUISpriteEnd(_capsule.Embryo.EmbryoType),
+                _ => throw new ArgumentOutOfRangeException(nameof(newEmbryoState), newEmbryoState, null)
+            };
         }
-
         [UsedImplicitly]
         public void MouseEnter()
         {

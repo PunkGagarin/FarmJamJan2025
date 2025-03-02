@@ -14,13 +14,16 @@ namespace Farm.Interface
     public class InventoryUI : MonoBehaviour
     {
         [SerializeField] private RectTransform _inventoryRectTransform;
-        [SerializeField] private Transform _energyPanel;
         [SerializeField] private TMP_Text _energyAmount;
         [SerializeField] private Transform _inventorySlotsContent;
         [SerializeField] private InventorySlot _inventorySlotPrefab;
         [SerializeField] private Button _buyModuleButton;
-        [SerializeField] private Button _openInventoryButton;
         [SerializeField] private TMP_Text _placedSlotsCountText;
+        [Header("Настройки кнопки открытия инвентаря")] 
+        [SerializeField] private Button _openInventoryButton;
+        [SerializeField] private Image _arrow;
+        [SerializeField] private Sprite _openState;
+        [SerializeField] private Sprite _closeState;
 
         [Inject] private SoundManager _soundManager;
         [Inject] private InventoryConfig _inventoryConfig;
@@ -32,6 +35,7 @@ namespace Farm.Interface
         private int _currentEnergy;
         private bool _isInventoryOpen = true;
         private int _moduleBoughtCount = 0;
+        private Tween _energyShakeTween, _slotsShakeTween;
 
         public InventorySlot[] InventorySlots => _inventorySlots;
         
@@ -122,9 +126,12 @@ namespace Farm.Interface
             }
         }
 
-        public void ShakeNotEnoughPlace() =>
-            _placedSlotsCountText.transform.DOShakePosition(_inventoryConfig.ShakeDuration, Vector3.one * _inventoryConfig.ShakePower);
-
+        public void ShakeNotEnoughPlace()
+        {
+            if (_slotsShakeTween != null) 
+                _slotsShakeTween = _placedSlotsCountText.transform.DOShakePosition(_inventoryConfig.ShakeDuration, Vector3.one * _inventoryConfig.ShakePower);
+        }
+        
         public bool CanBuy(int cost) =>
             _currentEnergy >= cost;
 
@@ -137,15 +144,19 @@ namespace Farm.Interface
         public void ResetColor() =>
             _energyAmount.color = _inventoryConfig.RegularColor;
 
-        public void ShakeCanNotBuy() =>
-            _energyPanel.DOShakePosition(_inventoryConfig.ShakeDuration, Vector3.one * _inventoryConfig.ShakePower);
-
+        public void ShakeCanNotBuy()
+        {
+            if (_energyShakeTween != null)
+                _energyShakeTween = _energyAmount.transform.DOShakePosition(_inventoryConfig.ShakeDuration, Vector3.one * _inventoryConfig.ShakePower);
+        }
+        
         private void ToggleOpenAnimation()
         {
             var closedX = 0;
             var openedX = -_inventoryRectTransform.rect.width;
             _inventoryRectTransform.DOAnchorPosX(endValue: _isInventoryOpen ? closedX : openedX, duration: 0.5f);
             _isInventoryOpen = !_isInventoryOpen;
+            _arrow.sprite = _isInventoryOpen ? _openState : _closeState;
             _soundManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
         }
 

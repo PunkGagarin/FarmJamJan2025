@@ -1,10 +1,8 @@
 using System;
 using Audio;
-using DG.Tweening;
 using Farm.Interface;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 using Zenject;
 
 namespace Farm.Gameplay.Capsules
@@ -17,7 +15,7 @@ namespace Farm.Gameplay.Capsules
         [Inject] private InventoryUI _inventoryUI;
         [Inject] private SoundManager _soundManager;
 
-        [SerializeField] private Image _icon;
+        [SerializeField] private GameObject _icon;
 
         private UpgradeModule _upgradeModule;
 
@@ -30,13 +28,12 @@ namespace Farm.Gameplay.Capsules
         {
             _soundManager.PlaySoundByType(GameAudioType.ModuleAddedAction, 0);
             _upgradeModule = item;
-            _icon.DOColor(new Color(1, 1, 1, 1), 0f);
+            _icon.SetActive(true);
             OnAnyModuleChanged?.Invoke(this);
         }
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            
             RemoveModule();
         }
 
@@ -59,7 +56,7 @@ namespace Farm.Gameplay.Capsules
             _soundManager.PlaySoundByType(GameAudioType.ModuleRemovedFromCapsuleAction, 0);
             OnSlotClick?.Invoke(_upgradeModule);
             _upgradeModule = null;
-            _icon.DOColor(new Color(1, 1, 1, 0), 0f);
+            _icon.SetActive(false);
             OnAnyModuleChanged?.Invoke(this);
         }
     }

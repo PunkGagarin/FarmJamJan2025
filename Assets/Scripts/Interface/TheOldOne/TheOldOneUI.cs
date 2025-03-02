@@ -3,6 +3,7 @@ using Farm.Gameplay.Definitions;
 using Farm.Utils.Timer;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Farm.Interface.TheOldOne
@@ -19,6 +20,9 @@ namespace Farm.Interface.TheOldOne
         [SerializeField] private Color _badColor;
         [SerializeField] private Button _questButton;
         [SerializeField] private FoodInfo _foodInfo;
+        [SerializeField] private Image _cautionImage;
+        [SerializeField] private float _blinkingCycleTime;
+        private Sequence _blinkingTween;
 
         private int _maxPhases;
 
@@ -41,6 +45,23 @@ namespace Farm.Interface.TheOldOne
         public void UpdateSatietyBar(float current, float max) =>
             UpdateSatietyBar(current, max, false);
 
+        public void OnRampageStateChanged(bool inRampage)
+        {
+            if (inRampage)
+            {
+                _blinkingTween = DOTween.Sequence();
+
+                _blinkingTween.Append(_cautionImage.DOFade(1, _blinkingCycleTime));
+                _blinkingTween.Append(_cautionImage.DOFade(0, _blinkingCycleTime)).OnComplete(() => _blinkingTween.Restart());
+
+                _blinkingTween.Restart();
+            }
+            else
+            {
+                _blinkingTween.Kill();
+            }
+        }
+        
         private void UpdateSatietyBar(float current, float max, bool instant)
         {
             float progress = current / max;

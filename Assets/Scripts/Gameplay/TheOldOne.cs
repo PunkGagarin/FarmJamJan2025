@@ -42,6 +42,7 @@ namespace Farm.Gameplay
         public event Action<int> OnPhaseChanged;
         public event Action OnSealed;
         public event Action OnDefeat;
+        public event Action<bool> OnRampageStateChanged; 
 
         public void Initialize(TheOldOneDefinition definition)
         {
@@ -68,8 +69,6 @@ namespace Farm.Gameplay
                     ? null 
                     : _definition.SatietyPhasesData[stage].Quest);
         }
-
-
 
         private void SetupStats()
         {
@@ -109,12 +108,9 @@ namespace Farm.Gameplay
                     throw new ArgumentOutOfRangeException(nameof(embryoType), embryoType, null);
             }
 
-            _currentSatiety += amount * modifier / 100f;
-            if (_currentSatiety > _definition.MaxSatiety)
-                _currentSatiety = _definition.MaxSatiety;
+            AddSatiety(Mathf.RoundToInt(amount * modifier / 100f));
 
             _questProvider.SetRequirement(RequirementType.Satiety, (int)_currentSatiety);
-            OnSatietyChanged?.Invoke(_currentSatiety, _maxSatiety);
         }
 
         private void Sealed()
@@ -153,34 +149,26 @@ namespace Farm.Gameplay
             }
         }
 
-        private void Starve()
-        {
-            _currentSatiety -= _definition.SatietyPhasesData[_currentStage].SatietyLoseByTick;
-            OnSatietyChanged?.Invoke(_currentSatiety, _maxSatiety);
-        }
+        private void Starve() => 
+            RemoveSatiety((int)_definition.SatietyPhasesData[_currentStage].SatietyLoseByTick);
 
         private void Rampage()
         {
-            _blinkingTween = DOTween.Sequence();
-
-            _blinkingTween.Append(_icon.DOFade(0, 1));
-            _blinkingTween.Append(_icon.DOFade(1, 1)).OnComplete(() => _blinkingTween.Restart());
-
-            _blinkingTween.Restart();
+            OnRampageStateChanged?.Invoke(true);
+           
             _inRampage = true;
 
             _musicManager.SetNextClipToPlay(GameAudioType.RampageBgm);
 
-            if (_rampageTimer == null)
-                _rampageTimer = _timerService.AddTimer(_definition.RampageTime, Defeat);
-            else
-                _rampageTimer.SetManualPause(false);
+            _rampageTimer ??= _timerService.AddTimer(_definition.RampageTime, Defeat);
         }
 
         private void StopRampage()
         {
             _inRampage = false;
-            _rampageTimer.SetManualPause(true);
+            OnRampageStateChanged?.Invoke(false);
+            _rampageTimer.EarlyComplete(true);
+            _rampageTimer = null;
             _icon.DOFade(1, 0);
             _blinkingTween.Kill();
             _musicManager.SetNextClipToPlay(GameAudioType.GamePlayBgm);
@@ -209,24 +197,38 @@ namespace Farm.Gameplay
         private void SatietyChanged(float current, float _)
         {
             if (current <= 0)
+            {
                 Rampage();
+            }
 
             if (current > 0 && _inRampage)
                 StopRampage();
         }
 
+        private void AddSatiety(int amount)
+        {
+            _currentSatiety += amount;
+            if (_currentSatiety >= _maxSatiety)
+                _currentSatiety = _maxSatiety;
+            
+            OnSatietyChanged?.Invoke(_currentSatiety, _maxSatiety);
+        }
+        
+        private void RemoveSatiety(int amount)
+        {
+            _currentSatiety -= amount;
+            if (_currentSatiety < 0)
+                _currentSatiety = 0;
+            
+            OnSatietyChanged?.Invoke(_currentSatiety, _maxSatiety);
+        }
+        
         private void Awake()
         {
             _feedMediator.SetupTheOldOne(this);
             _questProvider.OnQuestStarted += CollectQuestInfo;
-            _questProvider.OnQuestFailed += OnQuestFailed;
+            _questProvider.OnQuestFailed += RemoveSatiety;
             OnSatietyChanged += SatietyChanged;
-        }
-
-        private void OnQuestFailed(int satietyPenalty)
-        {
-            _currentSatiety -= satietyPenalty;
-            OnSatietyChanged?.Invoke(_currentSatiety, _maxSatiety);
         }
 
         private void OnDestroy()
@@ -241,6 +243,7 @@ namespace Farm.Gameplay
             OnSatietyChanged -= _theOldOneUI.UpdateSatietyBar;
             _blinkingTween.Kill();
             _questProvider.OnQuestStarted -= CollectQuestInfo;
+            _questProvider.OnQuestFailed -= RemoveSatiety;
             OnSatietyChanged -= SatietyChanged;
         }
     }

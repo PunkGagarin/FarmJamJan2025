@@ -6,6 +6,7 @@ using Farm.Gameplay.Configs.UpgradeModules;
 using Farm.Interface;
 using Farm.Interface.Popups;
 using Farm.Utils.Timer;
+using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -18,8 +19,10 @@ namespace Farm.Gameplay.Capsules
     {
         private static readonly int Open = Animator.StringToHash("Open");
         private static readonly int InstantOpen = Animator.StringToHash("InstantOpen");
+        private static readonly int Feed = Animator.StringToHash("Feed");
+        private static readonly int Fill = Animator.StringToHash("Fill");
         
-        [SerializeField] private Animator _platformAnimator;
+        [SerializeField] private Animator _animator;
         [Header("Components")]
         [SerializeField] private SpriteRenderer _capsuleSprite;
         [SerializeField] private Image _growProgress;
@@ -41,14 +44,16 @@ namespace Farm.Gameplay.Capsules
         private TimerHandle _embryoTimer;
         private int _tier;
         private bool _isOwn;
+        private bool _animationInProgress;
         private bool _isFeedReady;
 
         public List<CapsuleSlot> CapsuleSlots => _capsuleSlots;
         public Embryo Embryo { get; private set; }
         public int Tier => _tier;
         public bool IsOwn => _isOwn;
+        public EmbryoStates CurrentEmbryoState { get; private set; }
 
-        public event Action OnEmbryoStateChanged;
+        public event Action<EmbryoStates> OnEmbryoStateChanged;
         public static event Action OnCapsuleBought;
         public static event Action OnCapsuleUpgrade;
 
@@ -56,10 +61,10 @@ namespace Farm.Gameplay.Capsules
         {
             Embryo = embryo;
 
-            _embryoImage.gameObject.SetActive(true);
-            _embryoImage.sprite = Embryo.Image;
+            _animator.SetTrigger(Fill);
 
-            OnEmbryoStateChanged?.Invoke();
+            CurrentEmbryoState = EmbryoStates.Growing;
+            OnEmbryoStateChanged?.Invoke(CurrentEmbryoState);
             ApplyModulesToGrowthSpeed();
             _embryoTimer = _timerService.AddTimer(Embryo.TimeToGrowth, EmbryoGrewUp);
             _growProgress.gameObject.SetActive(true);
@@ -74,6 +79,8 @@ namespace Farm.Gameplay.Capsules
 
         private void EmbryoGrewUp()
         {
+            CurrentEmbryoState = EmbryoStates.End;
+            OnEmbryoStateChanged?.Invoke(CurrentEmbryoState);
             _embryoTimer = null;
             _isFeedReady = true;
             _growProgress.gameObject.SetActive(false);
@@ -83,23 +90,41 @@ namespace Farm.Gameplay.Capsules
         
         private void BuyCapsule()
         {
-            _platformAnimator.SetTrigger(Open);
+            _animator.SetTrigger(Open);
             UpdateOwnership();
         }
+        
         private void Awake()
         {
             _growProgress.gameObject.SetActive(false);
             _info.gameObject.SetActive(false);
-            _embryoImage.gameObject.SetActive(false);
+            OnEmbryoStateChanged += UpdateView;
 
             SetupCapsule();
         }
-
+        
+        private void UpdateView(EmbryoStates newEmbryoState)
+        {
+            if (Embryo == null)
+            {
+                _embryoImage.sprite = null;
+                return;
+            }
+            
+            _embryoImage.sprite = newEmbryoState switch
+            {
+                EmbryoStates.Empty => null,
+                EmbryoStates.Growing => _embryoConfig.GetSpriteStart(Embryo.EmbryoType),
+                EmbryoStates.End => _embryoConfig.GetSpriteEnd(Embryo.EmbryoType),
+                _ => throw new ArgumentOutOfRangeException(nameof(newEmbryoState), newEmbryoState, null)
+            };
+        }
+        
         private void SetupCapsule()
         {
             if (_capsuleConfig.CapsuleCosts[_capsuleNumber] == 0)
             {
-                _platformAnimator.SetTrigger(InstantOpen);
+                _animator.SetTrigger(InstantOpen);
                 UpdateOwnership();
             }
             else
@@ -111,6 +136,7 @@ namespace Farm.Gameplay.Capsules
         
         private void UpdateOwnership()
         {
+            CurrentEmbryoState = EmbryoStates.Empty;
             _isOwn = true;
             _capsuleSlots.ForEach(slot => slot.IsOwn = true);
             _capsuleEnergyCost.UpdateInfo(_capsuleConfig.UpgradeCost, true);
@@ -144,13 +170,15 @@ namespace Farm.Gameplay.Capsules
             if (EventSystem.current.IsPointerOverGameObject())
                 return;
 
-            if (!_isOwn)
+            if (!_isOwn || _animationInProgress)
                 return;
 
             if (_isFeedReady)
             {
-                FeedTheOldOne();
-                _sfxManager.PlayRandomSoundByTypeWithRandomChance(GameAudioType.FeedingAction, 0, true);
+                _animationInProgress = true;
+                _isFeedReady = false;
+                _info.gameObject.SetActive(false);
+                _animator.SetTrigger(Feed);
             }
             else
             {
@@ -159,27 +187,24 @@ namespace Farm.Gameplay.Capsules
             }
         }
 
+        [UsedImplicitly] //Вызываю из аниматора
         private void FeedTheOldOne()
         {
-            _info.gameObject.SetActive(false);
-            _isFeedReady = false;
-            _feedMediator.FeedTheOldOne(CalculateFeedAmount(), Embryo.EmbryoType);
-            _inventory.CurrentEnergy += CalculateEnergyValue();
+            _sfxManager.PlayRandomSoundByTypeWithRandomChance(GameAudioType.FeedingAction, 0, true);
+            _feedMediator.FeedTheOldOne(Embryo.StarvationValue, Embryo.EmbryoType);
+            _inventory.CurrentEnergy += Embryo.EnergyValue;
             Embryo = null;
-            _embryoImage.gameObject.SetActive(false);
-            OnEmbryoStateChanged?.Invoke();
+
+            CurrentEmbryoState = EmbryoStates.Empty;
+            OnEmbryoStateChanged?.Invoke(CurrentEmbryoState);
+            _animationInProgress = false;
         }
-
-        private int CalculateEnergyValue() =>
-            Embryo.EnergyValue;
-
-        private int CalculateFeedAmount() =>
-            Embryo.StarvationValue;
 
         private void OnDestroy()
         {
             _capsuleEnergyCost.OnBoughtSuccess -= BuyCapsule;
             _capsuleEnergyCost.OnBoughtSuccess -= UpgradeCapsule;
+            OnEmbryoStateChanged -= UpdateView;
         }
     }
 }

@@ -60,9 +60,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: Ctulhuumbus Font
   m_EditorClassIdentifier: 
-  hashCode: -1259370587
+  hashCode: 596090460
   material: {fileID: 5683825052000979397}
-  materialHashCode: -2092143771
+  materialHashCode: -307442692
   m_Version: 1.1.0
   m_SourceFontFileGUID: cab9abdbdb46847d694c1919a490e5e4
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: cab9abdbdb46847d694c1919a490e5e4, type: 3}
@@ -14985,7 +14985,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: JMH Cthulhumbus Arcade UGalt2 SDF Material
-  m_Shader: {fileID: 4800000, guid: 68e6db2ebdc24f95958faec2be5558d6, type: 3}
+  m_Shader: {fileID: 4800000, guid: 128e987d567d4e2c824d754223b3f3b0, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []

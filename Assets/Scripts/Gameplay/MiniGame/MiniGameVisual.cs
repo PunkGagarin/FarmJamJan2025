@@ -7,6 +7,7 @@ using Farm.Utils.Pause;
 using Farm.Utils.Timer;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Zenject;
 using Random = UnityEngine.Random;
@@ -30,6 +31,7 @@ namespace Farm.Gameplay.MiniGame
         [SerializeField] private MiniGameSpeedometer _miniGameSpeedometer;
         [SerializeField] private Segment _segmentPrefab;
         [SerializeField] private Transform _segmentsContainer;
+        [SerializeField] private TMP_Text _output;
         
         [Inject] private TimerService _timerService;
         [Inject] private InventoryUI _inventory;
@@ -44,13 +46,16 @@ namespace Farm.Gameplay.MiniGame
         private float _deceleration;
         private MiniGameRisk _selectedRisk;
         private bool _isFirstRun = true;
-        
+        private float _drumShift;
+
         private const float FULL_CIRCLE_ANGLE = 360f;
 
         public void Initialize()
         {
+            _output.text = "";
+
             ResetState();
-            
+
             InitializeButtons();
 
             _miniGameSpeedometer.Init(_miniGameConfig);
@@ -132,6 +137,7 @@ namespace Farm.Gameplay.MiniGame
         {
             GenerateSegment();
             _speed = _selectedRisk.Speed;
+            _miniGameSpeedometer.SetSpeed(_speed);
             _isStarted = true;
             _actionButton.gameObject.SetActive(true);
             _lowRiskButton.gameObject.SetActive(false);
@@ -151,22 +157,28 @@ namespace Farm.Gameplay.MiniGame
         private void DeterminateMiniGameOutput()
         {
             _isEnded = false;
-            var drumShift = _drum.transform.rotation.eulerAngles.z;
+            MiniGameEffect selectedEffect = GetMiniGameEffectUnderSelector();
+
+            _timerService.AddTimer(1f, () => OnMiniGameEnds?.Invoke(selectedEffect, _miniGameConfig.EffectTime));
+        }
+        
+        private MiniGameEffect GetMiniGameEffectUnderSelector()
+        {
             MiniGameEffect selectedEffect = null;
+            _drumShift = _drum.transform.rotation.eulerAngles.z;
             foreach (Segment segment in _segments)
             {
-                if ((segment.StartAngle - drumShift) % FULL_CIRCLE_ANGLE <= -_miniGameConfig.AdditionalAngle && 
-                    (segment.StartAngle + segment.Angle - drumShift) % FULL_CIRCLE_ANGLE >= _miniGameConfig.AdditionalAngle)
+                if ((segment.StartAngle - _drumShift) % FULL_CIRCLE_ANGLE <= -_miniGameConfig.AdditionalAngle && 
+                    (segment.StartAngle + segment.Angle - _drumShift) % FULL_CIRCLE_ANGLE >= _miniGameConfig.AdditionalAngle)
                 {
                     _isFirstRun = false;
                     selectedEffect = segment.MiniGameEffect;
                     break;
                 }
             }
-            
-            _timerService.AddTimer(1f, () => OnMiniGameEnds?.Invoke(selectedEffect, _miniGameConfig.EffectTime));
+            return selectedEffect;
         }
-        
+
         private void GenerateSegment()
         {
             List<MiniGameEffect> allowedEffects = _miniGameConfig.Effects.Where(buffs => buffs.Tier <= _selectedRisk.HighestAllowedTier).ToList();
@@ -253,8 +265,13 @@ namespace Farm.Gameplay.MiniGame
                     DeterminateMiniGameOutput();
             }
             
-            if (_isStarted) 
+            if (_isStarted)
+            {
                 _drum.Rotate(0, 0, _speed * Time.deltaTime);
+            }
+            
+            var effect = GetMiniGameEffectUnderSelector();
+            _output.text = effect == null ? "" : $"{effect.BuffType.ToString()}\n{effect.Value} %";
         }
         
         public void SetPaused(bool isPaused) => 

@@ -29,6 +29,15 @@ MonoBehaviour:
     _baseEnergyAmount: 300
     _baseGrowthSpeed: 15
     _baseCost: 0
-  _humanImage: {fileID: 21300000, guid: 0c918638830191d4a9fd73c0e5f7b7ab, type: 3}
-  _animalImage: {fileID: 21300000, guid: 0c918638830191d4a9fd73c0e5f7b7ab, type: 3}
-  _fishImage: {fileID: 21300000, guid: 0c918638830191d4a9fd73c0e5f7b7ab, type: 3}
+  _humanImageUI: {fileID: 21300000, guid: 834f545ca6631ca4f85b9817c6e9597b, type: 3}
+  _animalImageUI: {fileID: 21300000, guid: 60f8cbf65e2ade54bbfade37c96879a9, type: 3}
+  _fishImageUI: {fileID: 21300000, guid: d618d6383484ccb429463d03e507d74f, type: 3}
+  _humanImageUIEnd: {fileID: 21300000, guid: bf62fe4aedd9b3f419d2170dcd2d1f11, type: 3}
+  _animalImageUIEnd: {fileID: 21300000, guid: ebb20fd85fc7c5043ac3bf24420b0cb4, type: 3}
+  _fishImageUIEnd: {fileID: 21300000, guid: 3b7f8610cdd0d0d45b499cc9e92c5538, type: 3}
+  _humanImageStart: {fileID: 21300000, guid: 54da1e6a344013d4f9e2135d351f357a, type: 3}
+  _animalImageStart: {fileID: 21300000, guid: 2aaa417bf31aa2049934d24a4886b6d9, type: 3}
+  _fishImageStart: {fileID: 21300000, guid: d2aff34714b872a498d9dbb0c08344e8, type: 3}
+  _humanImageEnd: {fileID: 21300000, guid: f100c8318b6fe5f4b89604384e915669, type: 3}
+  _animalImageEnd: {fileID: 21300000, guid: 556ac286f752c01478063d2ca77f4e5f, type: 3}
+  _fishImageEnd: {fileID: 21300000, guid: e48ea610e555aed4d8d601921524dd21, type: 3}

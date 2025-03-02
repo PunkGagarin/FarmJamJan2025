@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &9084485295994069294
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3052350039929071282, guid: 4698865e63f1076448821ab5c37b9590, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052350039929071282, guid: 4698865e63f1076448821ab5c37b9590, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052350039929071282, guid: 4698865e63f1076448821ab5c37b9590, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052350039929071282, guid: 4698865e63f1076448821ab5c37b9590, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.16868715
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052350039929071282, guid: 4698865e63f1076448821ab5c37b9590, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.40300003
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052350039929071282, guid: 4698865e63f1076448821ab5c37b9590, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.024
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052350039929071282, guid: 4698865e63f1076448821ab5c37b9590, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -360.07663
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052350039929071282, guid: 4698865e63f1076448821ab5c37b9590, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -95.50391
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052350039929071282, guid: 4698865e63f1076448821ab5c37b9590, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052350039929071282, guid: 4698865e63f1076448821ab5c37b9590, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052350039929071282, guid: 4698865e63f1076448821ab5c37b9590, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052350039929071282, guid: 4698865e63f1076448821ab5c37b9590, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052350039929071282, guid: 4698865e63f1076448821ab5c37b9590, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052350039929071282, guid: 4698865e63f1076448821ab5c37b9590, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052350039929071282, guid: 4698865e63f1076448821ab5c37b9590, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052350039929071282, guid: 4698865e63f1076448821ab5c37b9590, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -114.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052350039929071282, guid: 4698865e63f1076448821ab5c37b9590, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -34.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052350039929071282, guid: 4698865e63f1076448821ab5c37b9590, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052350039929071282, guid: 4698865e63f1076448821ab5c37b9590, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052350039929071282, guid: 4698865e63f1076448821ab5c37b9590, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3259788940803123509, guid: 4698865e63f1076448821ab5c37b9590, type: 3}
+      propertyPath: m_Name
+      value: AnimatedBar (2) Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 4725594794880009378, guid: 4698865e63f1076448821ab5c37b9590, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 834478346, guid: 6d9d5a990e9b95a4185fd183b1bfa25e, type: 3}
+    - target: {fileID: 8081415842562715699, guid: 4698865e63f1076448821ab5c37b9590, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -973517837, guid: 1e76827152d4f2846ba3dfe85c36d042, type: 3}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4698865e63f1076448821ab5c37b9590, type: 3}

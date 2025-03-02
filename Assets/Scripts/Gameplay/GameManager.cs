@@ -1,5 +1,6 @@
 ﻿using Farm.Gameplay.Repositories;
 using Farm.Interface.Popups;
+using Farm.Interface.TheOldOne;
 using UnityEngine;
 using Zenject;
 
@@ -8,6 +9,7 @@ namespace Farm.Gameplay
     public class GameManager : MonoBehaviour
     {
         [SerializeField] private TheOldOne _theOldOne;
+        [SerializeField] private TheOldOneUI _theOldOneUI;
         
         [Inject] private TheOldOneRepository _theOldOneRepository;
         [Inject] private PopupManager _popupManager;
@@ -19,6 +21,13 @@ namespace Farm.Gameplay
             SetupOldOne();
             _theOldOne.OnSealed += TheOldOneSealed;
             _theOldOne.OnDefeat += Defeat;
+            _theOldOne.OnRampageStateChanged += RampageStateChanged;
+        }
+        
+        private void RampageStateChanged(bool newState)
+        {
+            _theOldOneUI.OnRampageStateChanged(newState);
+            
         }
 
         private void TheOldOneSealed()

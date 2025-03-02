@@ -20,6 +20,7 @@ namespace Farm.Interface.TheOldOne
         {
             _questProvider.OnQuestStarted += SetupPanel;
             _questProvider.OnQuestUpdated += UpdateQuest;
+            SetupPanel();
         }
         
         private void SetupPanel() => 

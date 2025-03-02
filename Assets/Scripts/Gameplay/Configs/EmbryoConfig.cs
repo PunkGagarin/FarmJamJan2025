@@ -9,18 +9,39 @@ namespace Farm.Gameplay.Configs
     public class EmbryoConfig : ScriptableObject
     {
         [SerializeField] private List<EmbryoTier> _embryoTiers;
-        [SerializeField] private Sprite _humanImage, _animalImage, _fishImage;
-        public Sprite HumanImage => _humanImage;
-        public Sprite AnimalImage => _animalImage;
-        public Sprite FishImage => _fishImage;
-
+        [SerializeField] private Sprite _humanImageUI, _animalImageUI, _fishImageUI, _humanImageUIEnd, _animalImageUIEnd, _fishImageUIEnd, _humanImageStart, _animalImageStart, _fishImageStart, _humanImageEnd, _animalImageEnd, _fishImageEnd;
+        
         public List<EmbryoTier> EmbryoTiers => _embryoTiers;
 
-        public Sprite GetSprite(EmbryoType embryoType) => embryoType switch
+        public Sprite GetUISprite(EmbryoType embryoType) => embryoType switch
         {
-            EmbryoType.Human => _humanImage,
-            EmbryoType.Animal => _animalImage,
-            EmbryoType.Fish => _fishImage,
+            EmbryoType.Human => _humanImageUI,
+            EmbryoType.Animal => _animalImageUI,
+            EmbryoType.Fish => _fishImageUI,
+            _ => null
+        };
+        
+        public Sprite GetUISpriteEnd(EmbryoType embryoType) => embryoType switch
+        {
+            EmbryoType.Human => _humanImageUIEnd,
+            EmbryoType.Animal => _animalImageUIEnd,
+            EmbryoType.Fish => _fishImageUIEnd,
+            _ => null
+        };
+        
+        public Sprite GetSpriteStart(EmbryoType embryoType) => embryoType switch
+        {
+            EmbryoType.Human => _humanImageStart,
+            EmbryoType.Animal => _animalImageStart,
+            EmbryoType.Fish => _fishImageStart,
+            _ => null
+        };
+        
+        public Sprite GetSpriteEnd(EmbryoType embryoType) => embryoType switch
+        {
+            EmbryoType.Human => _humanImageEnd,
+            EmbryoType.Animal => _animalImageEnd,
+            EmbryoType.Fish => _fishImageEnd,
             _ => null
         };
 

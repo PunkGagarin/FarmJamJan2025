@@ -7,7 +7,7 @@ namespace Farm.Gameplay.Quests
     public class QuestProvider
     {
         private QuestDefinition _currentQuest;
-        private List<QuestInfo> _currentQuestRequirements;
+        private List<QuestInfo> _currentQuestRequirements = new();
         private bool _isQuestCompleted;
         
         public event Action OnQuestStarted;
@@ -89,7 +89,7 @@ namespace Farm.Gameplay.Quests
         
         public void FinalizeQuest()
         {
-            if (_currentQuestRequirements == null)
+            if (_currentQuest == null || _currentQuestRequirements == null)
                 return;
             
             OnQuestFailed?.Invoke(_currentQuest.SatietyPenalty);
