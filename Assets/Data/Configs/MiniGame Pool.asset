@@ -37,15 +37,15 @@ MonoBehaviour:
     BuffType: 2
     Value: 25
     Weight: 1
-  - Tier: 2
+  - Tier: 3
     BuffType: 1
     Value: 45
     Weight: 1
-  - Tier: 2
+  - Tier: 3
     BuffType: 2
     Value: 45
     Weight: 1
-  - Tier: 2
+  - Tier: 3
     BuffType: 3
     Value: 45
     Weight: 1
