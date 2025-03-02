@@ -263,6 +263,7 @@ MonoBehaviour:
   _creditsPopup: {fileID: 1933405935}
   _questPopup: {fileID: 0}
   _miniGamePopup: {fileID: 0}
+  _endPhasePopup: {fileID: 0}
 --- !u!224 &199040324
 RectTransform:
   m_ObjectHideFlags: 0
@@ -710,8 +711,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Feast of the\n Forgotten "
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 168233b8fe43f4dae8e2bbd962232efa, type: 2}
-  m_sharedMaterial: {fileID: 5683825052000979397, guid: 168233b8fe43f4dae8e2bbd962232efa, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a0ea6ae88685b4905931d51a2e0f3560, type: 2}
+  m_sharedMaterial: {fileID: 3778483385410204777, guid: a0ea6ae88685b4905931d51a2e0f3560, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
