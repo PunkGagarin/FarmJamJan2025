@@ -15,31 +15,31 @@ MonoBehaviour:
   stats:
   - ModuleCharacteristicType: 0
     Description: Human Roll
-    Icon: {fileID: 21300000, guid: 4f5cf3927d11df04e89da0f34ac465cb, type: 3}
+    Icon: {fileID: -561560098, guid: 97cf5ba1950c8ce4e8c00d9c3a6695eb, type: 3}
     MinValue: 0
     MaxValue: 100
   - ModuleCharacteristicType: 1
     Description: Animal Roll
-    Icon: {fileID: 21300000, guid: 399470700809f2f4493aef42cc3a56b6, type: 3}
+    Icon: {fileID: -763041838, guid: 80923ceb1f2ec6447b0f023010711ec9, type: 3}
     MinValue: 0
     MaxValue: 100
   - ModuleCharacteristicType: 2
     Description: Fish Roll
-    Icon: {fileID: 21300000, guid: 00f9e0b48b6293d4aa69ef0867e7e075, type: 3}
+    Icon: {fileID: -1585948932, guid: 7d74d587a81673449b118ba58d9a24b0, type: 3}
     MinValue: 0
     MaxValue: 100
   - ModuleCharacteristicType: 4
     Description: Growth Time
-    Icon: {fileID: 21300000, guid: 8b1c27abe0824a6428ab0e0aff008b47, type: 3}
+    Icon: {fileID: 21300000, guid: c936fb5415108e649b564ccad0a59464, type: 3}
     MinValue: 0
     MaxValue: 30
   - ModuleCharacteristicType: 3
     Description: Energy Charge
-    Icon: {fileID: 21300000, guid: e3669f782799a9140a65ad6e30d415db, type: 3}
+    Icon: {fileID: 21300000, guid: 1db6f215825f9654baf115849f620333, type: 3}
     MinValue: 0
     MaxValue: 30
   - ModuleCharacteristicType: 5
     Description: Satiety
-    Icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+    Icon: {fileID: 21300000, guid: 8eea85c3f718848f698da93e490ea9c8, type: 3}
     MinValue: 0
     MaxValue: 30
