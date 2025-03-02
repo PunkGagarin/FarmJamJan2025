@@ -10,7 +10,8 @@ namespace Farm.Gameplay.Capsules
         [SerializeField] private Image _icon;
 
         private CapsuleSlot _capsuleSlot;
-        public bool CanPlaceItem { get; }
+
+        public bool CanPlaceItem => _capsuleSlot.CanPlaceItem;
 
         private void Awake()
         {

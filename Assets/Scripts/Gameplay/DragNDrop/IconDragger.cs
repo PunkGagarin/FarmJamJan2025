@@ -57,7 +57,7 @@ namespace Farm.Gameplay.DragNDrop
 
                     foreach (RaycastResult result in results)
                     {
-                        if (result.gameObject.TryGetComponent(out ISlot newSlot))
+                        if (result.gameObject.TryGetComponent(out ISlot newSlot) && newSlot.CanPlaceItem)
                         {
                             SetItemNewToSlot(newSlot);
                             return;
