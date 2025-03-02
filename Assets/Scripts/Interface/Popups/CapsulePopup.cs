@@ -103,6 +103,7 @@ namespace Farm.Interface.Popups
             );
 
             _capsuleInfo.SetEmbryoInfo(_selectedEmbryo);
+            _capsuleInfo.SetModulesInfo(_capsule.CapsuleSlots);
         }
 
         protected override void Close()

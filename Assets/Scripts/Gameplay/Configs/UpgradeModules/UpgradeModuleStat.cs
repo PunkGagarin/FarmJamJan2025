@@ -9,16 +9,25 @@ namespace Farm.Gameplay.Configs.UpgradeModules
         public ModuleCharacteristicType ModuleCharacteristicType;
         public String Description;
         public Sprite Icon;
-        public float MinValue;
-        public float MaxValue;
+        public int MinValue;
+        public int MaxValue;
 
-        public float Value { get; private set; }
+        public int Value { get; private set; }
 
-        public void SetValue(float value) => Value = value;
+        public void SetValue(int value) => Value = value;
 
         public override string ToString()
         {
             return $"ModuleCharacteristicType: {ModuleCharacteristicType}, Value: {Value}";
+        }
+
+        public UpgradeModuleStat(ModuleCharacteristicType moduleCharacteristicType, string description, Sprite icon, int minValue, int maxValue)
+        {
+            ModuleCharacteristicType = moduleCharacteristicType;
+            Description = description;
+            Icon = icon;
+            MinValue = minValue;
+            MaxValue = maxValue;
         }
     }
 }

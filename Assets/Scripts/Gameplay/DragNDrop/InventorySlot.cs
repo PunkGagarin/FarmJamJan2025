@@ -25,20 +25,20 @@ namespace Farm
         public void SetModule(UpgradeModule module)
         {
             UpgradeModule = module;
-            for (var i = 0; i < module.Stats.Count; i++)
+            for (var i = 0; i < UpgradeModule.Stats.Count; i++)
             {
                 switch (i)
                 {
                     case 0:
-                        _firstStatInfo.SetStatInfo(module.Stats[i]);
+                        _firstStatInfo.SetStatInfo(UpgradeModule.Stats[i]);
                         _firstStatInfo.gameObject.SetActive(true);
                         break;
                     case 1:
-                        _secondStatInfo.SetStatInfo(module.Stats[i]);
+                        _secondStatInfo.SetStatInfo(UpgradeModule.Stats[i]);
                         _secondStatInfo.gameObject.SetActive(true);
                         break;
-                    default:
-                        _thirdStatInfo.SetStatInfo(module.Stats[i]);
+                    case 3:
+                        _thirdStatInfo.SetStatInfo(UpgradeModule.Stats[i]);
                         _thirdStatInfo.gameObject.SetActive(true);
                         break;
                 }
