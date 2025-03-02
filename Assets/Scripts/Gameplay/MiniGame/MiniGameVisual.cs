@@ -7,7 +7,6 @@ using Farm.Utils.Pause;
 using Farm.Utils.Timer;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Zenject;
 using Random = UnityEngine.Random;
@@ -46,6 +45,8 @@ namespace Farm.Gameplay.MiniGame
         private float _deceleration;
         private MiniGameRisk _selectedRisk;
         private bool _isFirstRun = true;
+        private MiniGameTierType _currentTierType;
+        
         private float _drumShift;
 
         private const float FULL_CIRCLE_ANGLE = 360f;
@@ -90,6 +91,7 @@ namespace Farm.Gameplay.MiniGame
             if (_inventory.CanBuy(_miniGameConfig.LowRiskStats.CostToRun))
             {
                 _soundManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
+                _currentTierType = MiniGameTierType.Low;
                 _inventory.CurrentEnergy -= _miniGameConfig.LowRiskStats.CostToRun;
                 _selectedRisk = _miniGameConfig.LowRiskStats;
                 StartGame();
@@ -106,6 +108,7 @@ namespace Farm.Gameplay.MiniGame
             if (_inventory.CanBuy(_miniGameConfig.MediumRiskStats.CostToRun))
             {
                 _soundManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
+                _currentTierType = MiniGameTierType.Medium;
                 _inventory.CurrentEnergy -= _miniGameConfig.MediumRiskStats.CostToRun;
                 _selectedRisk = _miniGameConfig.MediumRiskStats;
                 StartGame();
@@ -122,6 +125,7 @@ namespace Farm.Gameplay.MiniGame
             if (_inventory.CanBuy(_miniGameConfig.HighRiskStats.CostToRun))
             {
                 _soundManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
+                _currentTierType = MiniGameTierType.High;
                 _inventory.CurrentEnergy -= _miniGameConfig.HighRiskStats.CostToRun;
                 _selectedRisk = _miniGameConfig.HighRiskStats;
                 StartGame();
@@ -158,8 +162,19 @@ namespace Farm.Gameplay.MiniGame
         {
             _isEnded = false;
             MiniGameEffect selectedEffect = GetMiniGameEffectUnderSelector();
+            //type of the game
+            _timerService.AddTimer(1f, () => OnMiniGameEnds?.Invoke(selectedEffect, GetEffectByTier()));
+        }
 
-            _timerService.AddTimer(1f, () => OnMiniGameEnds?.Invoke(selectedEffect, _miniGameConfig.EffectTime));
+        private float GetEffectByTier()
+        {
+            return _currentTierType switch
+            {
+                MiniGameTierType.Low => _miniGameConfig.EffectTimeLow,
+                MiniGameTierType.Medium => _miniGameConfig.EffectTimeMedium,
+                MiniGameTierType.High => _miniGameConfig.EffectTimeHigh,
+                _ => 40f
+            };
         }
         
         private MiniGameEffect GetMiniGameEffectUnderSelector()
@@ -276,5 +291,12 @@ namespace Farm.Gameplay.MiniGame
         
         public void SetPaused(bool isPaused) => 
             _isPaused = isPaused;
+    }
+
+    internal enum MiniGameTierType
+    {
+        Low,
+        Medium,
+        High
     }
 }

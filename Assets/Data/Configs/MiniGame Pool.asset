@@ -23,8 +23,8 @@ MonoBehaviour:
     Weight: 1
   - Tier: 1
     BuffType: 1
-    Value: -50
-    Weight: 50
+    Value: -30
+    Weight: 1000000
   - Tier: 1
     BuffType: 1
     Value: 200
@@ -100,5 +100,5 @@ MonoBehaviour:
   _firstEffect:
     Tier: 1
     BuffType: 1
-    Value: -50
+    Value: -30
     Weight: 0

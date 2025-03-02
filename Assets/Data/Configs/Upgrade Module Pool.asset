@@ -32,14 +32,14 @@ MonoBehaviour:
     Description: Growth Time
     Icon: {fileID: 21300000, guid: 8b1c27abe0824a6428ab0e0aff008b47, type: 3}
     MinValue: 0
-    MaxValue: 100
+    MaxValue: 30
   - ModuleCharacteristicType: 3
     Description: Energy Charge
     Icon: {fileID: 21300000, guid: e3669f782799a9140a65ad6e30d415db, type: 3}
     MinValue: 0
-    MaxValue: 100
+    MaxValue: 30
   - ModuleCharacteristicType: 5
     Description: Satiety
     Icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
     MinValue: 0
-    MaxValue: 100
+    MaxValue: 30
