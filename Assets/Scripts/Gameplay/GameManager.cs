@@ -38,7 +38,7 @@ namespace Farm.Gameplay
             }
             else
             {
-                _popupManager.OpenEndPhasePopup(_theOldOneRepository.Definitions[_currentStage]);
+                _popupManager.OpenEndPhasePopup(_theOldOneRepository.Definitions[_currentStage - 1]);
                 SetupOldOne();
             }
             
