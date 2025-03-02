@@ -13,29 +13,29 @@ namespace Farm.Interface.TheOldOne
         [SerializeField] private TMP_Text _requirement;
         [SerializeField] private Image _image;
 
-        [Inject] private QuestProvider _questProvider;
+        [Inject] private QuestService _questService;
         //public const string COMPLETED_INFO = "<color=green> </color>";
 
         private void Awake()
         {
-            _questProvider.OnQuestStarted += SetupPanel;
-            _questProvider.OnQuestUpdated += UpdateQuest;
+            _questService.OnQuestStarted += SetupPanel;
+            _questService.OnQuestUpdated += UpdateQuest;
             SetupPanel();
         }
         
         private void SetupPanel() => 
-            _panel.SetActive(_questProvider.GetQuestRequirements().Count > 0);
+            _panel.SetActive(_questService.GetQuestRequirements().Count > 0);
 
         private void UpdateQuest() => 
-            _requirement.text = GetQuestRequirementsText(_questProvider.GetQuestRequirements());
+            _requirement.text = GetQuestRequirementsText(_questService.GetQuestRequirements());
 
         private string GetQuestRequirementsText(List<QuestInfo> questInfos)
         {
             string text = "";
             foreach (QuestInfo info in questInfos)
             {
-                string textToAdd = info.GetCurrentQuestDescription();
-                textToAdd = textToAdd.Replace("[RequiredTier]", info.RequiredTier.ToString());
+                string textToAdd = info.QuestStateDescription;
+                textToAdd = textToAdd.Replace("[RequiredExtraAmount]", info.RequiredExtraAmount.ToString());
                 textToAdd += $" {info.CurrentAmount} / {info.RequiredAmount}\n";
                 text += textToAdd;
             }

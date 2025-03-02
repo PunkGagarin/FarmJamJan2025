@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Farm.Gameplay.Quests
 {
-    public class QuestProvider
+    public class QuestService
     {
         private QuestDefinition _currentQuest;
         private List<QuestInfo> _currentQuestRequirements = new();
@@ -28,7 +28,7 @@ namespace Farm.Gameplay.Quests
             _currentQuestRequirements = new List<QuestInfo>();
             foreach (QuestRequirement questRequirement in questDefinition.Requirements)
             {
-                QuestInfo questInfo = new QuestInfo(questRequirement.RequirementType, questRequirement.RequiredAmount, questRequirement.RequiredTier);
+                QuestInfo questInfo = new QuestInfo(questRequirement.RequirementType, questRequirement.RequiredAmount, questRequirement.RequiredExtraAmount, questRequirement.QuestStateDescription);
                 _currentQuestRequirements.Add(questInfo);
             }
             
@@ -46,7 +46,7 @@ namespace Farm.Gameplay.Quests
                 if (questInfo.RequirementType != requirementType)
                     continue;
                 
-                if (requirementType == RequirementType.CapsulesWithTierUpgrade && requiredTier != questInfo.RequiredTier)
+                if (requirementType == RequirementType.CapsulesWithTierUpgrade && requiredTier != questInfo.RequiredExtraAmount)
                     continue;
                 
                 if (questInfo.IsCompleted)
@@ -67,7 +67,7 @@ namespace Farm.Gameplay.Quests
                 if (questInfo.RequirementType != requirementType)
                     continue;
                 
-                if (requirementType == RequirementType.CapsulesWithTierUpgrade && requiredTier != questInfo.RequiredTier)
+                if (requirementType == RequirementType.CapsulesWithTierUpgrade && requiredTier != questInfo.RequiredExtraAmount)
                     continue;
                 
                 if (questInfo.IsCompleted)

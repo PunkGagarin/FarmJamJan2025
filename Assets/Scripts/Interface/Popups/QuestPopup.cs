@@ -31,9 +31,9 @@ namespace Farm.Interface.Popups
             string text = "";
             foreach (QuestInfo info in questInfos)
             {
-                string textToAdd = info.GetCurrentQuestDescription();
-                textToAdd = textToAdd.Replace("[RequiredTier]", info.RequiredTier.ToString());
-                textToAdd += info.IsCompleted ? $" {COMPLETED_INFO}" : $" {info.CurrentAmount} / {info.RequiredAmount}\n";
+                string textToAdd = info.QuestStateDescription;
+                textToAdd = textToAdd.Replace("[RequiredExtraAmount]", info.RequiredExtraAmount.ToString());
+                textToAdd += info.IsCompleted ? $" {COMPLETED_INFO}" : $"\r\n{info.CurrentAmount} / {info.RequiredAmount}";
                 text += textToAdd;
             }
             

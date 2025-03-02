@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Audio;
 using Farm.Gameplay.Configs.MiniGame;
+using Farm.Gameplay.Quests;
 using Farm.Interface;
 using Farm.Utils.Pause;
 using Farm.Utils.Timer;
@@ -35,6 +36,7 @@ namespace Farm.Gameplay.MiniGame
         [Inject] private TimerService _timerService;
         [Inject] private InventoryUI _inventory;
         [Inject] private SoundManager _soundManager;
+        [Inject] private QuestService _questService;
         
         public event MiniGameEnds OnMiniGameEnds;
         private bool _isStarted;
@@ -46,6 +48,7 @@ namespace Farm.Gameplay.MiniGame
         private MiniGameRisk _selectedRisk;
         private bool _isFirstRun = true;
         private MiniGameTierType _currentTierType;
+        private int _timesWonInARow;
         
         private float _drumShift;
 
@@ -164,6 +167,12 @@ namespace Farm.Gameplay.MiniGame
             MiniGameEffect selectedEffect = GetMiniGameEffectUnderSelector();
             //type of the game
             _timerService.AddTimer(1f, () => OnMiniGameEnds?.Invoke(selectedEffect, GetEffectByTier()));
+            if (_currentTierType == MiniGameTierType.High)
+            {
+                _timesWonInARow = selectedEffect == null ? 0 : _timesWonInARow + 1;
+
+                _questService.SetRequirement(RequirementType.WinInThirdTierMiniGameTimes, _timesWonInARow);
+            }
         }
 
         private float GetEffectByTier()

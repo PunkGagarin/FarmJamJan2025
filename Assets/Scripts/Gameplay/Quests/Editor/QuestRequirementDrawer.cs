@@ -10,9 +10,9 @@ namespace Farm.Gameplay.Quests.Editor
         {
             var requirementType = property.FindPropertyRelative("RequirementType");
 
-            float height = EditorGUIUtility.singleLineHeight * 2;
+            float height = EditorGUIUtility.singleLineHeight * 3.6f;
 
-            if (requirementType.enumValueIndex == (int)RequirementType.CapsulesWithTierUpgrade)
+            if (requirementType.enumValueIndex is (int)RequirementType.CapsulesWithTierUpgrade or (int)RequirementType.CollectUnitsInSeconds)
             {
                 height += EditorGUIUtility.singleLineHeight;
             }
@@ -24,18 +24,25 @@ namespace Farm.Gameplay.Quests.Editor
         {
             var requirementType = property.FindPropertyRelative("RequirementType");
             var requiredAmount = property.FindPropertyRelative("RequiredAmount");
-            var requiredTier = property.FindPropertyRelative("RequiredTier");
+            var requiredExtraAmount = property.FindPropertyRelative("RequiredExtraAmount");
+            var questStateDescription = property.FindPropertyRelative("QuestStateDescription");
 
             EditorGUI.PropertyField(new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight), requirementType);
 
-            position.y += EditorGUIUtility.singleLineHeight;
+            position.y += EditorGUIUtility.singleLineHeight * 1.2f;
 
             EditorGUI.PropertyField(new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight), requiredAmount);
+            
+            position.y += EditorGUIUtility.singleLineHeight * 1.2f;
 
-            if (requirementType.enumValueIndex == (int)RequirementType.CapsulesWithTierUpgrade)
+            EditorGUI.PropertyField(new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight), questStateDescription);
+            
+            position.y += EditorGUIUtility.singleLineHeight * .2f;
+            
+            if (requirementType.enumValueIndex is (int)RequirementType.CapsulesWithTierUpgrade or (int)RequirementType.CollectUnitsInSeconds)
             {
                 position.y += EditorGUIUtility.singleLineHeight;
-                EditorGUI.PropertyField(new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight), requiredTier);
+                EditorGUI.PropertyField(new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight), requiredExtraAmount);
             }
         }
     }

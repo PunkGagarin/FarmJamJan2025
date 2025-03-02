@@ -2502,7 +2502,7 @@ GameObject:
   - component: {fileID: 871973869}
   - component: {fileID: 871973870}
   m_Layer: 0
-  m_Name: QuestProviderInstaller
+  m_Name: QuestServiceInstaller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

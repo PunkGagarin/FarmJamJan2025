@@ -3,11 +3,11 @@ using Zenject;
 
 namespace Farm.DI
 {
-    public class QuestProviderInstaller : MonoInstaller
+    public class QuestServiceInstaller : MonoInstaller
     {
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<QuestProvider>().AsSingle();
+            Container.BindInterfacesAndSelfTo<QuestService>().AsSingle();
         }
     }
 }

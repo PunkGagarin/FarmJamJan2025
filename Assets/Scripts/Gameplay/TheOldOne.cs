@@ -23,7 +23,7 @@ namespace Farm.Gameplay
         [Inject] private PopupManager _popupManager;
         [Inject] private TimerService _timerService;
         [Inject] private FeedMediator _feedMediator;
-        [Inject] private QuestProvider _questProvider;
+        [Inject] private QuestService _questService;
         [Inject] private SoundManager _sfxManager;
         [Inject] private MusicManager _musicManager;
 
@@ -63,8 +63,8 @@ namespace Farm.Gameplay
 
         private void UpdateQuest(int stage)
         {
-            _questProvider.FinalizeQuest();
-            _questProvider.SetupQuest(
+            _questService.FinalizeQuest();
+            _questService.SetupQuest(
                 _definition.SatietyPhasesData[stage].Quest == null 
                     ? null 
                     : _definition.SatietyPhasesData[stage].Quest);
@@ -93,15 +93,15 @@ namespace Farm.Gameplay
             switch (embryoType)
             {
                 case EmbryoType.Human:
-                    _questProvider.AddRequirement(RequirementType.Human);
+                    _questService.AddRequirement(RequirementType.Human);
                     modifier = _definition.HumanSatietyModifier;
                     break;
                 case EmbryoType.Animal:
-                    _questProvider.AddRequirement(RequirementType.Animal);
+                    _questService.AddRequirement(RequirementType.Animal);
                     modifier = _definition.AnimalSatietyModifier;
                     break;
                 case EmbryoType.Fish:
-                    _questProvider.AddRequirement(RequirementType.Fish);
+                    _questService.AddRequirement(RequirementType.Fish);
                     modifier = _definition.FishSatietyModifier;
                     break;
                 default:
@@ -110,7 +110,7 @@ namespace Farm.Gameplay
 
             AddSatiety(Mathf.RoundToInt(amount * modifier / 100f));
 
-            _questProvider.SetRequirement(RequirementType.Satiety, (int)_currentSatiety);
+            _questService.SetRequirement(RequirementType.Satiety, (int)_currentSatiety);
         }
 
         private void Sealed()
@@ -191,7 +191,7 @@ namespace Farm.Gameplay
 
         private void CollectQuestInfo()
         {
-            _questProvider.SetRequirement(RequirementType.Satiety, (int)_currentSatiety);
+            _questService.SetRequirement(RequirementType.Satiety, (int)_currentSatiety);
         }
 
         private void SatietyChanged(float current, float _)
@@ -226,8 +226,8 @@ namespace Farm.Gameplay
         private void Awake()
         {
             _feedMediator.SetupTheOldOne(this);
-            _questProvider.OnQuestStarted += CollectQuestInfo;
-            _questProvider.OnQuestFailed += RemoveSatiety;
+            _questService.OnQuestStarted += CollectQuestInfo;
+            _questService.OnQuestFailed += RemoveSatiety;
             OnSatietyChanged += SatietyChanged;
         }
 
@@ -242,9 +242,14 @@ namespace Farm.Gameplay
             OnPhaseChanged -= _theOldOneUI.PhaseChanged;
             OnSatietyChanged -= _theOldOneUI.UpdateSatietyBar;
             _blinkingTween.Kill();
-            _questProvider.OnQuestStarted -= CollectQuestInfo;
-            _questProvider.OnQuestFailed -= RemoveSatiety;
+            _questService.OnQuestStarted -= CollectQuestInfo;
+            _questService.OnQuestFailed -= RemoveSatiety;
             OnSatietyChanged -= SatietyChanged;
+        }
+
+        private void Update()
+        {
+            _questService.SetRequirement(RequirementType.KeepRampageMode, _inRampage ? Mathf.FloorToInt(_rampageTimer.Duration - _rampageTimer.RemainingTime) : 0);
         }
     }
 }
