@@ -35,7 +35,10 @@ namespace Farm.Gameplay.Capsules
             if (_collectUnitsQuest == null)
             {
                 var quests = _questService.GetQuestRequirements();
-
+                
+                if (quests == null)
+                    return;
+            
                 foreach (var questInfo in quests)
                 {
                     if (questInfo.RequirementType == RequirementType.CollectUnitsInSeconds)
