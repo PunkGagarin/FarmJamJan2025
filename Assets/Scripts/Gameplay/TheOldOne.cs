@@ -209,7 +209,10 @@ namespace Farm.Gameplay
         {
             _currentSatiety += amount;
             if (_currentSatiety >= _maxSatiety)
+            {
                 _currentSatiety = _maxSatiety;
+                Sealed();
+            }
             
             OnSatietyChanged?.Invoke(_currentSatiety, _maxSatiety);
         }
