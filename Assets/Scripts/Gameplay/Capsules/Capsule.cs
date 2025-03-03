@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using Audio;
+using DG.Tweening;
 using Farm.Gameplay.Configs;
 using Farm.Gameplay.Configs.UpgradeModules;
 using Farm.Interface;
 using Farm.Interface.Popups;
 using Farm.Utils.Timer;
-using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -32,6 +32,7 @@ namespace Farm.Gameplay.Capsules
         [SerializeField] private CapsuleEnergyCost _capsuleEnergyCost;
         [SerializeField] private int _capsuleNumber;
         [SerializeField] private List<CapsuleSlot> _capsuleSlots;
+        [SerializeField] private Image _canBuyImage;
 
         [Inject] private PopupManager _popupManager;
         [Inject] private TimerService _timerService;
@@ -55,11 +56,13 @@ namespace Farm.Gameplay.Capsules
         public Embryo Embryo { get; private set; }
         public int Tier => _tier;
         public bool IsOwn => _isOwn;
+        public int Cost => _capsuleEnergyCost.Cost;
         public EmbryoStates CurrentEmbryoState { get; private set; }
 
         public event Action<EmbryoStates> OnEmbryoStateChanged;
         public static event Action OnCapsuleBought;
         public static event Action OnCapsuleUpgrade;
+        public static event Action OnTutorialCapsuleEmbryoReleased;
 
         public void StartEmbryoProcess(Embryo embryo)
         {
@@ -74,7 +77,17 @@ namespace Farm.Gameplay.Capsules
             _growProgress.gameObject.SetActive(true);
             _capsuleSlots.ForEach(slot => slot.IsCapsuleInGrowthProcess = true);
         }
-
+        
+        public void OpenCapsule()
+        {
+            _animator.SetTrigger(Open);
+        }
+        
+        public void ShowTutorialCanBuy()
+        {
+            _canBuyImage.gameObject.SetActive(true);
+            _canBuyImage.DOColor(Color.yellow, 0.5f).SetLoops(-1, LoopType.Yoyo);
+        }
         private void ApplyModulesToGrowthSpeed()
         {
             Embryo.TimeToGrowth = UpgradeModuleUtils.ApplyStatsWithType(Embryo.TimeToGrowth, _capsuleSlots,
@@ -131,7 +144,6 @@ namespace Farm.Gameplay.Capsules
         {
             if (_capsuleConfig.CapsuleCosts[_capsuleNumber] == 0)
             {
-                _animator.SetTrigger(InstantOpen);
                 UpdateOwnership();
                 _light2D.intensity = ENABLE_LIGHT;
             }
@@ -144,6 +156,9 @@ namespace Farm.Gameplay.Capsules
         
         private void UpdateOwnership()
         {
+            _canBuyImage.gameObject.SetActive(false);
+            _canBuyImage.DOKill();
+            
             CurrentEmbryoState = EmbryoStates.Empty;
             _isOwn = true;
             _capsuleSlots.ForEach(slot => slot.IsOwn = true);
@@ -195,7 +210,6 @@ namespace Farm.Gameplay.Capsules
             }
         }
 
-        [UsedImplicitly] //Вызываю из аниматора
         private void FeedTheOldOne()
         {
             _sfxManager.PlayRandomSoundByTypeWithRandomChance(GameAudioType.FeedingAction, 0, true);
@@ -205,6 +219,11 @@ namespace Farm.Gameplay.Capsules
 
             CurrentEmbryoState = EmbryoStates.Empty;
             OnEmbryoStateChanged?.Invoke(CurrentEmbryoState);
+        }
+
+        private void CompleteAnimation()
+        {
+            OnTutorialCapsuleEmbryoReleased?.Invoke();
             _animationInProgress = false;
         }
 

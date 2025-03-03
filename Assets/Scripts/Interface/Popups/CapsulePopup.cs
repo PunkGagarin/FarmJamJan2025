@@ -46,12 +46,17 @@ namespace Farm.Interface.Popups
         private Capsule _capsule;
         private Embryo _selectedEmbryo;
         private MiniGameEffect _miniGameEffect;
+        private bool _isTutorial = true;
 
         private const float PERCENT_VALUE = 100f;
         private const string CREATE_EMBRYO_TEXT = "Create embryo Tier ";
 
         private int Cost => _embryoConfig.EmbryoTiers[_selectedTier].BaseCost;
         private bool CanBuy => _inventory.CanBuy(Cost);
+        
+        public static event Action OnTutorialCapsuleOpened;
+        public static event Action OnTutorialCapsuleClosed;
+        public static event Action OnTutorialAnimationCompleted;
 
         public void Initialize(Capsule capsule)
         {
@@ -72,6 +77,14 @@ namespace Farm.Interface.Popups
             UpdateEmbryoView(capsule.CurrentEmbryoState);
 
             UpdateModulesSots();
+
+            if (_isTutorial)
+            {
+                _closeButton.interactable = false;
+                _additionalCloseButton.interactable = false;
+            }
+
+            OnTutorialCapsuleOpened?.Invoke();
         }
 
         public override void Open(bool withPause)
@@ -82,6 +95,14 @@ namespace Farm.Interface.Popups
             
             if (_capsule.Embryo != null)
                 _animator.SetTrigger(InstantFill);
+        }
+
+        private void TutorialAnimationComplete()
+        {
+            _isTutorial = false;
+            _closeButton.interactable = true;
+            _additionalCloseButton.interactable = true;
+            OnTutorialAnimationCompleted?.Invoke();
         }
 
         private void UpdateModulesSots()
@@ -113,8 +134,8 @@ namespace Farm.Interface.Popups
             _capsule.OnEmbryoStateChanged -= UpdateEmbryoView;
             _createEmbryoButton.interactable = false;
             _sfxManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
-
             base.Close();
+            OnTutorialCapsuleClosed?.Invoke();
         }
 
         private void PlusTier()

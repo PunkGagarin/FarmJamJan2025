@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Audio;
@@ -37,8 +38,7 @@ namespace Farm.Gameplay.MiniGame
         [Inject] private InventoryUI _inventory;
         [Inject] private SoundManager _soundManager;
         [Inject] private QuestService _questService;
-        
-        public event MiniGameEnds OnMiniGameEnds;
+
         private bool _isStarted;
         private bool _isPaused;
         private bool _isEnded;
@@ -49,10 +49,12 @@ namespace Farm.Gameplay.MiniGame
         private bool _isFirstRun = true;
         private MiniGameTierType _currentTierType;
         private int _timesWonInARow;
-        
         private float _drumShift;
 
         private const float FULL_CIRCLE_ANGLE = 360f;
+        
+        public static event Action OnTutorialMiniGameOpened;
+        public event MiniGameEnds OnMiniGameEnds;
 
         public void Initialize()
         {
@@ -63,6 +65,7 @@ namespace Farm.Gameplay.MiniGame
             InitializeButtons();
 
             _miniGameSpeedometer.Init(_miniGameConfig);
+            OnTutorialMiniGameOpened?.Invoke();
         }
         
         private void InitializeButtons()

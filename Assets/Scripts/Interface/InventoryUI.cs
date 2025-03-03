@@ -33,7 +33,7 @@ namespace Farm.Interface
         private InventorySlot[] _inventorySlots;
         private float _currentModuleCost;
         private int _currentEnergy;
-        private bool _isInventoryOpen = true;
+        private bool _isInventoryOpen = false;
         private int _moduleBoughtCount = 0;
         private Tween _energyShakeTween, _slotsShakeTween;
 
@@ -149,6 +149,9 @@ namespace Farm.Interface
             if (_energyShakeTween != null)
                 _energyShakeTween = _energyAmount.transform.DOShakePosition(_inventoryConfig.ShakeDuration, Vector3.one * _inventoryConfig.ShakePower);
         }
+        
+        public void TutorialToggleOpenAnimation() => 
+            ToggleOpenAnimation();
         
         private void ToggleOpenAnimation()
         {

@@ -18,7 +18,7 @@ namespace Farm.Utils.Timer
         public float SpeedMultiplier
         {
             get => _speedMultiplier;
-            set => _speedMultiplier = Mathf.Max(0.01f, value);
+            set => _speedMultiplier = Mathf.Max(0, value);
         }
         
         public bool IsActive => RemainingTime > 0;
@@ -46,7 +46,7 @@ namespace Farm.Utils.Timer
             RemainingTime = Mathf.Max(RemainingTime - additionalTime, 0);
 
         public void Tick(float deltaTime) => 
-            RemainingTime -= deltaTime * _speedMultiplier;
+            RemainingTime -= deltaTime * SpeedMultiplier;
 
         public void Reset()
         {

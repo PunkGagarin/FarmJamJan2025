@@ -72,6 +72,9 @@ namespace Audio
 
         private void PlaySoundByType(GameAudioType type, int soundIndex)
         {
+            if (type == GameAudioType.None)
+                return;
+            
             var soundToPlay = _soundsFactory.GetClipByTypeAndIndex(type, soundIndex);
             AudioSource.clip = soundToPlay.value;
             AudioSource.volume = Volume * (soundToPlay.key / PERCENT_VALUE);

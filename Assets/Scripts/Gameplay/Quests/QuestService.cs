@@ -59,7 +59,7 @@ namespace Farm.Gameplay.Quests
 
         public void SetRequirement(RequirementType requirementType, int value, int requiredTier = -1)
         {
-            if (_currentQuestRequirements == null || _isQuestCompleted)
+            if (_currentQuestRequirements == null || _currentQuestRequirements.Count == 0 || _isQuestCompleted)
                 return;
             
             foreach (QuestInfo questInfo in _currentQuestRequirements)

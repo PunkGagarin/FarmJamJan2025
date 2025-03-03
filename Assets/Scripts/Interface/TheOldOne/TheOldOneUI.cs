@@ -61,6 +61,9 @@ namespace Farm.Interface.TheOldOne
                 _blinkingTween.Kill();
             }
         }
+
+        public void TutorialComplete() => 
+            _theOldOneLifeTimeUI.TutorialComplete();
         
         private void UpdateSatietyBar(float current, float max, bool instant)
         {

@@ -17,6 +17,8 @@ namespace Farm.Gameplay.Capsules
         [Inject] private InventoryUI _inventory;
         [Inject] private SoundManager _sfxManager;
         private int _cost;
+        
+        public int Cost => _cost;
 
         private bool CanBuy => _inventory.CanBuy(_cost);
 

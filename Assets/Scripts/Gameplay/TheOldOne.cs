@@ -37,6 +37,7 @@ namespace Farm.Gameplay
         private int _currentStage;
         private Sequence _blinkingTween;
         private bool _inRampage;
+        private bool _waitForTutorial = true;
 
         public event SatietyChangeHandler OnSatietyChanged;
         public event Action<int> OnPhaseChanged;
@@ -61,6 +62,15 @@ namespace Farm.Gameplay
             InitializeInterface();
         }
 
+        public void TutorialCompleted()
+        {
+            _lifeTimer.SpeedMultiplier = 1f;
+            _phaseTimer.SpeedMultiplier = 1f;
+            _starveTimer.SpeedMultiplier = 1f;
+            _waitForTutorial = false;
+            _theOldOneUI.TutorialComplete();
+        }
+
         private void UpdateQuest(int stage)
         {
             _questService.FinalizeQuest();
@@ -81,9 +91,15 @@ namespace Farm.Gameplay
         private void SetupTimers()
         {
             _lifeTimer = _timerService.AddTimer(_definition.LifeTime, Sealed);
-            _phaseTimer = _timerService.AddTimer(_definition.SatietyPhasesData[_currentStage + 1].PhaseStartTime,
-                ChangePhase);
+            _phaseTimer = _timerService.AddTimer(_definition.SatietyPhasesData[_currentStage + 1].PhaseStartTime, ChangePhase);
             _starveTimer = _timerService.AddTimer(_definition.TimeToStarveTick, Starve, true);
+            
+            if (_waitForTutorial)
+            {
+                _lifeTimer.SpeedMultiplier = 0;
+                _phaseTimer.SpeedMultiplier = 0;
+                _starveTimer.SpeedMultiplier = 0;
+            }
         }
 
         public void Feed(int amount, EmbryoType embryoType)

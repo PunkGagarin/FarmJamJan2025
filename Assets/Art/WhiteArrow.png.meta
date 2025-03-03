@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 294fb7557af95b1438827c0b96405346
+guid: fc9df95d67282e64989933637572118b
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,22 +110,22 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UI_capsula_button_ext_0
+      name: WhiteArrow_0
       rect:
         serializedVersion: 2
-        x: 338
-        y: 76
-        width: 109
-        height: 42
+        x: 659
+        y: 248
+        width: 15
+        height: 14
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 5, y: 5, z: 5, w: 5}
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 229cc35992a3bee4db26dcb9230d2d62
-      internalID: 1684101872
+      spriteID: 5af5d3dd76aefd643a07a1aa451e27c1
+      internalID: 690189661
       vertices: []
       indices: 
       edges: []
@@ -141,7 +141,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      UI_capsula_button_ext_0: 1684101872
+      WhiteArrow_0: 690189661
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

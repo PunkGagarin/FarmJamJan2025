@@ -18,6 +18,30 @@ namespace Farm.Gameplay.Capsules
         private TimerHandle _embryoCollectTimer;
         private QuestInfo _collectUnitsQuest;
 
+        public int CapsulesOwned => _capsules.Count(capsule => capsule.IsOwn);
+
+        public void TutorialOpenFirstCapsule()
+        {
+            _capsules[0].OpenCapsule();
+        }
+        
+        public void TutorialOpenRemainCapsules()
+        {
+            for (int i = 1; i < _capsules.Count; i++)
+                if (_capsules[i].IsOwn)
+                    _capsules[i].OpenCapsule();
+        }
+
+        public Capsule NextUnopenedCapsuleCost()
+        {
+            foreach (Capsule capsule in _capsules)
+            {
+                if (!capsule.IsOwn)
+                    return capsule;
+            }
+            return null;
+        }
+
         private void Awake()
         {
             Capsule.OnCapsuleBought += CountOwnCapsules;
