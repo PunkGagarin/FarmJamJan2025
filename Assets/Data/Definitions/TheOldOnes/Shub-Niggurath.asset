@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eeffbc7b0f054cf48ebdfab026ccb5d3, type: 3}
   m_Name: Shub-Niggurath
   m_EditorClassIdentifier: 
-  _icon: {fileID: 21300000, guid: 3246db2c78c27334e8a2029aee65686e, type: 3}
+  _icon: {fileID: 21300000, guid: 1b23819978d4ea04db54ca340f2643e0, type: 3}
   _headerInfo: "Shub-Niggurath \nMother of Darkness"
   _maxSatiety: 2000
   _startSatiety: 300

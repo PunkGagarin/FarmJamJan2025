@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Farm.Audio.SO;
 using UnityEngine;
+using Zenject;
 
 namespace Farm.Audio
 {
@@ -11,7 +12,10 @@ namespace Farm.Audio
         private const float DEFAULT_VOLUME = .5f;
         private const float PERCENT_VALUE = 100f;
 
-        [SerializeField] private SoundsFactorySO _soundsFactory;
+        [SerializeField]
+        private SoundsFactorySO _soundsFactory;
+
+        [Inject] private MasterSoundManager _masterSoundManager;
 
         private List<AudioSource> _audioSources;
 
@@ -35,7 +39,7 @@ namespace Farm.Audio
             {
                 return source;
             }
-            
+
             AudioSource newAudioSource = gameObject.AddComponent<AudioSource>();
             newAudioSource.volume = Volume;
             _audioSources.Add(newAudioSource);
@@ -53,7 +57,7 @@ namespace Farm.Audio
             var clip = _soundsFactory.GetClipByTypeAndIndex(type, soundIndex);
             PlaySound(clip.value, clip.key);
         }
-        
+
         public void PlayRandomSoundByTypeWithRandomChance(GameAudioType type, int soundIndex, bool isRandomPitch)
         {
             var chance = Random.Range(0f, 1f);
@@ -70,12 +74,12 @@ namespace Farm.Audio
             audioSource.pitch = pitch;
             audioSource.Play();
         }
-        
+
         private void PlaySound(AudioClip clip, int clipVolume)
         {
             var audioSource = GetAvailableAudioSource();
             audioSource.clip = clip;
-            audioSource.volume = Volume * (clipVolume / PERCENT_VALUE);
+            audioSource.volume = _masterSoundManager.Volume * Volume * (clipVolume / PERCENT_VALUE);
             audioSource.Play();
         }
 
