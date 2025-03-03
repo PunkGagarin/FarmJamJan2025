@@ -23,16 +23,16 @@ MonoBehaviour:
     SatietyLoseByTick: 6
     Quest: {fileID: 11400000, guid: 471755e4359d743478abd66816d95b78, type: 2}
   - PhaseStartTime: 150
-    SatietyLoseByTick: 7
+    SatietyLoseByTick: 8
     Quest: {fileID: 11400000, guid: daae049ee641f6e418b4639847bca3b2, type: 2}
   - PhaseStartTime: 300
-    SatietyLoseByTick: 8
+    SatietyLoseByTick: 10
     Quest: {fileID: 11400000, guid: 925b1ff8333d47947adc2aff7d19d756, type: 2}
   - PhaseStartTime: 450
-    SatietyLoseByTick: 9
+    SatietyLoseByTick: 12
     Quest: {fileID: 11400000, guid: e81677f80a0b9e346b9f606b39972344, type: 2}
   - PhaseStartTime: 600
-    SatietyLoseByTick: 10
+    SatietyLoseByTick: 14
     Quest: {fileID: 11400000, guid: 045bd92f64ffdfa43ad1c8695893450b, type: 2}
   _rampageTime: 11
   _humanSatietyModifier: 100
