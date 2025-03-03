@@ -56,9 +56,9 @@ namespace Farm.Interface.Popups
             _sfxSlider.value = _soundManager.Volume;
         }
 
-        private void OnMasterSliderValueChanged(float value)
+        private void OnMasterSliderValueChanged(float masterValue)
         {
-            _masterSoundManager.ChangeVolume(value, value);
+            _masterSoundManager.ChangeVolume(masterValue, masterValue);
             OnMusicSliderValueChanged(_musicManager.Volume);
             OnSoundSliderValueChanged(_soundManager.Volume);
         }

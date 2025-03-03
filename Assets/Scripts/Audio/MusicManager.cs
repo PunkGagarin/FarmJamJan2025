@@ -1,6 +1,7 @@
 using Farm.Audio.SO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace Farm.Audio
 {
@@ -11,6 +12,7 @@ namespace Farm.Audio
         private const float PERCENT_VALUE = 100f;
 
         [SerializeField] private SoundsFactorySO _soundsFactory;
+        [Inject] private MasterSoundManager _masterSoundManager;
 
         private bool _isIntroPlaying = false;
         private GameAudioType _currentClipType = GameAudioType.None;
@@ -78,7 +80,7 @@ namespace Farm.Audio
             
             var soundToPlay = _soundsFactory.GetClipByTypeAndIndex(type, soundIndex);
             AudioSource.clip = soundToPlay.value;
-            AudioSource.volume = Volume * (soundToPlay.key / PERCENT_VALUE);
+            AudioSource.volume = Volume * (soundToPlay.key / PERCENT_VALUE) * _masterSoundManager.Volume;
             AudioSource.loop = false;
             AudioSource.Play();
             _currentClipType = type;
