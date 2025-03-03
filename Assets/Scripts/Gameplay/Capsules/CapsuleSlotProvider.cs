@@ -13,10 +13,7 @@ namespace Farm.Gameplay.Capsules
 
         public bool CanPlaceItem => _capsuleSlot.CanPlaceItem;
 
-        private void Awake()
-        {
-            CapsuleSlot.OnAnyModuleChanged += OnAnyModuleChanged;
-        }
+        private void Awake() => CapsuleSlot.OnAnyModuleChanged += OnAnyModuleChanged;
 
         private void OnAnyModuleChanged(CapsuleSlot slot)
         {
@@ -26,10 +23,9 @@ namespace Farm.Gameplay.Capsules
             }
         }
 
-        public void SetItem(UpgradeModule item)
-        {
-            _capsuleSlot.SetItem(item);
-        }
+        public void SetItem(UpgradeModule item) => _capsuleSlot.SetItem(item);
+
+        public void ShowNotAbleToPlace() => _capsuleSlot.ShowNotAbleToPlace();
 
         public void SetSlot(CapsuleSlot slot)
         {
@@ -37,14 +33,8 @@ namespace Farm.Gameplay.Capsules
             _icon.DOColor(new Color(1, 1, 1, _capsuleSlot.UpgradeModule != null ? 1 : 0), 0f);
         }
 
-        public void OnPointerDown(PointerEventData eventData)
-        {
-            _capsuleSlot.RemoveModule();
-        }
+        public void OnPointerDown(PointerEventData eventData) => _capsuleSlot.RemoveModule();
 
-        private void OnDestroy()
-        {
-            CapsuleSlot.OnAnyModuleChanged -= OnAnyModuleChanged;
-        }
+        private void OnDestroy() => CapsuleSlot.OnAnyModuleChanged -= OnAnyModuleChanged;
     }
 }

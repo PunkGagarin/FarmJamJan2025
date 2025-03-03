@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Audio;
+using DG.Tweening;
 using Farm.Gameplay.Configs;
 using Farm.Gameplay.Configs.UpgradeModules;
 using Farm.Interface;
@@ -38,6 +39,7 @@ namespace Farm.Gameplay.Capsules
         [Inject] private FeedMediator _feedMediator;
         [Inject] private InventoryUI _inventory;
         [Inject] private CapsuleConfig _capsuleConfig;
+        [Inject] private InventoryConfig _inventoryConfig;
         [Inject] private UpgradeModuleConfig _upgradeModuleConfig;
         [Inject] private EmbryoConfig _embryoConfig;
         [Inject] private SoundManager _sfxManager;
@@ -50,6 +52,7 @@ namespace Farm.Gameplay.Capsules
         private bool _isFeedReady;
         private const float ENABLE_LIGHT = 6.7f;
         private const float DISABLE_LIGHT = 0f;
+        private Tween _progressShakeTween;
 
         public List<CapsuleSlot> CapsuleSlots => _capsuleSlots;
         public Embryo Embryo { get; private set; }
@@ -91,7 +94,7 @@ namespace Farm.Gameplay.Capsules
             _info.gameObject.SetActive(true);
             _capsuleSlots.ForEach(slot => slot.IsCapsuleInGrowthProcess = false);
         }
-        
+
         private void BuyCapsule()
         {
             _animator.SetTrigger(Open);
@@ -99,7 +102,7 @@ namespace Farm.Gameplay.Capsules
             _sfxManager.PlaySoundByType(GameAudioType.CapsuleAppearing, 0);
             _timerService.AddTimer(1.4f, () => _light2D.intensity = ENABLE_LIGHT);
         }
-        
+
         private void Awake()
         {
             _growProgress.gameObject.SetActive(false);
@@ -109,7 +112,7 @@ namespace Farm.Gameplay.Capsules
             _light2D.intensity = DISABLE_LIGHT;
             SetupCapsule();
         }
-        
+
         private void UpdateView(EmbryoStates newEmbryoState)
         {
             if (Embryo == null)
@@ -117,7 +120,7 @@ namespace Farm.Gameplay.Capsules
                 _embryoImage.sprite = null;
                 return;
             }
-            
+
             _embryoImage.sprite = newEmbryoState switch
             {
                 EmbryoStates.Empty => null,
@@ -126,7 +129,7 @@ namespace Farm.Gameplay.Capsules
                 _ => throw new ArgumentOutOfRangeException(nameof(newEmbryoState), newEmbryoState, null)
             };
         }
-        
+
         private void SetupCapsule()
         {
             if (_capsuleConfig.CapsuleCosts[_capsuleNumber] == 0)
@@ -141,7 +144,7 @@ namespace Farm.Gameplay.Capsules
                 _capsuleEnergyCost.UpdateInfo(_capsuleConfig.CapsuleCosts[_capsuleNumber], false);
             }
         }
-        
+
         private void UpdateOwnership()
         {
             CurrentEmbryoState = EmbryoStates.Empty;
@@ -213,6 +216,16 @@ namespace Farm.Gameplay.Capsules
             _capsuleEnergyCost.OnBoughtSuccess -= BuyCapsule;
             _capsuleEnergyCost.OnBoughtSuccess -= UpgradeCapsule;
             OnEmbryoStateChanged -= UpdateView;
+        }
+
+        public void ShakeModuleAddingError()
+        {
+            if (CurrentEmbryoState == EmbryoStates.Growing)
+            {
+                _progressShakeTween =
+                    _growProgress.transform.DOShakePosition(_inventoryConfig.ShakeDuration,
+                        Vector3.one * 0.1f);
+            }
         }
     }
 }

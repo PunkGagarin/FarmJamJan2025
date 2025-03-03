@@ -18,5 +18,10 @@ namespace Farm
             _trashBinAnimator.SetTrigger(Play);
             _soundManager.PlaySoundByType(GameAudioType.ModuleDestroyedAction, 0);
         }
+
+        public void ShowNotAbleToPlace()
+        {
+            // no-op
+        }
     }
 }
