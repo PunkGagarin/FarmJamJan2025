@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c1bf9b7f956b14d32b4bd3c1c0416bbb
+guid: e41792d6b6fe74705bb319ff6aadd3ae
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -93,131 +93,39 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: GUI_1
+      name: UI_capsula_button1_m_0
       rect:
         serializedVersion: 2
-        x: 113
-        y: 209
-        width: 30
-        height: 14
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 2, y: 2, z: 2, w: 2}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 93834e8cd0630400d9b00088cf924772
-      internalID: -246483027
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: GUI_2
-      rect:
-        serializedVersion: 2
-        x: 113
-        y: 193
-        width: 30
-        height: 13
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 2, y: 2, z: 2, w: 2}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a46ac097ea4f246afb34034ef24c2b0c
-      internalID: 1844458056
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: GUI_3
-      rect:
-        serializedVersion: 2
-        x: 113
-        y: 177
-        width: 30
-        height: 14
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 2, y: 2, z: 2, w: 2}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a9f9e9bb83ba64d778d4ea593b7b2639
-      internalID: 514612754
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: GUI_0
-      rect:
-        serializedVersion: 2
-        x: 167
-        y: 247
-        width: 18
-        height: 18
+        x: 338
+        y: 76
+        width: 109
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 3, y: 3, z: 3, w: 3}
+      border: {x: 5, y: 5, z: 5, w: 5}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3e6825835393341ebae1507171734c53
-      internalID: -2062677163
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: GUI_4
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 209
-        width: 14
-        height: 14
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 2, y: 2, z: 2, w: 2}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c62dfc794290343cdbb6f05c462a2648
-      internalID: -910589211
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: GUI_5
-      rect:
-        serializedVersion: 2
-        x: 101
-        y: 212
-        width: 6
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d0d018adaafb54c248103024616d3aef
-      internalID: -1997093167
+      spriteID: bcfba91eaf2084c2190943454ed423be
+      internalID: 1222464708
       vertices: []
       indices: 
       edges: []
@@ -233,12 +141,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      GUI_0: -2062677163
-      GUI_1: -246483027
-      GUI_2: 1844458056
-      GUI_3: 514612754
-      GUI_4: -910589211
-      GUI_5: -1997093167
+      UI_capsula_button1_m_0: 1222464708
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

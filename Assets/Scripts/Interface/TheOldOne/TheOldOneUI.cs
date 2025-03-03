@@ -1,10 +1,11 @@
 ﻿using DG.Tweening;
 using Farm.Gameplay.Definitions;
+using Farm.Interface.Popups;
 using Farm.Utils.Timer;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Zenject;
 
 namespace Farm.Interface.TheOldOne
 {
@@ -22,6 +23,8 @@ namespace Farm.Interface.TheOldOne
         [SerializeField] private FoodInfo _foodInfo;
         [SerializeField] private Image _cautionImage;
         [SerializeField] private float _blinkingCycleTime;
+        [SerializeField] private Button _pauseButton;
+        [Inject] private PopupManager _popupManager;
         private Sequence _blinkingTween;
 
         private int _maxPhases;
@@ -68,5 +71,11 @@ namespace Farm.Interface.TheOldOne
             _satietyAmount.text = $"{current} / {max}";
             _satietyBar.DOFillAmount(progress, instant ? 0 : _timeToUpdateBar);
         }
+
+        private void Awake() => _pauseButton.onClick.AddListener(OnPauseClicked);
+
+        private void OnPauseClicked() => _popupManager.OpenPause();
+
+        private void OnDestroy() => _pauseButton.onClick.RemoveListener(OnPauseClicked);
     }
 }
