@@ -8,7 +8,7 @@ namespace Farm.Interface.Popups
     {
         [SerializeField] private Button _button;
 
-        [Inject] private SceneLoader _sceneLoader;
+        [Inject] private SceneLoader.SceneLoader _sceneLoader;
         
         private void Awake()
         {
@@ -22,7 +22,7 @@ namespace Farm.Interface.Popups
         
         private void OpenMainMenu()
         {
-            _sceneLoader.Load(SceneLoader.Scene.MainMenuScene);
+            _sceneLoader.Load(SceneLoader.SceneLoader.Scene.MainMenuScene);
         }
     }
 }

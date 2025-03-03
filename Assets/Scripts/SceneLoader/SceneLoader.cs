@@ -1,24 +1,26 @@
 using UnityEngine.SceneManagement;
-
-public class SceneLoader
+namespace Farm.SceneLoader
 {
-    private static Scene _targetScene;
-
-    public enum Scene
+    public class SceneLoader
     {
-        MainMenuScene,
-        Gameplay,
-        LoadingScene
-    }
+        private static Scene _targetScene;
 
-    public void Load(Scene targetScene)
-    {
-        _targetScene = targetScene;
-        SceneManager.LoadScene(Scene.LoadingScene.ToString());
-    }
+        public enum Scene
+        {
+            MainMenuScene,
+            Gameplay,
+            LoadingScene
+        }
 
-    public void LoaderCallback()
-    {
-        SceneManager.LoadScene(_targetScene.ToString());
+        public void Load(Scene targetScene)
+        {
+            _targetScene = targetScene;
+            SceneManager.LoadScene(Scene.LoadingScene.ToString());
+        }
+
+        public void LoaderCallback()
+        {
+            SceneManager.LoadScene(_targetScene.ToString());
+        }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using Farm.Gameplay.Repositories;
+﻿using Farm.Gameplay.Repositories;
 using Farm.Interface.Popups;
 using Farm.Interface.TheOldOne;
 using UnityEngine;

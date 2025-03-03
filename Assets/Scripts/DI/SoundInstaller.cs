@@ -1,19 +1,21 @@
-using Audio;
+using Farm.Audio;
 using UnityEngine;
 using Zenject;
-
-public class SoundInstaller : MonoInstaller
+namespace Farm.DI
 {
-    [SerializeField] private SoundManager _soundManager;
-    [SerializeField] private MasterSoundManager _masterSoundManager;
-    [SerializeField] private MusicManager _musicManager;
-    [SerializeField] private AmbientSoundPlayer _ambientSoundPlayer;
-
-    public override void InstallBindings()
+    public class SoundInstaller : MonoInstaller
     {
-        Container.Bind<MasterSoundManager>().FromInstance(_masterSoundManager).AsSingle();
-        Container.Bind<SoundManager>().FromInstance(_soundManager).AsSingle();
-        Container.Bind<MusicManager>().FromInstance(_musicManager).AsSingle();
-        Container.Bind<AmbientSoundPlayer>().FromInstance(_ambientSoundPlayer).AsSingle();
+        [SerializeField] private SoundManager _soundManager;
+        [SerializeField] private MasterSoundManager _masterSoundManager;
+        [SerializeField] private MusicManager _musicManager;
+        [SerializeField] private AmbientSoundPlayer _ambientSoundPlayer;
+
+        public override void InstallBindings()
+        {
+            Container.Bind<MasterSoundManager>().FromInstance(_masterSoundManager).AsSingle();
+            Container.Bind<SoundManager>().FromInstance(_soundManager).AsSingle();
+            Container.Bind<MusicManager>().FromInstance(_musicManager).AsSingle();
+            Container.Bind<AmbientSoundPlayer>().FromInstance(_ambientSoundPlayer).AsSingle();
+        }
     }
 }

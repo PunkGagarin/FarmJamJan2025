@@ -73,9 +73,9 @@ namespace Farm.Interface.Popups
             return _victoryPopup;
         }
 
-        public MessagePopup OpenMessagePopup(string message)
+        public MessagePopup OpenMessagePopup(string message, int positions = -1)
         {
-            _messagePopup.Open(message);
+            _messagePopup.Open(message, positions);
 
             return _messagePopup;
         }

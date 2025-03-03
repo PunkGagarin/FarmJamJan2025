@@ -1,25 +1,26 @@
-using Audio;
 using UnityEngine;
-
-class MasterSoundManager : BaseAudioManager
+namespace Farm.Audio
 {
-    private const string PLAYER_PREFS_NAME = "MasterSoundVolume";
-    private const float DEFAULT_VOLUME = 1f;
-
-    private void Awake()
+    class MasterSoundManager : BaseAudioManager
     {
-        SetPlayerPrefsName();
-        Volume = PlayerPrefs.GetFloat(PLAYER_PREFS_NAME, DEFAULT_VOLUME);
-    }
+        private const string PLAYER_PREFS_NAME = "MasterSoundVolume";
+        private const float DEFAULT_VOLUME = 1f;
 
-    public override void ChangeVolume(float volume, float masterVolume)
-    {
-        Volume = volume;
-    }
+        private void Awake()
+        {
+            SetPlayerPrefsName();
+            Volume = PlayerPrefs.GetFloat(PLAYER_PREFS_NAME, DEFAULT_VOLUME);
+        }
+
+        public override void ChangeVolume(float volume, float masterVolume)
+        {
+            Volume = volume;
+        }
 
     
-    protected override void SetPlayerPrefsName()
-    {
-        PlayerPrefsName = PLAYER_PREFS_NAME;
+        protected override void SetPlayerPrefsName()
+        {
+            PlayerPrefsName = PLAYER_PREFS_NAME;
+        }
     }
 }

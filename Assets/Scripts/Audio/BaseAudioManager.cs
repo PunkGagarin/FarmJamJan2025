@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Audio
+namespace Farm.Audio
 {
     public abstract class BaseAudioManager : MonoBehaviour
     {

@@ -1,9 +1,8 @@
-using Farm.Interface.Popups;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace Farm
+namespace Farm.Interface.Popups
 {
     public class PausePopup : Popup
     {
@@ -12,7 +11,7 @@ namespace Farm
         [SerializeField] private Button _returnButton;
 
         [Inject] private PopupManager _popupManager;
-        [Inject] private SceneLoader _sceneLoader;
+        [Inject] private SceneLoader.SceneLoader _sceneLoader;
 
         private void Awake()
         {
@@ -23,7 +22,7 @@ namespace Farm
 
         private void OnOptionsClicked() => _popupManager.OpenOptions();
 
-        private void OnMainMenuClicked() => _sceneLoader.Load(SceneLoader.Scene.MainMenuScene);
+        private void OnMainMenuClicked() => _sceneLoader.Load(SceneLoader.SceneLoader.Scene.MainMenuScene);
 
         private void OnDestroy()
         {

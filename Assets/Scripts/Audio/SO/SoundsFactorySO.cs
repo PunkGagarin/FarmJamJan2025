@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace Audio
+namespace Farm.Audio.SO
 {
 
     [CreateAssetMenu(menuName = "Gameplay/Audio/SoundsFactorySO", fileName = "SoundsFactorySO")]

@@ -1,9 +1,11 @@
 using Zenject;
-
-public class LoaderInstaller : MonoInstaller
+namespace Farm.DI
 {
-    public override void InstallBindings()
+    public class LoaderInstaller : MonoInstaller
     {
-        Container.Bind<SceneLoader>().AsSingle();
+        public override void InstallBindings()
+        {
+            Container.Bind<SceneLoader.SceneLoader>().AsSingle();
+        }
     }
 }

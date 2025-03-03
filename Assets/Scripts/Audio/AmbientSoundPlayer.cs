@@ -1,37 +1,40 @@
-using Audio;
+using Farm.Audio.SO;
 using Farm.Utils.Timer;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
 using Random = UnityEngine.Random;
 
-public class AmbientSoundPlayer : MonoBehaviour
+namespace Farm.Audio
 {
-    private TimerHandle _timerHandle;
-    private float _playChance = 0.5f;
-
-    [SerializeField] private SoundsFactorySO _soundsFactory;
-    [Inject] private SoundManager _sfxManager;
-    [Inject] private TimerService _timerService;
-
-    void Start()
+    public class AmbientSoundPlayer : MonoBehaviour
     {
-        _timerHandle = _timerService.AddTimer(_soundsFactory.IntervalBetweenAmbientSfx, TryPlayAmbient, true);
-    }
+        private TimerHandle _timerHandle;
+        private float _playChance = 0.5f;
 
-    private void TryPlayAmbient()
-    {
-        var currentScene = SceneManager.GetActiveScene().name;
-        var chance = Random.Range(0f, 1f);
-        if (chance < _playChance && currentScene == SceneLoader.Scene.Gameplay.ToString())
+        [SerializeField] private SoundsFactorySO _soundsFactory;
+        [Inject] private SoundManager _sfxManager;
+        [Inject] private TimerService _timerService;
+
+        void Start()
         {
-            _sfxManager.PlayRandomSoundByType(GameAudioType.AmbientSounds);
+            _timerHandle = _timerService.AddTimer(_soundsFactory.IntervalBetweenAmbientSfx, TryPlayAmbient, true);
         }
-    }
 
-    private void OnDestroy()
-    {
-        _timerHandle?.FinalizeTimer();
-        _timerHandle = null;
+        private void TryPlayAmbient()
+        {
+            var currentScene = SceneManager.GetActiveScene().name;
+            var chance = Random.Range(0f, 1f);
+            if (chance < _playChance && currentScene == SceneLoader.SceneLoader.Scene.Gameplay.ToString())
+            {
+                _sfxManager.PlayRandomSoundByType(GameAudioType.AmbientSounds);
+            }
+        }
+
+        private void OnDestroy()
+        {
+            _timerHandle?.FinalizeTimer();
+            _timerHandle = null;
+        }
     }
 }

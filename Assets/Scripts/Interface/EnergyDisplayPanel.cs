@@ -1,9 +1,8 @@
-using Farm.Interface;
 using TMPro;
 using UnityEngine;
 using Zenject;
 
-namespace Farm
+namespace Farm.Interface
 {
     public class EnergyDisplayPanel : MonoBehaviour
     {

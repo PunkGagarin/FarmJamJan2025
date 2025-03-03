@@ -2,7 +2,6 @@
 using Farm.Gameplay.Configs.UpgradeModules;
 using Farm.Interface;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 
 namespace Farm.DI

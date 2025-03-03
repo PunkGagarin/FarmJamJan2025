@@ -1,7 +1,8 @@
+using Farm.Audio.SO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Audio
+namespace Farm.Audio
 {
     public class MusicManager : BaseAudioManager
     {
@@ -47,7 +48,7 @@ namespace Audio
         public void PlayBgm()
         {
             var currentScene = SceneManager.GetActiveScene().name;
-            var introAudioType = currentScene == SceneLoader.Scene.MainMenuScene.ToString()
+            var introAudioType = currentScene == SceneLoader.SceneLoader.Scene.MainMenuScene.ToString()
                 ? GameAudioType.MainMenuIntro
                 : GameAudioType.GamePlayIntro;
 
@@ -63,7 +64,7 @@ namespace Audio
         private void StartBgm()
         {
             var currentScene = SceneManager.GetActiveScene().name;
-            var bgmAudioType = currentScene == SceneLoader.Scene.MainMenuScene.ToString()
+            var bgmAudioType = currentScene == SceneLoader.SceneLoader.Scene.MainMenuScene.ToString()
                 ? GameAudioType.MainMenuBgm
                 : GameAudioType.GamePlayBgm;
 

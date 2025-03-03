@@ -1,9 +1,8 @@
 using System;
-using Farm.Gameplay.DragNDrop;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Farm
+namespace Farm.Gameplay.DragNDrop
 {
     public class InventorySlot : MonoBehaviour, IPointerDownHandler, IDraggable
     {

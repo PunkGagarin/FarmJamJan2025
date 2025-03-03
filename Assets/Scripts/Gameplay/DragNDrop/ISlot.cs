@@ -1,6 +1,9 @@
-public interface ISlot
+namespace Farm.Gameplay.DragNDrop
 {
-    public bool CanPlaceItem { get; }
-    void SetItem(UpgradeModule item);
-    void ShowNotAbleToPlace();
+    public interface ISlot
+    {
+        public bool CanPlaceItem { get; }
+        void SetItem(UpgradeModule item);
+        void ShowNotAbleToPlace();
+    }
 }

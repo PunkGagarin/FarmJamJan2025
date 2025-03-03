@@ -50,14 +50,14 @@ namespace Farm.Interface.Tutorial
         private void ShowTutorialCapsuleTutorial()
         {
             CapsulePopup.OnTutorialCapsuleOpened -= ShowTutorialCapsuleTutorial;
-            _popupManager.OpenMessagePopup(_tutorialTextStartEmbryo);
+            _popupManager.OpenMessagePopup(_tutorialTextStartEmbryo, 0);
             CapsulePopup.OnTutorialAnimationCompleted += ShowGoodEmbryoTutorial;
         }
         
         private void ShowGoodEmbryoTutorial()
         {
             CapsulePopup.OnTutorialAnimationCompleted -= ShowGoodEmbryoTutorial;
-            _popupManager.OpenMessagePopup(_tutorialTextGoodSample);
+            _popupManager.OpenMessagePopup(_tutorialTextGoodSample, 3);
         }
 
         private void CapsuleTutorialComplete()
@@ -77,7 +77,7 @@ namespace Farm.Interface.Tutorial
 
         private void ShowHungryTutorial()
         {
-            _popupManager.OpenMessagePopup(_tutorialTextHungry);
+            _popupManager.OpenMessagePopup(_tutorialTextHungry, 1);
             _inventoryUI.OnEnergyChanged += CheckCapsuleCost;
         }
         
@@ -93,20 +93,18 @@ namespace Farm.Interface.Tutorial
             if (_inventoryUI.CanBuy(capsule.Cost))
             {
                 capsule.ShowTutorialCanBuy();
-                Capsule.OnCapsuleBought += CapsuleBoughtTutorial;
+                if (_capsuleManager.CapsulesOwned == _capsulesOwnToShowInventory - 1)
+                    Capsule.OnCapsuleBought += CapsuleBoughtTutorial;
             }
         }
-        
+
         private void CapsuleBoughtTutorial()
         {
-            if (_capsuleManager.CapsulesOwned >= _capsulesOwnToShowInventory)
-            {
-                Capsule.OnCapsuleBought -= CapsuleBoughtTutorial;
-                _rightShadow.gameObject.SetActive(false);
-                _inventoryUI.TutorialToggleOpenAnimation();
-                var message = _popupManager.OpenMessagePopup(_tutorialTextInventory);
-                message.SetCloseEvent(() => _popupManager.OpenMessagePopup(_tutorialTextModule));
-            }
+            Capsule.OnCapsuleBought -= CapsuleBoughtTutorial;
+            _rightShadow.gameObject.SetActive(false);
+            _inventoryUI.TutorialToggleOpenAnimation();
+            var message = _popupManager.OpenMessagePopup(_tutorialTextInventory, 2);
+            message.SetCloseEvent(() => _popupManager.OpenMessagePopup(_tutorialTextModule, 2));
         }
         
         private void OldOnePhaseChanged(int newPhase)
@@ -116,7 +114,7 @@ namespace Farm.Interface.Tutorial
             
             _theOldOne.OnPhaseChanged -= OldOnePhaseChanged;
 
-            _popupManager.OpenMessagePopup(_tutorialTextGettingHungrier);
+            _popupManager.OpenMessagePopup(_tutorialTextGettingHungrier, 4);
             _middleShadow.gameObject.SetActive(false);
         }
         

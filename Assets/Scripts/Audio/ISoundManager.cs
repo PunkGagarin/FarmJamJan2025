@@ -1,4 +1,4 @@
-namespace Audio
+namespace Farm.Audio
 {
     public interface ISoundManager
     {

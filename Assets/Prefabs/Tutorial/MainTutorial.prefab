@@ -293,8 +293,9 @@ MonoBehaviour:
   _tutorialTextGettingHungrier: It seems he's getting hungrier. You should check
     out the available upgrades.
   _tutorialTextInventory: In your inventory you can buy capsule upgrade.
-  _tutorialTextModule: To inject a module, drag and drop it onto the capsule slot.
-    To extract a module, click on the occupied slot.
+  _tutorialTextModule: To inject a module, drag and drop it onto an idle capsule
+    slot. To extract a module, click on the occupied slot. If the capsule is active,
+    you cannot insert a new module or extract the existing one.
   _capsuleManager: {fileID: 0}
   _theOldOne: {fileID: 0}
   _timeToWaitUntilHungryTutorialShow: 5

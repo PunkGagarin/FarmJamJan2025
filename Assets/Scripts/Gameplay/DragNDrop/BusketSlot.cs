@@ -1,8 +1,8 @@
-using Audio;
+using Farm.Audio;
 using UnityEngine;
 using Zenject;
 
-namespace Farm
+namespace Farm.Gameplay.DragNDrop
 {
     public class BusketSlot : MonoBehaviour, ISlot
     {

@@ -1,16 +1,18 @@
 using UnityEngine;
 using Zenject;
-
-public class SceneLoaderCallback : MonoBehaviour
+namespace Farm.SceneLoader
 {
-    private bool _isFirstUpdate = true;
-
-    [Inject] private SceneLoader _loader;
-
-    private void Update()
+    public class SceneLoaderCallback : MonoBehaviour
     {
-        if (!_isFirstUpdate) return;
-        _isFirstUpdate = false;
-        _loader.LoaderCallback();
+        private bool _isFirstUpdate = true;
+
+        [Inject] private SceneLoader _loader;
+
+        private void Update()
+        {
+            if (!_isFirstUpdate) return;
+            _isFirstUpdate = false;
+            _loader.LoaderCallback();
+        }
     }
 }

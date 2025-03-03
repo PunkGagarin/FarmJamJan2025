@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using Farm.Audio.SO;
 using UnityEngine;
 
-namespace Audio
+namespace Farm.Audio
 {
     public class SoundManager : BaseAudioManager, ISoundManager
     {

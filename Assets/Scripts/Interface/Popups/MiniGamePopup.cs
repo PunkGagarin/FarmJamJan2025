@@ -1,4 +1,4 @@
-﻿using Audio;
+﻿using Farm.Audio;
 using Farm.Gameplay.Configs.MiniGame;
 using Farm.Gameplay.MiniGame;
 using UnityEngine;
