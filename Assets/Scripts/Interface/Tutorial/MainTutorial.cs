@@ -1,4 +1,5 @@
-﻿using Farm.Gameplay.Capsules;
+﻿using System;
+using Farm.Gameplay.Capsules;
 using Farm.Gameplay.MiniGame;
 using Farm.Interface.Popups;
 using Farm.Utils.Timer;
@@ -39,6 +40,13 @@ namespace Farm.Interface.Tutorial
             _theOldOne.OnPhaseChanged += OldOnePhaseChanged;
             MiniGameVisual.OnTutorialMiniGameOpened += ShowMiniGameTutorial;
             Capsule.OnCapsuleBought += CheckOpeningMiniGameUnlock;
+            _inventoryUI.OnEnergyChanged += CheckCapsuleCost;
+
+        }
+        
+        private void OnDestroy()
+        {
+            _inventoryUI.OnEnergyChanged -= CheckCapsuleCost;
         }
         
         private void CheckOpeningMiniGameUnlock()
@@ -98,7 +106,6 @@ namespace Farm.Interface.Tutorial
         private void ShowHungryTutorial()
         {
             _popupManager.OpenMessagePopup(_tutorialTextHungry, 1);
-            _inventoryUI.OnEnergyChanged += CheckCapsuleCost;
         }
         
         private void CheckCapsuleCost()

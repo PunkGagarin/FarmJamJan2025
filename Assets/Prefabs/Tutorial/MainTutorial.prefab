@@ -298,5 +298,5 @@ MonoBehaviour:
     you cannot insert a new module or extract the existing one.
   _capsuleManager: {fileID: 0}
   _theOldOne: {fileID: 0}
-  _timeToWaitUntilHungryTutorialShow: 5
+  _timeToWaitUntilHungryTutorialShow: 2
   _capsulesOwnToShowInventory: 4
