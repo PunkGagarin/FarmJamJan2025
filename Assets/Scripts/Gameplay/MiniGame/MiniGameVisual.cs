@@ -70,19 +70,31 @@ namespace Farm.Gameplay.MiniGame
         
         private void InitializeButtons()
         {
-            _actionButton.onClick.RemoveAllListeners();
             _actionButton.gameObject.SetActive(false);
             _lowRiskButton.gameObject.SetActive(true);
             _mediumRiskButton.gameObject.SetActive(true);
             _highRiskButton.gameObject.SetActive(true);
             
-            _lowRiskButton.onClick.AddListener(StartLowRiskGame);
-            _mediumRiskButton.onClick.AddListener(StartMediumRiskGame);
-            _highRiskButton.onClick.AddListener(StartHighRiskGame);
             
             _lowRiskCost.text = _miniGameConfig.LowRiskStats.CostToRun.ToString();
             _mediumRiskCost.text = _miniGameConfig.MediumRiskStats.CostToRun.ToString();
             _highRiskCost.text = _miniGameConfig.HighRiskStats.CostToRun.ToString();
+        }
+        
+        private void Awake()
+        {
+            _lowRiskButton.onClick.AddListener(StartLowRiskGame);
+            _mediumRiskButton.onClick.AddListener(StartMediumRiskGame);
+            _highRiskButton.onClick.AddListener(StartHighRiskGame);
+            _actionButton.onClick.AddListener(StartDeceleration);
+        }
+
+        private void OnDestroy()
+        {
+            _lowRiskButton.onClick.RemoveListener(StartLowRiskGame);
+            _mediumRiskButton.onClick.RemoveListener(StartMediumRiskGame);
+            _highRiskButton.onClick.RemoveListener(StartHighRiskGame);
+            _actionButton.onClick.RemoveListener(StartDeceleration);
         }
 
         private void ResetState()
@@ -94,6 +106,8 @@ namespace Farm.Gameplay.MiniGame
         
         private void StartLowRiskGame()
         {
+            if (_isStarted)
+                return;
             if (_inventory.CanBuy(_miniGameConfig.LowRiskStats.CostToRun))
             {
                 _soundManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
@@ -111,6 +125,8 @@ namespace Farm.Gameplay.MiniGame
         
         private void StartMediumRiskGame()
         {
+            if (_isStarted)
+                return;
             if (_inventory.CanBuy(_miniGameConfig.MediumRiskStats.CostToRun))
             {
                 _soundManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
@@ -128,6 +144,8 @@ namespace Farm.Gameplay.MiniGame
         
         private void StartHighRiskGame()
         {
+            if (_isStarted)
+                return;
             if (_inventory.CanBuy(_miniGameConfig.HighRiskStats.CostToRun))
             {
                 _soundManager.PlaySoundByType(GameAudioType.UiButtonClick, 0);
@@ -153,7 +171,6 @@ namespace Farm.Gameplay.MiniGame
             _lowRiskButton.gameObject.SetActive(false);
             _mediumRiskButton.gameObject.SetActive(false);
             _highRiskButton.gameObject.SetActive(false);
-            _actionButton.onClick.AddListener(StartDeceleration);
         }
         
         private void StartDeceleration()
