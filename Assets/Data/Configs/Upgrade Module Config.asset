@@ -19,7 +19,15 @@ MonoBehaviour:
   _negativePercentForTwo: 30
   _negativePercentForThree: 50
   _canBeThreeStatCount: 0
-  _icons:
-  - {fileID: 21300000, guid: 399470700809f2f4493aef42cc3a56b6, type: 3}
-  - {fileID: 21300000, guid: e3669f782799a9140a65ad6e30d415db, type: 3}
-  - {fileID: 21300000, guid: 4f5cf3927d11df04e89da0f34ac465cb, type: 3}
+  _firstStattutorialModule:
+    ModuleCharacteristicType: 0
+    Description: Human Roll
+    Icon: {fileID: -561560098, guid: 97cf5ba1950c8ce4e8c00d9c3a6695eb, type: 3}
+    MinValue: 50
+    MaxValue: 50
+  _secondStattutorialModule:
+    ModuleCharacteristicType: 3
+    Description: Energy Charge
+    Icon: {fileID: 21300000, guid: d5c4f5283e115424dbe2b732eed0cfbf, type: 3}
+    MinValue: 15
+    MaxValue: 15

@@ -230,10 +230,10 @@ namespace Farm.Gameplay.MiniGame
         {
             if (_isFirstRun) 
                 return _miniGameConfig.FirstEffect;
+            allowedEffects = Shuffle(allowedEffects);
             float totalWeight = allowedEffects.Sum(effect => effect.Weight);
             float randomValue = Random.Range(0f, totalWeight);
             float currentWeight = 0f;
-            //Debug.Log($"total weight = {totalWeight}, random value = {randomValue}");
             foreach (MiniGameEffect miniGameEffect in allowedEffects)
             {
                 currentWeight += miniGameEffect.Weight;
@@ -243,6 +243,19 @@ namespace Farm.Gameplay.MiniGame
             }
             
             return allowedEffects[^1];
+        }
+        
+        private List<MiniGameEffect> Shuffle(List<MiniGameEffect> list)
+        {
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = Random.Range(0, n + 1);
+                (list[n], list[k]) = (list[k], list[n]); // Swap элементов
+            }
+
+            return list;
         }
         
         private Segment PickSegment()

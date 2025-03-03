@@ -38,6 +38,26 @@ namespace Farm.Interface.Tutorial
             message.SetCloseEvent(OpenFirstCapsule);
             _theOldOne.OnPhaseChanged += OldOnePhaseChanged;
             MiniGameVisual.OnTutorialMiniGameOpened += ShowMiniGameTutorial;
+            Capsule.OnCapsuleBought += CheckOpeningMiniGameUnlock;
+        }
+        
+        private void CheckOpeningMiniGameUnlock()
+        {
+            if (_capsuleManager.CapsulesOwned == 3)
+            {
+                Capsule.OnCapsuleBought -= CheckOpeningMiniGameUnlock;
+                _inventoryUI.OnEnergyChanged += CheckCanStartMiniGame;
+            }
+            
+        }
+        
+        private void CheckCanStartMiniGame()
+        {
+            if (_inventoryUI.CanBuy(50))
+            {
+                _inventoryUI.OnEnergyChanged -= CheckCanStartMiniGame;
+                _middleShadow.gameObject.SetActive(false);
+            }
         }
 
         private void OpenFirstCapsule()
@@ -115,7 +135,6 @@ namespace Farm.Interface.Tutorial
             _theOldOne.OnPhaseChanged -= OldOnePhaseChanged;
 
             _popupManager.OpenMessagePopup(_tutorialTextGettingHungrier, 4);
-            _middleShadow.gameObject.SetActive(false);
         }
         
         private void ShowMiniGameTutorial()

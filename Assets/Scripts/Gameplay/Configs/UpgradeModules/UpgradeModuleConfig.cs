@@ -13,10 +13,23 @@ namespace Farm.Gameplay.Configs.UpgradeModules
         [SerializeField] private float _negativePercentForTwo;
         [SerializeField] private float _negativePercentForThree;
         [SerializeField] private float _canBeThreeStatCount;
+        [SerializeField] private UpgradeModuleStat _firstStattutorialModule;
+        [SerializeField] private UpgradeModuleStat _secondStattutorialModule;
 
         public List<UpgradeModuleStat> Stats => _pool.Stats;
 
         public float CanBeThreeStatCount => _canBeThreeStatCount;
+        
+        public UpgradeModule GetTutorialModule()
+        {
+            var firststat = new UpgradeModuleStat(_firstStattutorialModule.ModuleCharacteristicType, _firstStattutorialModule.Description, _firstStattutorialModule.Icon, _firstStattutorialModule.MinValue, _firstStattutorialModule.MaxValue);
+            firststat.SetValue(firststat.MaxValue);
+            var secondstat = new UpgradeModuleStat(_secondStattutorialModule.ModuleCharacteristicType, _secondStattutorialModule.Description, _secondStattutorialModule.Icon, _secondStattutorialModule.MinValue, _secondStattutorialModule.MaxValue);
+            secondstat.SetValue(secondstat.MaxValue);
+            UpgradeModule tutorialModule = new UpgradeModule(new List<UpgradeModuleStat> { firststat, secondstat });
+
+            return tutorialModule;
+        }
 
         public UpgradeModule GetRandomModule(bool canBeThree)
         {

@@ -281,7 +281,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 600, y: 400}
+  m_SizeDelta: {x: 700, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6102638129763458057
 CanvasRenderer:
@@ -462,7 +462,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: I'll explain to you the main points of our work. After all, the safety
-    of all mankind depends on us.
+    of all mankind depends on us.I'll explain to you the main points of our work.
+    After all, the safety of all mankind depends on us.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a0ea6ae88685b4905931d51a2e0f3560, type: 2}
   m_sharedMaterial: {fileID: 3778483385410204777, guid: a0ea6ae88685b4905931d51a2e0f3560, type: 2}

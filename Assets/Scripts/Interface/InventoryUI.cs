@@ -181,6 +181,8 @@ namespace Farm.Interface
             InitializeSlots();
             _currentModuleCost = _inventoryConfig.BaseModuleCost;
             UpdateBuyModuleButtonText();
+            UpgradeModule tutorialModule = _upgradeModuleConfig.GetTutorialModule();
+            SetItem(tutorialModule);
             _buyModuleButton.onClick.AddListener(OnBuyUpgradeModuleClicked);
             _openInventoryButton.onClick.AddListener(ToggleOpenAnimation);
             InventorySlot.OnModuleChanged += UpdatePlacedSlotsCountText;
