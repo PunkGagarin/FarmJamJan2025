@@ -19,11 +19,11 @@ MonoBehaviour:
     Weight: 100
   - Tier: 1
     BuffType: 2
-    Value: -15
+    Value: 15
     Weight: 100
   - Tier: 1
     BuffType: 3
-    Value: -15
+    Value: 15
     Weight: 100
   - Tier: 1
     BuffType: 2
@@ -31,7 +31,7 @@ MonoBehaviour:
     Weight: 100
   - Tier: 2
     BuffType: 3
-    Value: -25
+    Value: 25
     Weight: 200
   - Tier: 2
     BuffType: 1
@@ -39,11 +39,11 @@ MonoBehaviour:
     Weight: 200
   - Tier: 2
     BuffType: 2
-    Value: -25
+    Value: 25
     Weight: 200
   - Tier: 2
     BuffType: 3
-    Value: 30
+    Value: -30
     Weight: 200
   - Tier: 3
     BuffType: 1
@@ -51,10 +51,14 @@ MonoBehaviour:
     Weight: 400
   - Tier: 3
     BuffType: 2
-    Value: -40
+    Value: 40
     Weight: 400
   - Tier: 3
     BuffType: 3
+    Value: 40
+    Weight: 400
+  - Tier: 3
+    BuffType: 2
     Value: -40
     Weight: 400
   _firstEffect:
