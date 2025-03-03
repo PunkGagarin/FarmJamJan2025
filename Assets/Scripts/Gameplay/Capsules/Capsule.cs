@@ -22,34 +22,17 @@ namespace Farm.Gameplay.Capsules
         private static readonly int InstantOpen = Animator.StringToHash("InstantOpen");
         private static readonly int Feed = Animator.StringToHash("Feed");
         private static readonly int Fill = Animator.StringToHash("Fill");
-
-        [SerializeField]
-        private Animator _animator;
-
+        
+        [SerializeField] private Animator _animator;
         [Header("Components")]
-        [SerializeField]
-        private SpriteRenderer _capsuleSprite;
-
-        [SerializeField]
-        private Image _growProgress;
-
-        [SerializeField]
-        private SpriteRenderer _embryoImage;
-
-        [SerializeField]
-        private TMP_Text _info;
-
-        [SerializeField]
-        private CapsuleEnergyCost _capsuleEnergyCost;
-
-        [SerializeField]
-        private int _capsuleNumber;
-
-        [SerializeField]
-        private List<CapsuleSlot> _capsuleSlots;
-
-        [SerializeField]
-        private Image _canBuyImage;
+        [SerializeField] private SpriteRenderer _capsuleSprite;
+        [SerializeField] private Image _growProgress;
+        [SerializeField] private SpriteRenderer _embryoImage;
+        [SerializeField] private TMP_Text _info;
+        [SerializeField] private CapsuleEnergyCost _capsuleEnergyCost;
+        [SerializeField] private int _capsuleNumber;
+        [SerializeField] private List<CapsuleSlot> _capsuleSlots;
+        [SerializeField] private Image _canBuyImage;
 
         [Inject] private PopupManager _popupManager;
         [Inject] private TimerService _timerService;
@@ -96,18 +79,18 @@ namespace Farm.Gameplay.Capsules
             _growProgress.gameObject.SetActive(true);
             _capsuleSlots.ForEach(slot => slot.IsCapsuleInGrowthProcess = true);
         }
-
+        
         public void OpenCapsule()
         {
             _animator.SetTrigger(Open);
         }
-
+        
         public void ShowTutorialCanBuy()
         {
             _canBuyImage.gameObject.SetActive(true);
             _canBuyImage.DOColor(Color.yellow, 0.5f).SetLoops(-1, LoopType.Yoyo);
         }
-
+        
         private void ApplyModulesToGrowthSpeed()
         {
             Embryo.TimeToGrowth = UpgradeModuleUtils.ApplyStatsWithType(Embryo.TimeToGrowth, _capsuleSlots,
@@ -257,6 +240,8 @@ namespace Farm.Gameplay.Capsules
             _capsuleEnergyCost.OnBoughtSuccess -= BuyCapsule;
             _capsuleEnergyCost.OnBoughtSuccess -= UpgradeCapsule;
             OnEmbryoStateChanged -= UpdateView;
+            _embryoTimer?.EarlyComplete(true);
+            _embryoTimer = null;
         }
 
         public void ShakeModuleAddingError()

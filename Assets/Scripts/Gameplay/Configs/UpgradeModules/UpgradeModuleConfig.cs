@@ -13,7 +13,6 @@ namespace Farm.Gameplay.Configs.UpgradeModules
         [SerializeField] private float _negativePercentForTwo;
         [SerializeField] private float _negativePercentForThree;
         [SerializeField] private float _canBeThreeStatCount;
-        [SerializeField] private List<Sprite> _icons;
 
         public List<UpgradeModuleStat> Stats => _pool.Stats;
 
@@ -49,7 +48,7 @@ namespace Farm.Gameplay.Configs.UpgradeModules
                 finalStats.Add(stat);
             }
 
-            return new UpgradeModule(finalStats, _icons[Random.Range(0, _icons.Count)]);
+            return new UpgradeModule(finalStats);
         }
 
         private int CalculateStatsCount(bool canBeThree)

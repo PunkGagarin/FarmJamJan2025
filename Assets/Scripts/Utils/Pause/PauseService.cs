@@ -20,6 +20,9 @@ namespace Farm.Utils.Pause
 
         public void SetPaused(bool isPaused)
         {
+            if (IsPaused == isPaused)
+                return;
+            
             IsPaused = isPaused;
             
             foreach (var handler in _handlers)

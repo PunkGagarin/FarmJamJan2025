@@ -1,12 +1,10 @@
 ﻿using System;
-using DG.Tweening;
 using Farm.Audio;
 using Farm.Enums;
 using Farm.Gameplay.Definitions;
 using Farm.Gameplay.Quests;
 using Farm.Interface.Popups;
 using Farm.Interface.TheOldOne;
-using Farm.Utils.Pause;
 using Farm.Utils.Timer;
 using UnityEngine;
 using Zenject;
