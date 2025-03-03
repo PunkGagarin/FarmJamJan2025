@@ -14,15 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pool: {fileID: 11400000, guid: 1246d17cc9803f34d9f3df885387b2eb, type: 2}
   _tier1Angle: 30
-  _tier2Angle: 25
-  _tier3Angle: 20
+  _tier2Angle: 30
+  _tier3Angle: 30
   _decelerationTime: 0.2
   _effectTimeLow: 30
   _effectTimeMedium: 60
   _effectTimeHigh: 90
   _lowRiskStats:
     Speed: 80
-    SegmentsOnWheel: 5
+    SegmentsOnWheel: 6
     HighestAllowedTier: 1
     CostToRun: 50
   _mediumRiskStats:
@@ -32,7 +32,7 @@ MonoBehaviour:
     CostToRun: 100
   _highRiskStats:
     Speed: 240
-    SegmentsOnWheel: 8
+    SegmentsOnWheel: 6
     HighestAllowedTier: 3
     CostToRun: 150
   _additionalAngle: 0

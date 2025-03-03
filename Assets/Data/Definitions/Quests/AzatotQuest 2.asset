@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e75a5946f17c4c94b1c373e23e15ae72, type: 3}
-  m_Name: CtulhuQuest 5
+  m_Name: AzatotQuest 2
   m_EditorClassIdentifier: 
   _requirements:
-  - RequirementType: 3
-    RequiredAmount: 500
-    RequiredExtraAmount: 0
-    QuestStateDescription: SURVIVE
-  _energyReward: 0
+  - RequirementType: 6
+    RequiredAmount: 8
+    RequiredExtraAmount: 2
+    QuestStateDescription: Upgrade your capsules to the next level
+  _energyReward: 200
   _satietyPenalty: 0

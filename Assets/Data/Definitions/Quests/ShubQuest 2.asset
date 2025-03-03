@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e75a5946f17c4c94b1c373e23e15ae72, type: 3}
-  m_Name: CtulhuQuest 1
+  m_Name: ShubQuest 2
   m_EditorClassIdentifier: 
   _requirements:
-  - RequirementType: 9
-    RequiredAmount: 5
-    RequiredExtraAmount: 20
-    QuestStateDescription: Collect capsules in 20 seconds
-  _energyReward: 50
+  - RequirementType: 5
+    RequiredAmount: 8
+    RequiredExtraAmount: 0
+    QuestStateDescription: Unlock all capsules
+  _energyReward: 200
   _satietyPenalty: 0

@@ -12,17 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e75a5946f17c4c94b1c373e23e15ae72, type: 3}
   m_Name: CtulhuQuest 3
   m_EditorClassIdentifier: 
-  _description: "Provide fish to calm Cthulhu, but beware \u2014 his power grows
-    stronger with time."
   _requirements:
-  - RequirementType: 2
-    RequiredAmount: 10
-    RequiredTier: 0
-  - RequirementType: 2
-    RequiredAmount: 10
-    RequiredTier: 0
-  - RequirementType: 6
-    RequiredAmount: 10
-    RequiredTier: 2
+  - RequirementType: 8
+    RequiredAmount: 20
+    RequiredExtraAmount: 0
+    QuestStateDescription: Keep the capsules empty for a while
   _energyReward: 200
-  _satietyPenalty: 100
+  _satietyPenalty: 0

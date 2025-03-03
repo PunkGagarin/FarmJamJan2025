@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: CtulhuQuest 2
   m_EditorClassIdentifier: 
   _requirements:
-  - RequirementType: 1
-    RequiredAmount: 5
+  - RequirementType: 7
+    RequiredAmount: 2
     RequiredExtraAmount: 0
-    QuestStateDescription: 
-  _energyReward: 100
-  _satietyPenalty: 100
+    QuestStateDescription: Equip modules
+  _energyReward: 150
+  _satietyPenalty: 0

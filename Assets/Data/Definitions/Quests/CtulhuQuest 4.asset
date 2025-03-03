@@ -12,12 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e75a5946f17c4c94b1c373e23e15ae72, type: 3}
   m_Name: CtulhuQuest 4
   m_EditorClassIdentifier: 
-  _description: "Cthulhu\u2019s awakening is near, and we need to gather energy to
-    complete the ritual. Harness every source of power you can find to prevent the
-    world from falling into darkness."
   _requirements:
   - RequirementType: 3
     RequiredAmount: 500
-    RequiredTier: 0
+    RequiredExtraAmount: 0
+    QuestStateDescription: Collect enough energy
   _energyReward: 200
-  _satietyPenalty: 100
+  _satietyPenalty: 0
