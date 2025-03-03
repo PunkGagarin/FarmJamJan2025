@@ -67,9 +67,9 @@ namespace Farm.Interface.Popups
             _closeButton.onClick.AddListener(Close);
             _additionalCloseButton.onClick.AddListener(Close);
             _capsule.OnEmbryoStateChanged += UpdateEmbryoView;
-            _selectedTier = 0;
             _additionalCloseButton.gameObject.SetActive(_capsule.Embryo != null);
-
+            _selectedTier = capsule.Tier;
+            
             UpdatePopupInfo();
 
             UpdateButtonsInfo();

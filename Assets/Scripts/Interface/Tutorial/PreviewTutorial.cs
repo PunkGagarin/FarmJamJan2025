@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using Farm.Gameplay;
+using Farm.Utils.Pause;
 using Farm.Utils.Timer;
 using TMPro;
 using UnityEngine;
@@ -26,6 +27,7 @@ namespace Farm.Interface.Tutorial
 
         [Inject] private WriterService _writerService;
         [Inject] private TimerService _timerService;
+        [Inject] private PauseService _pauseService;
         
         private string _text1,_text2,_text3;
         private bool _continueAvailable;
@@ -33,6 +35,7 @@ namespace Farm.Interface.Tutorial
 
         private void Awake()
         {
+            _pauseService.SetPaused(false);
             _curtainLeft.gameObject.SetActive(false);
             _curtainRight.gameObject.SetActive(false);
             
@@ -48,7 +51,7 @@ namespace Farm.Interface.Tutorial
         private void Start()
         {
             _continueButton.onClick.AddListener(_writerService.StopWriter);
-            _timer = _timerService.AddTimer(3f, ShowSecondText);
+            _timer = _timerService.AddTimer(2f, ShowSecondText);
             
             _writerService.WriteText(_firstText, _text1);
         }
@@ -58,7 +61,7 @@ namespace Farm.Interface.Tutorial
             _timer?.EarlyComplete();
             _timer = null;
 
-            _timer = _timerService.AddTimer(3f, ShowCurtainAnimation);
+            _timer = _timerService.AddTimer(2f, ShowCurtainAnimation);
             _writerService.WriteText(_secondText, _text2);
         }
         
@@ -75,14 +78,11 @@ namespace Farm.Interface.Tutorial
             _bg.color = _transparentBlack;
             _continueButton.onClick.AddListener(GoodLuck);
 
-            _curtainLeft.DOLocalMoveX(-1000, 3f);
-            _curtainRight.DOLocalMoveX(1000, 3f).OnComplete(() =>
+            _curtainLeft.DOLocalMoveX(-1000, 2f);
+            _curtainRight.DOLocalMoveX(1000, 2f).OnComplete(() =>
             {
-                _curtainLeft.DOLocalMoveX(0, 3f);
-                _curtainRight.DOLocalMoveX(0, 3f).OnComplete(() =>
-                {
-                    GoodLuck();
-                });
+                _curtainLeft.DOLocalMoveX(0, 2f);
+                _curtainRight.DOLocalMoveX(0, 2f).OnComplete(GoodLuck);
             });
 
             void GoodLuck()
@@ -94,7 +94,7 @@ namespace Farm.Interface.Tutorial
                 _curtainRight.gameObject.SetActive(false);
 
                 _continueButton.onClick.AddListener(_writerService.StopWriter);
-                _timer = _timerService.AddTimer(3f, ShowGoodLuck);
+                _timer = _timerService.AddTimer(2f, ShowGoodLuck);
                 _writerService.WriteText(_thirdText, _text3);
             }
         }
@@ -142,8 +142,6 @@ namespace Farm.Interface.Tutorial
             _writerService.OnTextWritten -= ShowSecondText;
             _writerService.OnTextWritten -= ShowCurtainAnimation;
             _writerService.OnTextWritten -= ShowGoodLuck;
-            _curtainLeft.DOKill();
-            _curtainRight.DOKill();
         }
     }
 }

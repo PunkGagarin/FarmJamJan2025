@@ -90,6 +90,7 @@ namespace Farm.Gameplay.Capsules
             _canBuyImage.gameObject.SetActive(true);
             _canBuyImage.DOColor(Color.yellow, 0.5f).SetLoops(-1, LoopType.Yoyo);
         }
+        
         private void ApplyModulesToGrowthSpeed()
         {
             Embryo.TimeToGrowth = UpgradeModuleUtils.ApplyStatsWithType(Embryo.TimeToGrowth, _capsuleSlots,
@@ -160,11 +161,11 @@ namespace Farm.Gameplay.Capsules
         {
             _canBuyImage.gameObject.SetActive(false);
             _canBuyImage.DOKill();
-            
+
             CurrentEmbryoState = EmbryoStates.Empty;
             _isOwn = true;
             _capsuleSlots.ForEach(slot => slot.IsOwn = true);
-            _capsuleEnergyCost.UpdateInfo(_capsuleConfig.UpgradeCost, true);
+            _capsuleEnergyCost.UpdateInfo(_capsuleConfig.UpgradeCost[0], true);
             OnCapsuleBought?.Invoke();
             _inventory.OnEnergyChanged += _capsuleEnergyCost.CheckCanBuy;
             _capsuleEnergyCost.CheckCanBuy();
@@ -181,6 +182,11 @@ namespace Farm.Gameplay.Capsules
                 _inventory.OnEnergyChanged -= _capsuleEnergyCost.CheckCanBuy;
                 _capsuleEnergyCost.OnBoughtSuccess -= UpgradeCapsule;
                 _capsuleEnergyCost.gameObject.SetActive(false);
+            }
+            else
+            {
+                //все ещё есть тир для грейда
+                _capsuleEnergyCost.UpdateInfo(_capsuleConfig.UpgradeCost[_tier], true);
             }
         }
 
@@ -234,6 +240,8 @@ namespace Farm.Gameplay.Capsules
             _capsuleEnergyCost.OnBoughtSuccess -= BuyCapsule;
             _capsuleEnergyCost.OnBoughtSuccess -= UpgradeCapsule;
             OnEmbryoStateChanged -= UpdateView;
+            _embryoTimer?.EarlyComplete(true);
+            _embryoTimer = null;
         }
 
         public void ShakeModuleAddingError()

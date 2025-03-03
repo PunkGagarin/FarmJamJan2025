@@ -80,6 +80,12 @@ namespace Farm.Interface.TheOldOne
 
         private void OnPauseClicked() => _popupManager.OpenPause();
 
-        private void OnDestroy() => _pauseButton.onClick.RemoveListener(OnPauseClicked);
+        private void OnDestroy()
+        {
+            _pauseButton.onClick.RemoveListener(OnPauseClicked);
+            _cautionImage.DOKill();
+            _blinkingTween.Kill();
+        }
+        
     }
 }
