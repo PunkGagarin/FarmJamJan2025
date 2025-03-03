@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using Farm.Audio;
 using Farm.Gameplay;
 using Farm.Utils.Pause;
 using Farm.Utils.Timer;
@@ -28,13 +29,17 @@ namespace Farm.Interface.Tutorial
         [Inject] private WriterService _writerService;
         [Inject] private TimerService _timerService;
         [Inject] private PauseService _pauseService;
+        [Inject] private MasterSoundManager _masterSoundManager;
         
         private string _text1,_text2,_text3;
         private bool _continueAvailable;
         private TimerHandle _timer;
+        private float _tempVolume;
 
         private void Awake()
         {
+            _tempVolume = _masterSoundManager.Volume;
+            _masterSoundManager.ChangeVolume(0, 0);
             _pauseService.SetPaused(false);
             _curtainLeft.gameObject.SetActive(false);
             _curtainRight.gameObject.SetActive(false);
@@ -114,6 +119,7 @@ namespace Farm.Interface.Tutorial
         
         private void StartNextPhase()
         {
+            _masterSoundManager.ChangeVolume(_tempVolume, _tempVolume);
             _timer?.EarlyComplete();
             _timer = null;
             _continueButton.onClick.RemoveListener(StartNextPhase);
