@@ -3685,10 +3685,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainTutorial
       objectReference: {fileID: 0}
-    - target: {fileID: 5069602417159194259, guid: fb0a70867fff97c48ac1d9b88a179da8, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5072720016413308283, guid: fb0a70867fff97c48ac1d9b88a179da8, type: 3}
       propertyPath: _theOldOne
       value: 
