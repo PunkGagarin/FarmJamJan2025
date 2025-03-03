@@ -41,9 +41,9 @@ namespace Farm.Gameplay.DragNDrop
             {
                 var worldPosition = GetWorldPosition();
                 var hit = Physics2D.Raycast(worldPosition, Vector2.zero);
-                if (hit.collider != null && hit.collider.TryGetComponent(out ISlot slot) && slot.CanPlaceItem)
+                if (hit.collider != null && hit.collider.TryGetComponent(out ISlot slot))
                 {
-                    SetItemNewToSlot(slot);
+                    TryPlaceItem(slot);
                 }
                 else
                 {
@@ -57,14 +57,27 @@ namespace Farm.Gameplay.DragNDrop
 
                     foreach (RaycastResult result in results)
                     {
-                        if (result.gameObject.TryGetComponent(out ISlot newSlot) && newSlot.CanPlaceItem)
+                        if (result.gameObject.TryGetComponent(out ISlot newSlot))
                         {
-                            SetItemNewToSlot(newSlot);
+                            TryPlaceItem(newSlot);
                             return;
                         }
                     }
                     ReturnItem();
                 }
+            }
+        }
+
+        private void TryPlaceItem(ISlot slot)
+        {
+            if (slot.CanPlaceItem)
+            {
+                SetItemNewToSlot(slot);
+            }
+            else
+            {
+                slot.ShowNotAbleToPlace();
+                ReturnItem();
             }
         }
 

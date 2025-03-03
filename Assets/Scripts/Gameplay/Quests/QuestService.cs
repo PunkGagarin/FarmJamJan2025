@@ -8,24 +8,24 @@ namespace Farm.Gameplay.Quests
     {
         private QuestDefinition _currentQuest;
         private List<QuestInfo> _currentQuestRequirements = new();
-        private bool _isQuestCompleted;
         
         public event Action OnQuestStarted;
         public event Action<int> OnQuestFailed;
         public event Action<int> OnQuestCompleted;
         public event Action OnQuestUpdated;
+        
+        public bool HaveActiveQuest => _currentQuestRequirements.Count > 0 && _currentQuestRequirements.Any(quest => quest.IsCompleted == false);
 
         public void SetupQuest(QuestDefinition questDefinition)
         {
             _currentQuest = questDefinition;
-            _isQuestCompleted = false;
+            _currentQuestRequirements = new List<QuestInfo>();
             if (questDefinition == null)
             {
-                _currentQuestRequirements = null;
+                OnQuestUpdated?.Invoke();
                 return;
             }
             
-            _currentQuestRequirements = new List<QuestInfo>();
             foreach (QuestRequirement questRequirement in questDefinition.Requirements)
             {
                 QuestInfo questInfo = new QuestInfo(questRequirement.RequirementType, questRequirement.RequiredAmount, questRequirement.RequiredExtraAmount, questRequirement.QuestStateDescription);
@@ -38,7 +38,7 @@ namespace Farm.Gameplay.Quests
 
         public void AddRequirement(RequirementType requirementType, int requiredTier = -1)
         {
-            if (_currentQuestRequirements == null)
+            if (!HaveActiveQuest)
                 return;
             
             foreach (QuestInfo questInfo in _currentQuestRequirements)
@@ -59,7 +59,7 @@ namespace Farm.Gameplay.Quests
 
         public void SetRequirement(RequirementType requirementType, int value, int requiredTier = -1)
         {
-            if (_currentQuestRequirements == null || _currentQuestRequirements.Count == 0 || _isQuestCompleted)
+            if (!HaveActiveQuest)
                 return;
             
             foreach (QuestInfo questInfo in _currentQuestRequirements)
@@ -77,22 +77,28 @@ namespace Farm.Gameplay.Quests
             }
             
             if (_currentQuestRequirements.All(questRequirement => questRequirement.IsCompleted))
-            {
-                _isQuestCompleted = true;
                 OnQuestCompleted?.Invoke(_currentQuest.EnergyReward);
-            }
+           
             OnQuestUpdated?.Invoke();
         }
         
         public List<QuestInfo> GetQuestRequirements() => 
             _currentQuestRequirements;
         
-        public void FinalizeQuest()
+        public void FailQuest()
         {
             if (_currentQuest == null || _currentQuestRequirements == null)
                 return;
             
             OnQuestFailed?.Invoke(_currentQuest.SatietyPenalty);
+        }
+
+        public void ExpireQuest()
+        {
+            if (_currentQuest == null || _currentQuestRequirements == null)
+                return;
+
+            OnQuestFailed?.Invoke(0);
         }
     }
 }

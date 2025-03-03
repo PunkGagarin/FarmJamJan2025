@@ -17,7 +17,13 @@ namespace Farm.Interface.Popups
             _writerService.WriteText(_message, message);
             Open(true);
         }
-        
+
+        protected override void Close()
+        {
+            _writerService.StopWriter();
+            base.Close();
+        }
+
         private void Awake()
         {
             _okButton.onClick.AddListener(Close);

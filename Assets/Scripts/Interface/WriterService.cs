@@ -12,6 +12,7 @@ namespace Farm.Interface
         private float _writerCooldown = 0.025f;
         private string _textToWrite;
         private TMP_Text _targetContainer;
+        private Coroutine _writerCoroutine;
         
         public event Action OnTextWritten;
         
@@ -25,12 +26,14 @@ namespace Farm.Interface
         {
             _targetContainer = target;
             _textToWrite = text;
-            StartCoroutine(Writer());
+            _writerCoroutine = StartCoroutine(Writer());
         }
 
         public void StopWriter()
         {
-            StopCoroutine(Writer());
+            if (_writerCoroutine != null)
+                StopCoroutine(_writerCoroutine);
+            
             _targetContainer.text = _textToWrite;
             OnTextWritten?.Invoke();
         }
@@ -48,7 +51,7 @@ namespace Farm.Interface
                 yield return new WaitForSeconds(_writerCooldown);
             }
             while (index < chars.Length);
-            OnTextWritten?.Invoke();
+            StopWriter();
         }
     }
 }

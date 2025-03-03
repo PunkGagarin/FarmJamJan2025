@@ -17,6 +17,7 @@ namespace Farm.Interface.Popups
         [SerializeField] private EndPhasePopup _endPhasePopup;
         [SerializeField] private VictoryPopup _victoryPopup;
         [SerializeField] private MessagePopup _messagePopup;
+        [SerializeField] private PausePopup _pausePopup;
 
         public GameOverPopup OpenGameOver()
         {
@@ -77,6 +78,12 @@ namespace Farm.Interface.Popups
             _messagePopup.Open(message);
 
             return _messagePopup;
+        }
+
+        public PausePopup OpenPause()
+        {
+            _pausePopup.Open(true);
+            return _pausePopup;
         }
     }
 }

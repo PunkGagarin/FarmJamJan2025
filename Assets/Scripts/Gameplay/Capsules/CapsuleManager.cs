@@ -47,10 +47,17 @@ namespace Farm.Gameplay.Capsules
             Capsule.OnCapsuleBought += CountOwnCapsules;
             Capsule.OnCapsuleUpgrade += CountCapsulesTiers;
             CapsuleSlot.OnAnyModuleChanged += CountCapsuleModules;
+            CapsuleSlot.OnModuleAddingError += ShakeModuleAddingError;
             foreach (var capsule in _capsules)
                 capsule.OnEmbryoStateChanged += CountEmbryos;
         }
-        
+
+        private void ShakeModuleAddingError(CapsuleSlot obj)
+        {
+            var capsule = _capsules.FirstOrDefault(capsule => capsule.CapsuleSlots.Any(slot => slot == obj));
+            capsule?.ShakeModuleAddingError();
+        }
+
         private void CountEmbryos(EmbryoStates newEmbryoState)
         {
             if (newEmbryoState != EmbryoStates.Empty)
@@ -142,6 +149,7 @@ namespace Farm.Gameplay.Capsules
             Capsule.OnCapsuleBought -= CountOwnCapsules;
             Capsule.OnCapsuleUpgrade -= CountCapsulesTiers;
             CapsuleSlot.OnAnyModuleChanged -= CountCapsuleModules;
+            CapsuleSlot.OnModuleAddingError -= ShakeModuleAddingError;
             _questService.OnQuestStarted -= CollectQuestInfo;
             foreach (var capsule in _capsules)
                 capsule.OnEmbryoStateChanged -= CountEmbryos;
