@@ -36,6 +36,7 @@ namespace Farm.Interface.TheOldOne
             _theOldOneLifeTimeUI.Initialize(definition, lifeTimer);
             _foodInfo.SetFoodInfo(definition);
             UpdateSatietyBar(definition.StartSatiety, definition.MaxSatiety, true);
+            _cautionImage.DOFade(0, 0);
         }
 
         public void PhaseChanged(int phaseNum)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Farm.Gameplay.Quests;
 using TMPro;
 using UnityEngine;
@@ -31,6 +32,13 @@ namespace Farm.Interface.TheOldOne
 
         private string GetQuestRequirementsText(List<QuestInfo> questInfos)
         {
+            if (questInfos == null || questInfos.Count == 0)
+            {
+                _panel.gameObject.SetActive(false);
+                return "";
+            }
+            
+            _panel.gameObject.SetActive(true);
             string text = "";
             foreach (QuestInfo info in questInfos)
             {
@@ -41,6 +49,12 @@ namespace Farm.Interface.TheOldOne
             }
             
             return text;
+        }
+
+        private void OnDestroy()
+        {
+            _questService.OnQuestStarted -= SetupPanel;
+            _questService.OnQuestUpdated -= UpdateQuest;
         }
     }
 }

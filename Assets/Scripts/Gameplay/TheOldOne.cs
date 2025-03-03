@@ -13,7 +13,7 @@ using Zenject;
 
 namespace Farm.Gameplay
 {
-    public class TheOldOne : MonoBehaviour, IPauseHandler
+    public class TheOldOne : MonoBehaviour
     {
         public delegate void SatietyChangeHandler(float current, float max);
 
@@ -35,7 +35,6 @@ namespace Farm.Gameplay
         private TimerHandle _rampageTimer;
         private TimerHandle _phaseTimer;
         private int _currentStage;
-        private Sequence _blinkingTween;
         private bool _inRampage;
 
         public event SatietyChangeHandler OnSatietyChanged;
@@ -63,7 +62,7 @@ namespace Farm.Gameplay
 
         private void UpdateQuest(int stage)
         {
-            _questService.FinalizeQuest();
+            _questService.FailQuest();
             _questService.SetupQuest(
                 _definition.SatietyPhasesData[stage].Quest == null 
                     ? null 
@@ -113,17 +112,22 @@ namespace Farm.Gameplay
             _questService.SetRequirement(RequirementType.Satiety, (int)_currentSatiety);
         }
 
+        [ContextMenu("seal")]
         private void Sealed()
         {
-            _lifeTimer?.FinalizeTimer();
+            if (_inRampage)
+                StopRampage();
+            
             _starveTimer?.FinalizeTimer();
-            _rampageTimer?.FinalizeTimer();
-            _phaseTimer?.FinalizeTimer();
+            _lifeTimer?.EarlyComplete(true);
+            _phaseTimer?.EarlyComplete(true);
 
             _lifeTimer = null;
             _starveTimer = null;
-            _rampageTimer = null;
             _phaseTimer = null;
+            
+            if (_questService.HaveActiveQuest)
+                _questService.ExpireQuest();
 
             OnSealed?.Invoke();
         }
@@ -169,24 +173,15 @@ namespace Farm.Gameplay
             OnRampageStateChanged?.Invoke(false);
             _rampageTimer.EarlyComplete(true);
             _rampageTimer = null;
-            _icon.DOFade(1, 0);
-            _blinkingTween.Kill();
             _musicManager.SetNextClipToPlay(GameAudioType.GamePlayBgm);
         }
 
         private void Defeat()
         {
             _inRampage = false;
-            _blinkingTween.Kill();
 
             _sfxManager.PlaySoundByType(GameAudioType.GameOver, 0);
             OnDefeat?.Invoke();
-        }
-
-        public void SetPaused(bool isPaused)
-        {
-            if (_inRampage)
-                _blinkingTween.TogglePause();
         }
 
         private void CollectQuestInfo()
@@ -244,7 +239,6 @@ namespace Farm.Gameplay
             _lifeTimer = null;
             OnPhaseChanged -= _theOldOneUI.PhaseChanged;
             OnSatietyChanged -= _theOldOneUI.UpdateSatietyBar;
-            _blinkingTween.Kill();
             _questService.OnQuestStarted -= CollectQuestInfo;
             _questService.OnQuestFailed -= RemoveSatiety;
             OnSatietyChanged -= SatietyChanged;
